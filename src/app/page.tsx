@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -15,6 +16,7 @@ import Autoplay from "embla-carousel-autoplay";
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import productsData from "@/lib/products.json";
+import categoriesData from "@/lib/categories.json";
 import { Product } from "@/lib/types";
 
 export default function Home() {
@@ -48,14 +50,6 @@ export default function Home() {
     }, 100);
     return () => clearInterval(interval);
   }, [api, current]);
-
-  const categories = [
-    { name: "Custom Name Plates", image: "https://picsum.photos/seed/cat-name/400/400" },
-    { name: "Shubh Symbols", image: "https://picsum.photos/seed/cat-symbols/400/400" },
-    { name: "Evil Eye Decor", image: "https://picsum.photos/seed/cat-evil/400/400" },
-    { name: "Decorative Hangings", image: "https://picsum.photos/seed/cat-hang/400/400" },
-    { name: "Home Decor", image: "https://picsum.photos/seed/cat-decor/400/400" }
-  ];
 
   const productsByCategory: Record<string, Product[]> = productsData.products.reduce((acc: Record<string, Product[]>, product: Product) => {
     if (!acc[product.category]) {
@@ -96,32 +90,14 @@ export default function Home() {
     "https://picsum.photos/seed/insta6/400/400"
   ];
 
-  const heroSlides = [
-    {
-      badge: "BESPOKE DOOR DECOR",
-      title: "CUSTOM",
-      highlight: "NAME PLATES",
-      categoryName: "Custom Name Plates",
-      desc: "Artisanal door decor personalized for your beautiful home. Experience contemporary design through bespoke handmade elegance.",
-      image: "https://picsum.photos/seed/art-nameplates/1920/1080",
-    },
-    {
-      badge: "TRADITIONAL SPIRITUALITY",
-      title: "SHUBH",
-      highlight: "SYMBOLS",
-      categoryName: "Shubh Symbols",
-      desc: "Traditional auspicious motifs to bring positive energy. Each piece is meticulously handcrafted with love and devotion.",
-      image: "https://picsum.photos/seed/spiritual-art/1920/1080",
-    },
-    {
-      badge: "VERTICAL TREASURES",
-      title: "DECORATIVE",
-      highlight: "HANGINGS",
-      categoryName: "Decorative Hangings",
-      desc: "Bespoke ensembles for your vertical spaces. Celebrate traditions with our vibrant range of festive wall and door decor.",
-      image: "https://picsum.photos/seed/wall-art-hangings/1920/1080",
-    }
-  ];
+  const heroSlides = categoriesData.categories.slice(0, 3).map(cat => ({
+    badge: "COLLECTION HIGHLIGHT",
+    title: cat.name.split(' ')[0].toUpperCase(),
+    highlight: cat.name.split(' ').slice(1).join(' ').toUpperCase(),
+    categoryName: cat.name,
+    desc: cat.description,
+    image: cat.imageUrl
+  }));
 
   return (
     <div className="flex flex-col w-full overflow-hidden">
@@ -138,7 +114,7 @@ export default function Home() {
                   <div className="absolute inset-0 z-0">
                     <Image 
                       src={slide.image}
-                      alt={slide.title}
+                      alt={slide.categoryName}
                       fill
                       sizes="100vw"
                       className={cn(
@@ -172,7 +148,7 @@ export default function Home() {
                       </p>
                       <Link href={`/products?category=${encodeURIComponent(slide.categoryName)}`} className="pt-4">
                         <Button className="h-14 px-12 rounded-xl text-[10px] font-bold uppercase tracking-widest gradient-primary border-none shadow-xl shadow-primary/40 active:scale-95 transition-all">
-                          Shop {slide.highlight}
+                          Shop {slide.categoryName}
                         </Button>
                       </Link>
                     </div>
@@ -208,11 +184,11 @@ export default function Home() {
             <h2 className="text-xl lg:text-4xl font-black uppercase tracking-tight">Artistic Categories</h2>
           </div>
           <div className="flex items-center gap-4 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
-            {categories.map((cat, index) => (
+            {categoriesData.categories.map((cat, index) => (
               <Link key={index} href={`/products?category=${encodeURIComponent(cat.name)}`} className="group block shrink-0 text-center space-y-2 w-28 sm:w-40">
                 <div className="relative aspect-square rounded-xl overflow-hidden border-2 border-white shadow-sm transition-all duration-500 group-hover:scale-105 group-hover:bg-primary/5">
                   <Image 
-                    src={cat.image} 
+                    src={cat.imageUrl} 
                     alt={cat.name} 
                     fill
                     sizes="(max-width: 639px) 25vw, 16.66vw"

@@ -9,6 +9,7 @@ import { Search, Mic } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import productsData from "@/lib/products.json";
+import categoriesData from "@/lib/categories.json";
 import { Product } from "@/lib/types";
 
 export default function ProductsPage() {
@@ -32,16 +33,7 @@ export default function ProductsPage() {
     }
   }, [searchModeParam]);
 
-  const categories = [
-    'All', 
-    'Custom Name Plates', 
-    'Shubh Symbols', 
-    'Evil Eye Protection Decor', 
-    'Decorative Hangings', 
-    'Festive / Special Gifts', 
-    'Home Decor', 
-    'Wedding'
-  ];
+  const categories = ['All', ...categoriesData.categories.map(c => c.name)];
 
   const allProducts = useMemo(() => productsData.products as Product[], []);
 
