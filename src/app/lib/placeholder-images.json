@@ -1,41 +1,28 @@
-
 {
   "placeholderImages": [
     {
-      "id": "pottery-1",
-      "description": "Hand-painted ceramic vase with floral motifs",
-      "imageUrl": "https://picsum.photos/seed/pottery1/600/800",
-      "imageHint": "ceramic vase"
+      "id": "lippan-art-1",
+      "description": "Vibrant Lippan Art piece with traditional mirror work",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuCdc7QHqmb8IoFw1otk9qpDxgkSPFRF6v-g9-5wUHln1LJGtaytUpF9dDwusObFHk6_SzO1aI-t6j8Y93gOlZXcQUTlQqYz153HEzKAK3peQTe5dLHDSkdyFmdySPUJvRZI0dCkMg9DXujNS1ZfX2KnrQc-NH1GRCM2FhOfkLfSUh4KW4rpZ0fIspAwU_rEmx2J3S4iySUFnCHvEB6tqbdKgnQTNV1JYCP9at0W7pUqgwTOoRuJncTZBnjhx0C4kD3sES8ZoEUXmUqS",
+      "imageHint": "lippan art"
     },
     {
-      "id": "painting-1",
-      "description": "Abstract watercolor sunset on canvas",
-      "imageUrl": "https://picsum.photos/seed/painting1/800/600",
-      "imageHint": "watercolor painting"
+      "id": "nameplate-1",
+      "description": "Custom handcrafted ceramic nameplate",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuB5zZUhE3Y6R0W0llzf9IYPUY54CnECp6lnAAgpPAOZXAVcovYGiPinIU5GU5hFXHABy7Rv8cgeHrVED6CN7ALdvaHQV7v8-oIH2SWmAw0nL9-NDb5h8Ms_Fi4HWNbhj2t9NlGtCN7JK8hogz7baDruuQaOxdjjdO3uKU9Ni2KOBgyFmV8k0OeewvIzaumYWoke22z5uIKAtVgNtnjQeEhTi____7CDtA1VAyDyd4c4ixsA8S85-dszzsrBphWbt7iD_Ig7hMZfTcmE",
+      "imageHint": "handmade nameplate"
     },
     {
-      "id": "jewelry-1",
-      "description": "Handcrafted silver earrings with turquoise stones",
-      "imageUrl": "https://picsum.photos/seed/jewelry1/600/600",
-      "imageHint": "handmade jewelry"
+      "id": "folk-art-1",
+      "description": "Indian Folk Art canvas painting",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD63rFSKw-M6kg2WTaH9p8ikR9JvpsN4Dqj-g-rQ52URHNznf5jw3X80OgUQbWEbdeuoGWqLg9PFYylTOWofLYGeZnIXp-DzsBPm4Ddr_8cu8xqn9XagBWvq1cIgDR0O8x3ayw3s6X6H9LkcJkt2_4JNL6ezqYUB4cKZv6fGe-JL1ZCPHCplBHK3Nqi5DifB3GrwI_cnp6sklwGaoSuXjkEiX0pTuAiknZ6Fzksw_1oApPFYngCdcCBFBMVhkNhS-uaRyzlh5QkJVLz",
+      "imageHint": "indian folk art"
     },
     {
-      "id": "macrame-1",
-      "description": "Bohemian wall hanging macrame art",
-      "imageUrl": "https://picsum.photos/seed/macrame1/600/800",
-      "imageHint": "macrame art"
-    },
-    {
-      "id": "candle-1",
-      "description": "Scented soy wax candle in decorative glass",
-      "imageUrl": "https://picsum.photos/seed/candle1/600/600",
-      "imageHint": "handmade candle"
-    },
-    {
-      "id": "textile-1",
-      "description": "Hand-woven cushion cover with ethnic patterns",
-      "imageUrl": "https://picsum.photos/seed/textile1/600/600",
-      "imageHint": "woven textile"
+      "id": "festive-decor-1",
+      "description": "Artisanal festive wall hanging",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuBUsyLP0xQMBpBkX_34Kj-cuDT5Rt4ifEcem4J1L_mgabKGB97S43wAnV3SEhO7ZlFrlm-hn_wstC9QhnfZyk9bElqhlxnrbks4uA6O1TwHSX8UUeXhLBkuATFBPVp0jOcr115YiKqsvYnuVrUObk0Xdt7GWGrNQhNKI0FPE_ajD5Bv2t7Q3SJHrmthSrUElVFOnkWhS9I_whOnbMpD0z0oZ0f5ZGxb08qhpydxFVtZLgTpkD2Bx2UkCFhNQCwefFEoScaZd1adHi88",
+      "imageHint": "festive decor"
     }
   ]
 }

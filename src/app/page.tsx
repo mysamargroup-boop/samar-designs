@@ -1,7 +1,8 @@
+"use client";
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Sparkles, Palette, ShieldCheck, Truck } from 'lucide-react';
+import { MessageCircle, Sparkles, Layout } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -11,129 +12,102 @@ export default function Home() {
     id: img.id,
     name: img.description.split(' ').slice(0, 3).join(' '),
     description: img.description,
-    price: [249, 599, 1200, 450, 899, 1500][i],
+    price: [1299, 1599, 899, 650][i % 4],
     imageUrl: img.imageUrl,
-    category: ['Ceramics', 'Paintings', 'Jewelry', 'Boho', 'Decor', 'Textile'][i]
+    category: ['Lippan Art', 'Nameplates', 'Folk Art', 'Decor'][i % 4]
   }));
-
-  const categories = [
-    { name: 'Ceramics', icon: Sparkles, color: 'bg-pink-100' },
-    { name: 'Paintings', icon: Palette, color: 'bg-purple-100' },
-    { name: 'Jewelry', icon: Sparkles, color: 'bg-rose-100' },
-    { name: 'Home Decor', icon: Sparkles, color: 'bg-fuchsia-100' },
-  ];
 
   return (
     <div className="flex flex-col w-full">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-20 pb-16 lg:pt-32 lg:pb-32 gradient-bg">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            <div className="lg:w-1/2 text-center lg:text-left space-y-8">
-              <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-white/80 border border-primary/20 text-primary text-sm font-bold animate-fade-in">
-                <Sparkles className="h-4 w-4" />
-                <span>100% Handcrafted with Love</span>
-              </div>
-              <h1 className="text-5xl lg:text-7xl font-black font-headline leading-tight tracking-tight">
-                Celebrate the <span className="text-gradient">Art of Handmade</span> Living
-              </h1>
-              <p className="text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                Discover curated artisanal products that bring soulful stories and creative elegance to your home and lifestyle.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <Link href="/products">
-                  <Button className="h-14 px-10 rounded-full text-lg gradient-primary shadow-xl hover:scale-105 transition-transform">
-                    Shop Collection
-                  </Button>
-                </Link>
-                <Link href="/discovery">
-                  <Button variant="outline" className="h-14 px-10 rounded-full text-lg border-primary text-primary hover:bg-primary/5">
-                    Ask AI Assistant
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            
-            <div className="lg:w-1/2 relative">
-              <div className="relative w-full aspect-square max-w-[500px] mx-auto animate-float">
-                <div className="absolute inset-0 gradient-primary rounded-full blur-3xl opacity-20" />
-                <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white">
-                  <Image 
-                    src="https://picsum.photos/seed/sumegha-hero/800/800" 
-                    alt="Handmade Pottery" 
-                    fill 
-                    className="object-cover"
-                    priority
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+      <section className="relative min-h-[600px] flex items-center justify-center">
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-JpPH3cpfoZ5jyZj3LtwEfqTqZJp1azGRFH5Gncj8nwyFsfQdMbcCoyhzK9ckQSoYCSkeP2zRUVqJF3daNOXPw3XhY2m3voi9AbX6IVOjSlK-iEIqIfRuxsFbp8chWQskVhmKnzPwpS1tuOhdixcKv0uYCL41LnfdnrOG4KbqVsbSBV9QJj6t5P9s9ZA80yuz8PNpHg7DHC7ASsM-BwG7VLMN-Gxroe1nlLpt8TTT1H-mdQrAw5YwMOd_Dedsv7KlXTd66spuAgEQ"
+            alt="Hero background"
+            fill
+            className="object-cover brightness-50"
+            priority
+          />
         </div>
-      </section>
-
-      {/* Categories */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-5xl font-black font-headline mb-4">Explore Categories</h2>
-            <div className="w-24 h-1.5 gradient-primary mx-auto rounded-full" />
+        
+        <div className="container mx-auto px-4 relative z-10 text-center text-white space-y-8 max-w-3xl">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-bold uppercase tracking-[0.2em]">
+            Aesthetic Living
           </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {categories.map((cat) => (
-              <Link key={cat.name} href={`/products?category=${cat.name}`} className="group">
-                <div className={`p-8 rounded-3xl ${cat.color} flex flex-col items-center justify-center space-y-4 transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-lg`}>
-                  <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm">
-                    <cat.icon className="h-8 w-8 text-primary" />
-                  </div>
-                  <span className="font-headline font-bold text-xl">{cat.name}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <h2 className="text-3xl lg:text-5xl font-black font-headline mb-2">Editor's Choice</h2>
-              <p className="text-muted-foreground">Most loved items by our community</p>
-            </div>
-            <Link href="/products">
-              <Button variant="link" className="text-primary font-bold text-lg group p-0">
-                View All <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+          <h1 className="text-4xl lg:text-6xl font-black font-display leading-tight uppercase tracking-tight">
+            Modern Artistry, Curated for Your Home
+          </h1>
+          <p className="text-lg opacity-90 font-light max-w-xl mx-auto">
+            Experience contemporary design through bespoke handmade elegance. Every piece is a testament to sophisticated simplicity.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <Link href="/products" className="w-full sm:w-auto">
+              <Button className="w-full h-12 px-10 rounded-lg text-xs font-bold uppercase tracking-widest bg-primary hover:bg-primary/90">
+                View Collection
               </Button>
+            </Link>
+            <Button 
+              variant="secondary" 
+              className="w-full sm:w-auto h-12 px-10 rounded-lg text-xs font-bold uppercase tracking-widest bg-white text-charcoal hover:bg-gray-100 flex items-center gap-2"
+              onClick={() => window.open('https://wa.me/919876543210', '_blank')}
+            >
+              <MessageCircle className="h-4 w-4 text-primary" />
+              Order on WhatsApp
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Works */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between mb-12">
+            <h4 className="text-sm font-bold uppercase tracking-widest">Featured Works</h4>
+            <Link href="/products" className="text-primary text-[10px] font-bold uppercase tracking-widest border-b border-primary/20 pb-0.5 hover:border-primary transition-all">
+              See All
             </Link>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {featuredProducts.slice(0, 4).map((product) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Banner */}
-      <section className="py-16 bg-white border-y">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      {/* Philosophy Section */}
+      <section className="py-20 px-4 bg-white/40">
+        <div className="container mx-auto max-w-2xl">
+          <div className="bg-white p-12 rounded-2xl shadow-sm text-center border border-gray-100 space-y-6">
+            <Layout className="h-8 w-8 text-primary/30 mx-auto" />
+            <h4 className="text-sm font-bold uppercase tracking-[0.2em]">The Philosophy</h4>
+            <p className="text-charcoal/60 text-sm leading-relaxed font-light italic">
+              "Rooted in contemporary aesthetics and traditional soul, we believe in the power of handmade elements to transform spaces into personal sanctuaries of elegance."
+            </p>
+            <div className="w-10 h-[1px] bg-primary/30 mx-auto" />
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Steps */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <h4 className="text-xs font-bold text-center mb-16 uppercase tracking-[0.2em]">The Experience</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
             {[
-              { icon: ShieldCheck, title: "Quality Assured", desc: "Every item is hand-inspected for artistic perfection." },
-              { icon: Truck, title: "Global Shipping", desc: "We deliver art safely to your doorstep worldwide." },
-              { icon: Sparkles, title: "Custom Orders", desc: "Personalize your products through direct artist contact." }
-            ].map((feature, i) => (
-              <div key={i} className="flex items-start space-x-6">
-                <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center flex-shrink-0 text-white shadow-lg">
-                  <feature.icon className="h-7 w-7" />
+              { id: '01', title: "Curate", desc: "Select from our gallery of hand-designed artisan creations." },
+              { id: '02', title: "Connect", desc: "Direct consultation for bespoke modifications and orders." },
+              { id: '03', title: "Cherish", desc: "Bespoke delivery of a piece crafted specifically for your home." }
+            ].map((step) => (
+              <div key={step.id} className="flex items-start gap-5">
+                <div className="flex-shrink-0 size-10 rounded-full border border-primary/20 flex items-center justify-center text-xs font-bold text-primary bg-white shadow-sm">
+                  {step.id}
                 </div>
-                <div>
-                  <h4 className="font-headline font-bold text-xl mb-2">{feature.title}</h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{feature.desc}</p>
+                <div className="pt-1">
+                  <h5 className="font-bold text-xs uppercase tracking-wide mb-1">{step.title}</h5>
+                  <p className="text-charcoal/50 text-[10px] font-light leading-relaxed">{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -141,24 +115,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AI Discovery CTA */}
-      <section className="py-20 bg-white overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="relative rounded-[3rem] gradient-primary p-12 lg:p-20 overflow-hidden shadow-2xl">
-            <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none">
+      {/* AI Assistant CTA */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-4xl">
+          <div className="bg-charcoal text-white p-12 lg:p-20 rounded-[2rem] text-center space-y-8 relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-32 h-32 opacity-10 -mr-8 -mt-8">
               <Sparkles className="w-full h-full" />
             </div>
-            <div className="relative z-10 max-w-2xl text-white">
-              <h2 className="text-4xl lg:text-6xl font-black font-headline mb-6">Can't decide what to pick?</h2>
-              <p className="text-xl opacity-90 mb-10 leading-relaxed">
-                Our AI Assistant "Sumegha AI" knows our collection inside out. Describe your taste, and it will find the perfect match for you.
-              </p>
-              <Link href="/discovery">
-                <Button size="lg" variant="secondary" className="h-16 px-10 rounded-full text-xl font-bold hover:scale-105 transition-transform">
-                  Start AI Discovery
-                </Button>
-              </Link>
-            </div>
+            <h3 className="text-2xl font-bold uppercase tracking-[0.2em]">Ask the Art Concierge</h3>
+            <p className="text-white/60 text-xs font-light tracking-wide max-w-md mx-auto">
+              Not sure which piece fits your aesthetic? Our AI Assistant can curate a selection based on your preferences.
+            </p>
+            <Link href="/discovery" className="inline-block">
+              <Button className="h-12 px-10 rounded-lg text-xs font-bold uppercase tracking-widest bg-primary hover:bg-primary/90">
+                Start Discovery
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

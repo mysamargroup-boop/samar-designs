@@ -1,30 +1,29 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 327 50% 96%;
-    --foreground: 324 74% 15%;
+    --background: 0 0% 97%;
+    --foreground: 0 0% 20%;
     --card: 0 0% 100%;
-    --card-foreground: 324 74% 15%;
+    --card-foreground: 0 0% 20%;
     --popover: 0 0% 100%;
-    --popover-foreground: 324 74% 15%;
-    --primary: 324 74% 45%;
+    --popover-foreground: 0 0% 20%;
+    --primary: 195 27% 49%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 300 64% 94%;
-    --secondary-foreground: 324 74% 45%;
-    --muted: 300 20% 92%;
-    --muted-foreground: 324 20% 45%;
-    --accent: 300 64% 63%;
+    --secondary: 0 0% 94%;
+    --secondary-foreground: 195 27% 49%;
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 195 27% 49%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 324 20% 88%;
-    --input: 324 20% 88%;
-    --ring: 324 74% 45%;
-    --radius: 1rem;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 195 27% 49%;
+    --radius: 0.75rem;
   }
 }
 
@@ -36,44 +35,12 @@
     @apply bg-background text-foreground font-body;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-headline;
+    @apply font-display uppercase tracking-widest;
   }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #C71D85, #D966D9);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #D966D9, #C71D85);
-}
-
-/* Hide scrollbar arrows */
-::-webkit-scrollbar-button {
-  display: none;
-}
-
 .gradient-bg {
-  background: linear-gradient(135deg, #FBEFF6 0%, #F5D3E8 100%);
-}
-
-.gradient-primary {
-  background: linear-gradient(135deg, #C71D85 0%, #D966D9 100%);
-}
-
-.text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#C71D85] to-[#D966D9];
+  background: linear-gradient(180deg, #F8F8F8 0%, #EFEFEF 100%);
 }
 
 .animate-float {
