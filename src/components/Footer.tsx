@@ -67,8 +67,8 @@ export function Footer() {
       <div className="container-normal px-8 lg:px-12">
         <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-12 lg:gap-16 mb-16 lg:mb-20">
           <div className="text-center lg:text-left space-y-6 lg:space-y-8 max-w-md w-full">
-            <h3 className="text-lg lg:text-xl font-black uppercase tracking-[0.3em] lg:tracking-[0.4em] text-white">Join the Inner Circle</h3>
-            <p className="text-white/40 text-[9px] lg:text-xs font-light tracking-[0.2em] leading-relaxed uppercase">
+            <h3 className="text-base lg:text-lg font-black uppercase tracking-[0.3em] lg:tracking-[0.4em] text-white">Join the Inner Circle</h3>
+            <p className="text-white/40 text-[9px] lg:text-[10px] font-light tracking-[0.2em] leading-relaxed uppercase">
               Experience new collections, limited drops, and exclusive releases.
             </p>
             <div className="flex flex-col sm:flex-row w-full gap-3 mt-4">
@@ -109,9 +109,9 @@ export function Footer() {
                   <div key={idx} className="flex flex-col items-start lg:items-end gap-3 w-full group">
                     <div className="flex items-center gap-3 text-primary lg:justify-end w-full">
                       <Icon className="h-5 w-5 stroke-[2.5px]" />
-                      <span className="text-[11px] lg:text-sm font-black uppercase tracking-[0.3em]">{item.label}</span>
+                      <span className="text-[11px] lg:text-[12px] font-black uppercase tracking-[0.3em]">{item.label}</span>
                     </div>
-                    <p className="text-white/80 text-sm lg:text-lg font-light tracking-wide lg:text-right w-full">
+                    <p className="text-white/80 text-sm lg:text-base font-light tracking-wide lg:text-right w-full">
                       {item.value}
                     </p>
                   </div>
@@ -124,11 +124,11 @@ export function Footer() {
         <div className="hidden md:grid md:grid-cols-4 gap-12 py-12 border-t border-white/5 text-sm font-bold uppercase tracking-[0.3em] text-white/70 lg:pl-12">
           {footerData.map((section) => (
             <div key={section.title} className="space-y-6">
-              <h4 className="text-white/30 text-[9px] lg:text-xs tracking-[0.5em] mb-4">{section.title}</h4>
+              <h4 className="text-white/30 text-[9px] lg:text-[10px] tracking-[0.5em] mb-4">{section.title}</h4>
               <ul className="space-y-4">
                 {section.links.map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="hover:text-primary transition-colors text-sm lg:text-base">{link.name}</Link>
+                    <Link href={link.href} className="hover:text-primary transition-colors text-[11px] lg:text-sm">{link.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -159,10 +159,21 @@ export function Footer() {
           </Accordion>
         </div>
 
-        <div className="mt-10 pt-8 border-t border-white/5 text-center px-4">
+        <div className="mt-10 pt-8 border-t border-white/5 flex flex-col items-center gap-4 text-center px-4">
           <p className="text-[9px] text-white/10 uppercase tracking-[0.5em] font-medium leading-relaxed">
             © {new Date().getFullYear()} Sumegha Handmades. Crafted with Precision.
           </p>
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-white/20">
+            <span>•</span>
+            <Link 
+              href="https://instagram.com/shubham__nema" 
+              target="_blank" 
+              className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-pink-400 hover:opacity-80 transition-opacity"
+            >
+              Designed by Samar
+            </Link>
+            <span>•</span>
+          </div>
         </div>
       </div>
     </footer>
