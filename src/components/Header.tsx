@@ -45,23 +45,23 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Right Icons */}
-          <div className="flex justify-end items-center gap-2 md:gap-6">
+          {/* Right Icons - Adjusted size and spacing */}
+          <div className="flex justify-end items-center gap-1 md:gap-2">
             <Link href="/wishlist">
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-black/5 text-foreground relative h-12 w-12 transition-transform hover:scale-110">
-                <Heart className="h-6 w-6" />
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-black/5 text-foreground relative h-12 w-12 transition-transform hover:scale-105">
+                <Heart className="h-7 w-7" />
                 {wishlist.length > 0 && (
-                  <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-white border-2 border-white">
+                  <span className="absolute top-2.5 right-2.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-white border-2 border-white">
                     {wishlist.length}
                   </span>
                 )}
               </Button>
             </Link>
             <Link href="/cart">
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-black/5 text-foreground relative h-12 w-12 transition-transform hover:scale-110">
-                <ShoppingBag className="h-6 w-6" />
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-black/5 text-foreground relative h-12 w-12 transition-transform hover:scale-105">
+                <ShoppingBag className="h-7 w-7" />
                 {cart.length > 0 && (
-                  <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-white border-2 border-white">
+                  <span className="absolute top-2.5 right-2.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-white border-2 border-white">
                     {cart.length}
                   </span>
                 )}
