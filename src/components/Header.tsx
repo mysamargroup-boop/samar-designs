@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { ShoppingBag, Heart, Menu, X } from 'lucide-react';
+import { ShoppingBag, Heart, Menu, X, Home, Shapes, Info, MessageCircle, Gem, BookText } from 'lucide-react';
 import { useState } from 'react';
 import { useStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
@@ -13,12 +13,12 @@ export function Header() {
   const { cart, wishlist } = useStore();
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Gallery', href: '/products' },
-    { name: 'Our Story', href: '/about' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'AI Concierge', href: '/discovery' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'Gallery', href: '/products', icon: Shapes },
+    { name: 'Our Story', href: '/about', icon: Info },
+    { name: 'Blog', href: '/blog', icon: BookText },
+    { name: 'AI Concierge', href: '/discovery', icon: Gem },
+    { name: 'Contact', href: '/contact', icon: MessageCircle },
   ];
 
   return (
@@ -87,20 +87,24 @@ export function Header() {
         </nav>
       </div>
 
-      {/* Mobile/Tablet Nav Overlay */}
+      {/* Mobile/Tablet Nav Overlay with Icons */}
       {isOpen && (
         <div className="absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-100 p-8 animate-in slide-in-from-top duration-300 lg:hidden shadow-2xl z-50">
-          <nav className="flex flex-col space-y-6 text-center">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.name} 
-                href={link.href} 
-                onClick={() => setIsOpen(false)}
-                className="text-sm font-bold uppercase tracking-[0.3em] text-foreground hover:text-primary transition-all"
-              >
-                {link.name}
-              </Link>
-            ))}
+          <nav className="flex flex-col space-y-2">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <Link 
+                  key={link.name} 
+                  href={link.href} 
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary/5 text-sm font-bold uppercase tracking-[0.2em] text-foreground hover:text-primary transition-all"
+                >
+                  <Icon className="h-5 w-5 opacity-60" />
+                  {link.name}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       )}
