@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Instagram } from 'lucide-react';
+import { Instagram, Facebook, Twitter, Youtube } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -33,18 +33,27 @@ export function Footer() {
                 placeholder="Email Address"
                 type="email"
               />
-              <Button className="h-14 px-10 rounded-xl text-xs font-bold uppercase tracking-[0.3em] gradient-primary transition-all text-white">
+              <Button className="h-14 px-10 rounded-xl text-xs font-bold uppercase tracking-[0.3em] gradient-primary transition-all text-white border-none shadow-none">
                 Subscribe
               </Button>
             </div>
           </div>
           
-          <div className="flex gap-12 items-center">
+          <div className="flex flex-wrap justify-center gap-8 items-center">
             <Link href="#" className="text-white/40 hover:text-primary transition-all hover:scale-110">
-              <Instagram className="h-8 w-8" />
+              <Instagram className="h-7 w-7" />
+            </Link>
+            <Link href="#" className="text-white/40 hover:text-blue-500 transition-all hover:scale-110">
+              <Facebook className="h-7 w-7" />
+            </Link>
+            <Link href="#" className="text-white/40 hover:text-sky-400 transition-all hover:scale-110">
+              <Twitter className="h-7 w-7" />
+            </Link>
+            <Link href="#" className="text-white/40 hover:text-red-500 transition-all hover:scale-110">
+              <Youtube className="h-7 w-7" />
             </Link>
             <Link href="#" className="text-white/40 hover:text-green-500 transition-all hover:scale-110">
-              <WhatsAppIcon className="h-8 w-8" />
+              <WhatsAppIcon className="h-7 w-7" />
             </Link>
           </div>
         </div>

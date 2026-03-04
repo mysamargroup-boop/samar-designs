@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Sparkles, PanelsTopLeft, MousePointer2, Truck, Gem, ArrowRight } from 'lucide-react';
+import { Sparkles, PanelsTopLeft, MousePointer2, Truck, Gem, ArrowRight, Shapes } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard';
 import {
@@ -91,6 +91,10 @@ export default function Home() {
     { id: "jewelry-1", name: "Artisanal Jewelry", description: "Handcrafted pieces that tell a story.", price: 450, originalPrice: 799, imageUrl: "https://picsum.photos/seed/jewel1/600/600", category: "Jewelry" }
   ];
 
+  const categories = [
+    "Ceramics", "Paintings", "Jewelry", "Boho", "Decor", "Textile", "Nameplates", "Folk Art"
+  ];
+
   return (
     <div className="flex flex-col w-full overflow-hidden">
       {/* Hero Slider Section */}
@@ -170,6 +174,31 @@ export default function Home() {
             ))}
           </CarouselContent>
         </Carousel>
+      </section>
+
+      {/* Collections Rounded Slider */}
+      <section className="py-16 bg-white/30 backdrop-blur-sm border-b border-white">
+        <div className="container-normal">
+          <div className="flex items-center gap-4 mb-8">
+            <Shapes className="h-6 w-6 text-primary" />
+            <h2 className="text-xl font-black uppercase tracking-widest">Explore Collections</h2>
+          </div>
+          <Carousel opts={{ align: "start", loop: true }} className="w-full">
+            <CarouselContent className="-ml-4">
+              {categories.map((cat, index) => (
+                <CarouselItem key={index} className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6">
+                  <Link href={`/products?category=${cat}`}>
+                    <div className="h-14 flex items-center justify-center rounded-full border-2 border-primary/10 bg-white hover:border-primary hover:bg-primary/5 transition-all duration-300 group">
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/60 group-hover:text-primary">
+                        {cat}
+                      </span>
+                    </div>
+                  </Link>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
       </section>
 
       {/* Featured Works Grid */}
