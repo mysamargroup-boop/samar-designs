@@ -44,6 +44,7 @@ export function Footer() {
       links: [
         { name: "Terms & Conditions", href: "/terms" },
         { name: "Return & Refunds", href: "/returns" },
+        { name: "Privacy Policy", href: "/privacy" },
       ]
     },
     {
