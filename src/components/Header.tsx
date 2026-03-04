@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { ShoppingBag, Heart, Menu, X, Home, Shapes, Info, MessageCircle, Gem, BookText } from 'lucide-react';
+import { ShoppingBag, Heart, Menu, X, Home, Shapes, Info, Phone, Gem, BookText } from 'lucide-react';
 import { useState } from 'react';
 import { useStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ export function Header() {
     { name: 'Our Story', href: '/about', icon: Info },
     { name: 'Blog', href: '/blog', icon: BookText },
     { name: 'AI Concierge', href: '/discovery', icon: Gem },
-    { name: 'Contact', href: '/contact', icon: MessageCircle },
+    { name: 'Contact', href: '/contact', icon: Phone },
   ];
 
   return (

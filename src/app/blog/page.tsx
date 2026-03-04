@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Calendar, User, Tag } from 'lucide-react';
+import { Calendar, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -14,7 +14,7 @@ export default function BlogPage() {
       title: "The Soul of Handmade: Why It Matters",
       excerpt: "In a world of mass production, find out why handcrafted pieces carry a unique energy and story within them.",
       author: "Sumegha",
-      date: "Oct 12, 2023",
+      date: "January 12, 2026",
       category: "Philosophy",
       image: "https://picsum.photos/seed/blog1/800/600"
     },
@@ -23,7 +23,7 @@ export default function BlogPage() {
       title: "Lippan Art: A Desert Masterpiece",
       excerpt: "Tracing the roots of Kutch's traditional mirror work and how we bring it into modern urban homes.",
       author: "Sumegha",
-      date: "Nov 05, 2023",
+      date: "January 20, 2026",
       category: "Tradition",
       image: "https://picsum.photos/seed/blog2/800/600"
     },
@@ -32,7 +32,7 @@ export default function BlogPage() {
       title: "Designing for Serenity",
       excerpt: "How to curate your living space with minimal but impactful art to create a sanctuary of peace.",
       author: "Sumegha",
-      date: "Dec 18, 2023",
+      date: "January 28, 2026",
       category: "Design",
       image: "https://picsum.photos/seed/blog3/800/600"
     }
@@ -42,18 +42,18 @@ export default function BlogPage() {
     <div className="min-h-screen py-16 lg:py-24">
       <div className="container-normal mx-auto space-y-20">
         {/* Header Section */}
-        <div className="text-center space-y-4">
+        <div className="text-center space-y-4 px-4">
           <p className="text-[11px] font-bold uppercase tracking-[0.5em] text-primary">The Studio Journal</p>
-          <h1 className="text-4xl lg:text-7xl font-black uppercase tracking-tight text-foreground">Stories & Insights</h1>
-          <p className="text-foreground/50 text-base lg:text-xl max-w-2xl mx-auto font-light leading-relaxed">
+          <h1 className="text-3xl lg:text-7xl font-black uppercase tracking-tight text-foreground">Stories & Insights</h1>
+          <p className="text-foreground/50 text-sm lg:text-xl max-w-2xl mx-auto font-light leading-relaxed">
             A deeper look into the artistry, traditions, and philosophy behind every Sumegha creation.
           </p>
         </div>
 
         {/* Blog Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 px-4">
           {blogs.map((blog) => (
-            <div key={blog.id} className="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-primary/5">
+            <Link key={blog.id} href={`/blog/${blog.id}`} className="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-primary/5 block">
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image 
                   src={blog.image} 
@@ -87,18 +87,13 @@ export default function BlogPage() {
                 <p className="text-foreground/60 text-sm leading-relaxed font-light">
                   {blog.excerpt}
                 </p>
-
-                <Button variant="link" className="p-0 text-primary font-black uppercase tracking-widest text-[10px] group-hover:gap-4 transition-all h-auto">
-                  Read Article
-                  <ArrowRight className="h-3 w-3 ml-2 transition-all" />
-                </Button>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
         {/* Newsletter CTA in Blog context */}
-        <div className="bg-[#181113] p-12 lg:p-20 rounded-[4rem] text-center space-y-8 relative overflow-hidden">
+        <div className="mx-4 bg-[#181113] p-12 lg:p-20 rounded-[4rem] text-center space-y-8 relative overflow-hidden">
           <div className="absolute inset-0 opacity-10 pointer-events-none">
             <Image src="https://picsum.photos/seed/patterns/1920/1080" alt="pattern" fill className="object-cover" />
           </div>

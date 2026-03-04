@@ -4,7 +4,7 @@
 import { use, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, ShoppingCart, Share2, Star, Sparkles, ChevronRight, Zap, ShieldCheck, Leaf, Medal } from 'lucide-react';
+import { Heart, ShoppingCart, Share2, Star, Sparkles, ChevronRight, Zap, ShieldCheck, Leaf, Medal, Phone } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { ProductCard } from '@/components/ProductCard';
+import { Separator } from '@/components/ui/separator';
 import {
   Carousel,
   CarouselContent,
@@ -195,7 +196,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
               <div className="flex items-center gap-4">
                 <p className="text-3xl lg:text-5xl font-black font-headline text-primary">₹{product.price}</p>
-                <p className="text-xl lg:text-2xl text-muted-foreground line-through decoration-primary/60 font-bold">₹{product.originalPrice}</p>
+                <p className="text-xl lg:text-2xl text-muted-foreground line-through decoration-primary/60 font-black">₹{product.originalPrice}</p>
               </div>
 
               <div className="flex flex-wrap gap-4 pt-2">
@@ -221,11 +222,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8">
               {specifications.map((spec, i) => (
-                <div key={i} className="space-y-1">
-                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{spec.label}</p>
-                  <p className="text-sm font-bold text-foreground">{spec.value}</p>
+                <div key={i} className="space-y-2 group">
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{spec.label}</p>
+                    <p className="text-sm font-black text-foreground">{spec.value}</p>
+                  </div>
+                  <Separator className="bg-primary/10" />
                 </div>
               ))}
             </div>
@@ -243,7 +247,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 </Button>
                 <Button 
                   size="lg" 
-                  className="h-14 lg:h-16 rounded-2xl text-[10px] font-bold uppercase tracking-widest gradient-primary flex-1 shadow-lg shadow-primary/20 relative overflow-hidden transition-opacity duration-300 hover:opacity-90 active:scale-95" 
+                  className="h-14 lg:h-16 rounded-2xl text-[10px] font-bold uppercase tracking-widest gradient-primary flex-1 shadow-lg shadow-primary/20 relative overflow-hidden transition-all duration-300 hover:opacity-90 active:scale-95" 
                   onClick={() => {addToCart(product); window.location.href = '/cart';}}
                 >
                   <Zap className="h-4 w-4 mr-1.5" />
@@ -253,7 +257,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
               <Button 
                 variant="outline" 
-                className="w-full h-12 rounded-2xl border-green-100 bg-green-50/30 hover:bg-green-50/50 hover:text-green-700 text-green-700 font-bold text-[11px] uppercase tracking-widest gap-2 transition-opacity duration-300" 
+                className="w-full h-12 rounded-2xl border-green-100 bg-green-50/30 hover:bg-green-50/50 hover:text-green-700 text-green-700 font-bold text-[11px] uppercase tracking-widest gap-2 transition-all" 
                 onClick={handleWhatsAppShare}
               >
                 <WhatsAppIcon className="h-4 w-4" />
@@ -273,6 +277,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   <AccordionTrigger className="text-[11px] font-bold uppercase tracking-widest hover:no-underline">Return Policy</AccordionTrigger>
                   <AccordionContent className="text-muted-foreground text-sm font-light">
                     As these are unique handcrafted pieces, we only accept returns in case of damage during transit. Please record an unboxing video for claim processing.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="custom" className="border-primary/5">
+                  <AccordionTrigger className="text-[11px] font-bold uppercase tracking-widest hover:no-underline">Custom Orders</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm font-light">
+                    We love creating bespoke pieces! If you want a specific size or color combination, reach out to us via WhatsApp for a personalized consultation.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
