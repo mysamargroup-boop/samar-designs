@@ -160,8 +160,8 @@ export function Footer() {
         </div>
 
         <div className="mt-10 pt-8 border-t border-white/5 flex flex-col items-center gap-4 text-center px-4">
-          <p className="text-[9px] text-white/10 uppercase tracking-[0.5em] font-medium leading-relaxed">
-            © {new Date().getFullYear()} Sumegha Handmades. Crafted with Precision.
+          <p className="text-[9px] text-white uppercase tracking-[0.5em] font-medium leading-relaxed">
+            © 2026 Sumegha Handmades. Crafted with Precision.
           </p>
           <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-white/20">
             <span>•</span>
@@ -179,3 +179,4 @@ export function Footer() {
     </footer>
   );
 }
+
