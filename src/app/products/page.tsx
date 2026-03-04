@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useSearchParams } from 'next/navigation';
@@ -5,7 +6,7 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { ProductCard } from '@/components/ProductCard';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
-import { Search } from 'lucide-react';
+import { Search, Mic } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -62,14 +63,15 @@ export default function ProductsPage() {
           
           <div className="flex flex-col gap-8 w-full max-w-3xl">
             <div className="relative group max-w-2xl mx-auto w-full">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground transition-colors group-focus-within:text-primary" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground transition-colors group-focus-within:text-primary pointer-events-none" />
               <input 
                 ref={searchInputRef}
                 placeholder="Search unique art..." 
-                className="w-full pl-12 h-14 rounded-2xl border border-primary/10 bg-white/50 backdrop-blur-sm focus:bg-white shadow-sm outline-none px-4"
+                className="w-full pl-12 pr-12 h-14 rounded-2xl border border-primary/10 bg-white/50 backdrop-blur-sm focus:bg-white shadow-sm outline-none px-4 transition-all"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
+              <Mic className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground hover:text-primary cursor-pointer transition-colors" />
             </div>
 
             <div className="relative w-full">
@@ -99,7 +101,7 @@ export default function ProductsPage() {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="space-y-4 p-2 bg-white rounded-xl shadow-sm">
                 <Skeleton className="aspect-square w-full rounded-lg" />
@@ -111,7 +113,7 @@ export default function ProductsPage() {
             ))}
           </div>
         ) : filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {filteredProducts.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}

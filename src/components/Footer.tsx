@@ -140,14 +140,14 @@ export function Footer() {
           <Accordion type="single" collapsible className="w-full">
             {footerData.map((section, idx) => (
               <AccordionItem key={section.title} value={`item-${idx}`} className="border-white/5">
-                <AccordionTrigger className="text-[10px] font-bold uppercase tracking-widest text-white/60 hover:no-underline py-4 px-4">
+                <AccordionTrigger className="text-[12px] font-bold uppercase tracking-widest text-white/60 hover:no-underline py-5 px-4">
                   {section.title}
                 </AccordionTrigger>
                 <AccordionContent>
-                  <ul className="flex flex-col gap-3 py-2 px-6">
+                  <ul className="flex flex-col gap-4 py-3 px-6">
                     {section.links.map((link) => (
                       <li key={link.name}>
-                        <Link href={link.href} className="text-[9px] text-white/40 uppercase tracking-widest hover:text-primary transition-colors">
+                        <Link href={link.href} className="text-[11px] text-white/70 uppercase tracking-widest hover:text-primary transition-colors">
                           {link.name}
                         </Link>
                       </li>

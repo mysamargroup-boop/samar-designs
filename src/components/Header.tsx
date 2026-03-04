@@ -2,6 +2,7 @@
 "use client";
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ShoppingBag, Heart, Menu, X, Home, Shapes, Info, Phone, Gem, BookText } from 'lucide-react';
 import { useState } from 'react';
 import { useStore } from '@/lib/store';
@@ -10,10 +11,12 @@ import { cn } from '@/lib/utils';
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
   const { cart, wishlist } = useStore();
 
   const navLinks = [
     { name: 'Home', href: '/', icon: Home },
+    { name: 'Collections', href: '/collections', icon: Shapes },
     { name: 'Gallery', href: '/products', icon: Shapes },
     { name: 'Our Story', href: '/about', icon: Info },
     { name: 'Blog', href: '/blog', icon: BookText },
@@ -74,16 +77,25 @@ export function Header() {
 
         {/* Desktop Navigation: Centered Below Logo */}
         <nav className="hidden lg:flex items-center justify-center space-x-12 mt-6 pt-4 border-t border-gray-50">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              href={link.href}
-              className="text-[11px] font-bold uppercase tracking-[0.3em] text-foreground/60 hover:text-primary transition-all relative group"
-            >
-              {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-primary transition-all group-hover:w-full"></span>
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link 
+                key={link.name} 
+                href={link.href}
+                className={cn(
+                  "text-[11px] font-bold uppercase tracking-[0.3em] transition-all relative group",
+                  isActive ? "text-primary" : "text-foreground/60 hover:text-primary"
+                )}
+              >
+                {link.name}
+                <span className={cn(
+                  "absolute -bottom-1 left-0 h-[1.5px] bg-primary transition-all",
+                  isActive ? "w-full" : "w-0 group-hover:w-full"
+                )}></span>
+              </Link>
+            );
+          })}
         </nav>
       </div>
 
@@ -93,14 +105,18 @@ export function Header() {
           <nav className="flex flex-col space-y-2">
             {navLinks.map((link) => {
               const Icon = link.icon;
+              const isActive = pathname === link.href;
               return (
                 <Link 
                   key={link.name} 
                   href={link.href} 
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary/5 text-sm font-bold uppercase tracking-[0.2em] text-foreground hover:text-primary transition-all"
+                  className={cn(
+                    "flex items-center gap-4 px-4 py-3 rounded-xl transition-all text-sm font-bold uppercase tracking-[0.2em]",
+                    isActive ? "bg-primary/10 text-primary" : "hover:bg-primary/5 text-foreground hover:text-primary"
+                  )}
                 >
-                  <Icon className="h-5 w-5 opacity-60" />
+                  <Icon className={cn("h-5 w-5", isActive ? "opacity-100" : "opacity-60")} />
                   {link.name}
                 </Link>
               );
