@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from 'next/link';
@@ -89,7 +88,6 @@ export default function Home() {
     highlight: cat.name.split(' ').slice(1).join(' ').toUpperCase(),
     categoryName: cat.name,
     desc: cat.description,
-    // Using variety from categories or fallback to variety picsum
     image: cat.imageUrl || `https://picsum.photos/seed/hero-${idx}/1920/1080`
   }));
 
@@ -179,7 +177,7 @@ export default function Home() {
             <h4 className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary">Discover Our</h4>
             <h2 className="text-2xl lg:text-5xl font-black uppercase tracking-tight">Artistic Categories</h2>
           </div>
-          <div className="flex items-center gap-8 overflow-x-auto pb-6 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-12 pb-6 px-4">
             {categoriesData.categories.map((cat, index) => (
               <Link key={index} href={`/products?category=${encodeURIComponent(cat.name)}`} className="group block shrink-0 text-center space-y-4 w-32 sm:w-48">
                 <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-white shadow-md transition-all duration-500 group-hover:scale-105 group-hover:shadow-xl group-hover:border-primary/20">

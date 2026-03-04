@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from 'next/link';
@@ -41,8 +40,15 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6">
-      <div className="container-normal mx-auto space-y-12 pb-16">
+    <div className="relative min-h-screen py-10 px-4 sm:px-6 overflow-hidden">
+      {/* Background Overlays */}
+      <div className="absolute top-0 left-0 w-full h-full -z-10 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[10%] right-[-5%] w-[35%] h-[35%] bg-primary/10 rounded-full blur-[100px]" />
+        <div className="absolute top-[30%] right-[10%] w-[20%] h-[20%] bg-pink-200/20 rounded-full blur-[80px]" />
+      </div>
+
+      <div className="container-normal mx-auto space-y-12 pb-16 relative">
         {/* Header */}
         <div className="relative flex items-center justify-center mb-8">
           <div className="absolute left-0">
