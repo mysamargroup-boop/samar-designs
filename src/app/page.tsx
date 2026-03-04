@@ -1,9 +1,8 @@
-
 "use client";
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { MousePointer2, Truck, ChevronRight } from 'lucide-react';
+import { Truck, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard';
 import {
@@ -61,14 +60,19 @@ export default function Home() {
       { id: "fest-1", name: "Floral Pooja Thali", price: 899, originalPrice: 1200, imageUrl: "https://picsum.photos/seed/pooja/600/600", category: "Festive", tags: ["Bestseller"], rating: 5 },
       { id: "fest-2", name: "Handpainted Diya Set", price: 450, originalPrice: 600, imageUrl: "https://picsum.photos/seed/diya/600/600", category: "Festive", tags: ["New Arrival"], rating: 4 },
       { id: "fest-3", name: "Custom Gift Hamper", price: 1500, originalPrice: 2000, imageUrl: "https://picsum.photos/seed/hamper/600/600", category: "Festive", tags: ["Top Selling"], rating: 5 },
+      { id: "fest-4", name: "Artisan Box", price: 599, originalPrice: 850, imageUrl: "https://picsum.photos/seed/box/600/600", category: "Festive", tags: ["Classic"], rating: 5 },
     ],
     "Home Decor": [
       { id: "home-1", name: "Lippan Mirror Art", price: 1299, originalPrice: 1800, imageUrl: "https://picsum.photos/seed/lippan/600/600", category: "Home Decor", tags: ["Bestseller"], rating: 5 },
       { id: "home-2", name: "Ceramic Floor Vase", price: 2500, originalPrice: 3500, imageUrl: "https://images.unsplash.com/photo-1631125915732-b98f8774f675?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2VyYW1pYyUyMHZhc2V8ZW58MHx8fHwxNzcyNTI3MTU5fDA&ixlib=rb-4.1.0&q=80&w=1080", category: "Home Decor", tags: ["Top Selling"], rating: 4 },
+      { id: "home-3", name: "Macrame Decor", price: 899, originalPrice: 1200, imageUrl: "https://picsum.photos/seed/macrame-home/600/600", category: "Home Decor", tags: ["Boho"], rating: 5 },
+      { id: "home-4", name: "Abstract Canvas", price: 1500, originalPrice: 2200, imageUrl: "https://picsum.photos/seed/canvas/600/600", category: "Home Decor", tags: ["Modern"], rating: 5 },
     ],
     "Wedding": [
       { id: "wed-1", name: "Bridal Trunk Box", price: 3500, originalPrice: 4500, imageUrl: "https://picsum.photos/seed/trunk/600/600", category: "Wedding", tags: ["Luxury"], rating: 5 },
       { id: "wed-2", name: "Wedding Shagun Envelope", price: 150, originalPrice: 200, imageUrl: "https://picsum.photos/seed/env/600/600", category: "Wedding", tags: ["Top Selling"], rating: 5 },
+      { id: "wed-3", name: "Bespoke Invitation", price: 299, originalPrice: 450, imageUrl: "https://picsum.photos/seed/card/600/600", category: "Wedding", tags: ["Artistic"], rating: 5 },
+      { id: "wed-4", name: "Floral Jewelry", price: 899, originalPrice: 1500, imageUrl: "https://picsum.photos/seed/floral/600/600", category: "Wedding", tags: ["Traditional"], rating: 5 },
     ]
   };
 
@@ -119,7 +123,7 @@ export default function Home() {
                       )}
                       priority
                     />
-                    <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
+                    <div className="absolute inset-0 bg-black/20" />
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-black/40" />
                   </div>
 
@@ -216,7 +220,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {products.slice(0, 4).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

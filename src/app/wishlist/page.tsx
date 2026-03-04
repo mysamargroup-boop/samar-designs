@@ -26,10 +26,12 @@ export default function WishlistPage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl lg:text-6xl font-black font-headline mb-4 text-center uppercase tracking-tight">My Wishlist</h1>
-      <p className="text-muted-foreground mb-12 text-lg text-center">Your curated collection of handmade dreams.</p>
+      <div className="text-center space-y-2 mb-12">
+        <h1 className="text-4xl lg:text-6xl font-black font-headline uppercase tracking-tight">My Wishlist</h1>
+        <p className="text-muted-foreground text-lg">Your curated collection of handmade dreams.</p>
+      </div>
       
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 sm:gap-6">
         {wishlist.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}

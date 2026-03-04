@@ -1,4 +1,3 @@
-
 "use client";
 
 import { use, useState } from 'react';
@@ -222,7 +221,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
               {specifications.map((spec, i) => (
                 <div key={i} className="space-y-2 group">
                   <div className="space-y-1">
@@ -292,11 +291,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
         {recommendedProducts.length > 0 && (
           <div className="space-y-10">
-            <div className="text-center lg:text-left">
+            <div className="text-center">
               <h4 className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary mb-2">You May Also Like</h4>
               <h2 className="text-2xl lg:text-3xl font-black font-headline tracking-tight uppercase">Recommended Pieces</h2>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {recommendedProducts.map(p => (
                 <ProductCard key={p.id} product={p} />
               ))}
