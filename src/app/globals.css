@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 18 100% 96%; /* #FFF1EB */
-    --foreground: 343 25% 7%; /* #181113 - Deep Charcoal Maroon */
+    --background: 18 100% 96%; /* Soft peach/pink base */
+    --foreground: 343 25% 7%; /* Deep Charcoal Maroon */
     --card: 0 0% 100%;
     --card-foreground: 343 25% 7%;
     --popover: 0 0% 100%;
     --popover-foreground: 343 25% 7%;
-    --primary: 345 80% 45%; /* #cf1745 - Vibrant Pink */
+    --primary: 196 28% 49%; /* Blue-Grey #5A8D9F from screenshot */
     --primary-foreground: 0 0% 100%;
     --secondary: 343 15% 96%;
-    --secondary-foreground: 345 80% 45%;
+    --secondary-foreground: 196 28% 49%;
     --muted: 343 10% 90%;
-    --muted-foreground: 343 15% 35%; /* Softer Charcoal for body text */
-    --accent: 345 80% 45%;
+    --muted-foreground: 343 15% 35%;
+    --accent: 196 28% 49%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 343 20% 90%;
     --input: 343 20% 90%;
-    --ring: 345 80% 45%;
+    --ring: 196 28% 49%;
     --radius: 1rem;
   }
 }
@@ -41,16 +41,12 @@
   }
 }
 
-.font-cursive {
-  font-family: 'Dancing Script', cursive;
-}
-
 .font-display {
   font-family: 'Manrope', sans-serif;
 }
 
-.gradient-bg {
-  background: linear-gradient(180deg, #FFF1EB 0%, #FFDDE1 100%);
+.font-cursive {
+  font-family: 'Dancing Script', cursive;
 }
 
 .gradient-primary {

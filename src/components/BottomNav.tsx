@@ -24,8 +24,8 @@ export function BottomNav() {
           
           const content = (
             <>
-              <Icon className="h-6 w-6" />
-              <span className="text-[8px] font-bold uppercase tracking-widest font-display">{item.name}</span>
+              <Icon className={cn("h-5 w-5", isActive ? "text-primary" : "text-charcoal/40")} />
+              <span className={cn("text-[8px] font-bold uppercase tracking-widest", isActive ? "text-primary" : "text-charcoal/40")}>{item.name}</span>
             </>
           );
 
@@ -36,7 +36,7 @@ export function BottomNav() {
                 href={item.href} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center w-full gap-1 text-charcoal/40 hover:text-primary transition-colors"
+                className="flex flex-col items-center justify-center w-full gap-1 transition-colors"
               >
                 {content}
               </a>
@@ -47,10 +47,7 @@ export function BottomNav() {
             <Link 
               key={item.name} 
               href={item.href}
-              className={cn(
-                "flex flex-col items-center justify-center w-full gap-1 transition-colors",
-                isActive ? "text-primary" : "text-charcoal/40 hover:text-primary"
-              )}
+              className="flex flex-col items-center justify-center w-full gap-1 transition-colors"
             >
               {content}
             </Link>

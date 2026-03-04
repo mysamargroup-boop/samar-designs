@@ -28,9 +28,9 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="group flex flex-col gap-3 bg-white p-2 rounded-[12px] shadow-sm hover:shadow-md transition-all duration-300">
+    <div className="group flex flex-col gap-3 bg-white p-2 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
       <Link href={`/products/${product.id}`} className="block">
-        <div className="relative w-full aspect-square bg-gray-50 rounded-[10px] overflow-hidden">
+        <div className="relative w-full aspect-square bg-gray-50 rounded-lg overflow-hidden">
           <Image
             src={product.imageUrl}
             alt={product.name}
@@ -48,14 +48,14 @@ export function ProductCard({ product }: ProductCardProps) {
             </Button>
           </div>
           {product.tags?.includes('Bestseller') && (
-            <div className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-[4px] text-[8px] text-charcoal font-bold uppercase tracking-widest border border-gray-100">
+            <div className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded text-[8px] text-charcoal font-bold uppercase tracking-widest border border-gray-100">
               Bestseller
             </div>
           )}
         </div>
         
         <div className="px-1 pb-1 pt-2">
-          <p className="text-charcoal text-[11px] font-bold uppercase tracking-wide font-display truncate">
+          <p className="text-charcoal text-[11px] font-bold uppercase tracking-wide truncate">
             {product.name}
           </p>
           <p className="text-primary text-[10px] font-semibold mt-1">₹{product.price}</p>
