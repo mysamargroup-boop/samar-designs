@@ -123,36 +123,40 @@ export default function Home() {
           <CarouselContent className="ml-0">
             {heroSlides.map((slide, index) => (
               <CarouselItem key={index} className="relative pl-0">
-                <div className="relative h-[55vh] sm:h-[70vh] min-h-[400px] w-full rounded-[2rem] overflow-hidden shadow-2xl bg-black/5 border border-white/20">
-                  <div className="absolute inset-0 z-0 rounded-[2rem] overflow-hidden">
+                <div className="relative h-[65vh] sm:h-[75vh] min-h-[450px] w-full rounded-[3rem] overflow-hidden shadow-2xl bg-black/5 border border-white/20">
+                  {/* Background & Overlay Layer */}
+                  <div className="absolute inset-0 z-0">
                     <Image 
                       src={slide.image}
                       alt={slide.title}
                       fill
-                      className="object-cover opacity-80 rounded-[2rem]"
+                      className="object-cover opacity-80 rounded-[3rem]"
                       priority
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/5 to-background/20 rounded-[2rem]" />
+                    <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] rounded-[3rem]" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-black/40 rounded-[3rem]" />
                   </div>
+
+                  {/* Content Layer */}
                   <div className="relative z-10 h-full flex items-center justify-center p-6 text-center">
                     <div className="flex flex-col items-center space-y-6">
-                      <div className="inline-block px-4 py-1 rounded-full border border-primary/20 text-[10px] font-bold uppercase tracking-[0.4em] text-primary bg-white/60 backdrop-blur-md">
+                      <div className="inline-block px-4 py-1.5 rounded-full border border-white/20 text-[10px] font-bold uppercase tracking-[0.4em] text-white bg-white/10 backdrop-blur-md">
                         {slide.badge}
                       </div>
                       <div className="space-y-1">
-                        <h1 className="text-3xl sm:text-6xl lg:text-8xl font-black leading-none uppercase tracking-tighter text-foreground">
+                        <h1 className="text-3xl sm:text-6xl lg:text-8xl font-black leading-none uppercase tracking-tighter text-white">
                           {slide.title}
                         </h1>
                         <h2 className="text-3xl sm:text-6xl lg:text-8xl font-black leading-none uppercase tracking-tighter text-primary">
                           {slide.highlight}
                         </h2>
                       </div>
-                      <p className="text-xs sm:text-lg text-foreground/80 font-medium max-w-xl leading-relaxed">
+                      <p className="text-xs sm:text-lg text-white/90 font-medium max-w-xl leading-relaxed">
                         {slide.desc}
                       </p>
                       <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-sm pt-4">
                         <Link href="/products" className="w-full">
-                          <Button className="w-full h-12 rounded-xl text-xs font-bold uppercase tracking-widest gradient-primary">
+                          <Button className="w-full h-14 rounded-2xl text-xs font-bold uppercase tracking-widest gradient-primary border-none shadow-3xl shadow-primary/20">
                             Shop Now
                           </Button>
                         </Link>
@@ -193,7 +197,7 @@ export default function Home() {
           <div className="flex items-center gap-6 overflow-x-auto pb-6 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
             {categories.map((cat, index) => (
               <Link key={index} href={`/products?category=${cat.name}`} className="group block shrink-0 text-center space-y-3 w-32 sm:w-40">
-                <div className="relative aspect-square rounded-lg overflow-hidden border-2 border-white shadow-md transition-all duration-500 group-hover:scale-105">
+                <div className="relative aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md transition-all duration-500 group-hover:scale-105">
                   <Image 
                     src={cat.image} 
                     alt={cat.name} 
@@ -233,7 +237,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-10">
               <div className="space-y-1 pr-8">
                 <h4 className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary">{idx % 2 === 0 ? "Curated" : "Premium"} Selection</h4>
-                <h2 className="text-2xl lg:text-5xl font-black uppercase tracking-tight text-foreground leading-[1.1]">{catName}</h2>
+                <h2 className="text-xl lg:text-5xl font-black uppercase tracking-tight text-foreground leading-[1.1]">{catName}</h2>
               </div>
               <Link href={`/products?category=${catName}`} className="flex items-center gap-3 text-primary font-black uppercase tracking-widest text-[10px] group shrink-0">
                 <div className="flex flex-col text-right leading-[1.2]">
