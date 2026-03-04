@@ -17,19 +17,20 @@ export function Header() {
     { name: 'Our Story', href: '/about' },
     { name: 'Blog', href: '/blog' },
     { name: 'AI Concierge', href: '/discovery' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-lg border-b border-gray-100">
       <div className="container-normal py-4">
-        {/* Main Header Row */}
-        <div className="grid grid-cols-3 items-center w-full relative">
-          {/* Left: Hamburger Button */}
+        {/* Main Header Row - 3 Column Grid for perfect alignment */}
+        <div className="grid grid-cols-3 items-center w-full">
+          {/* Left: Hamburger Button with padding from edge */}
           <div className="flex items-center justify-start">
             <Button 
               variant="ghost" 
               size="icon" 
-              className="rounded-full hover:bg-black/5 text-foreground lg:hidden h-10 w-10"
+              className="rounded-full hover:bg-black/5 text-foreground lg:hidden h-10 w-10 -ml-2"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -45,8 +46,8 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Right: Icons */}
-          <div className="flex justify-end items-center gap-1">
+          {/* Right: Icons with padding from edge */}
+          <div className="flex justify-end items-center gap-1 -mr-2">
             <Link href="/wishlist">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-black/5 text-foreground relative h-10 w-10 sm:h-12 sm:w-12 transition-transform hover:scale-110">
                 <Heart className="h-7 w-7 sm:h-9 sm:w-9" />
