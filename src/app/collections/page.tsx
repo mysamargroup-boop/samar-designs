@@ -72,7 +72,7 @@ export default function CollectionsPage() {
               <div className="flex flex-col items-center text-center space-y-6">
                 {/* Main Category Image - Compact Circle Style */}
                 <div className="relative w-32 h-32 lg:w-40 lg:h-40 rounded-full overflow-hidden shadow-2xl border-4 border-white">
-                  <Image src={collection.image} alt={collection.title} fill className="object-cover" />
+                  <Image src={collection.image} alt={collection.title} fill sizes="(max-width: 1023px) 33vw, 10vw" className="object-cover" />
                 </div>
                 
                 <div className="space-y-3 lg:space-y-4 max-w-xl px-4">
@@ -92,7 +92,7 @@ export default function CollectionsPage() {
                 {collection.subCategories.map((sub, sIdx) => (
                   <Link key={sIdx} href={sub.href} className="group text-center space-y-2">
                     <div className="relative aspect-square rounded-full overflow-hidden border-2 border-white shadow-lg transition-transform duration-500 group-hover:scale-105 group-hover:shadow-primary/10">
-                      <Image src={sub.image} alt={sub.name} fill className="object-cover" />
+                      <Image src={sub.image} alt={sub.name} fill sizes="(max-width: 639px) 50vw, 25vw" className="object-cover" />
                     </div>
                     <p className="text-[8px] lg:text-[10px] font-black uppercase tracking-widest text-foreground/70 group-hover:text-primary transition-colors leading-tight px-1">
                       {sub.name}

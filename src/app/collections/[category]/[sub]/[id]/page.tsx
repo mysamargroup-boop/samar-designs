@@ -1,10 +1,10 @@
+
 "use client";
 
-import { use, useState } from 'react';
+import { use, useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, ShoppingCart, Share2, Star, Sparkles, ChevronRight, Zap, ShieldCheck, Leaf, Medal, Quote, User } from 'lucide-react';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Heart, ShoppingCart, Share2, Star, Sparkles, ChevronRight, Zap, ShieldCheck, Leaf, Medal } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +12,8 @@ import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { ProductCard } from '@/components/ProductCard';
 import { Separator } from '@/components/ui/separator';
+import productsData from "@/lib/products.json";
+import { Product } from "@/lib/types";
 import {
   Carousel,
   CarouselContent,
@@ -35,14 +37,14 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export default function ProductDetailPage({ params }: { params: Promise<{ category: string, sub: string, id: string }> }) {
+export default function CollectionProductDetailPage({ params }: { params: Promise<{ category: string, sub: string, id: string }> }) {
   const { id } = use(params);
   const { addToCart, addToWishlist, isWishlisted, removeFromWishlist } = useStore();
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  const productData = PlaceHolderImages.find(p => p.id === id);
+  const product = useMemo(() => (productsData.products as Product[]).find(p => p.id === id), [id]);
   
-  if (!productData) {
+  if (!product) {
     return (
       <div className="container mx-auto p-32 text-center space-y-6">
         <h1 className="text-3xl lg:text-5xl font-black uppercase">Product not found</h1>
@@ -54,44 +56,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ catego
     );
   }
 
-  const category = productData.id.startsWith('fest') ? 'Festive' : productData.id.startsWith('home') ? 'Home Decor' : 'Wedding';
-  const price = productData.id.startsWith('fest') ? 899 : productData.id.startsWith('home') ? 1299 : 3500;
-  const originalPrice = Math.round(price * 1.54);
-  const discount = Math.round(((originalPrice - price) / originalPrice) * 100);
-
-  const product = {
-    id: productData.id,
-    name: productData.id.includes('-') 
-      ? productData.description.split(' - ')[0] 
-      : productData.description.split(' ').slice(0, 3).join(' '),
-    description: productData.description,
-    price,
-    originalPrice,
-    imageUrl: productData.imageUrl,
-    category
-  };
-
-  const reviews = [
-    { name: "Kavya R.", rating: 5, date: "Feb 12, 2026", comment: "Absolutely stunning craftsmanship. The details are even better in person." },
-    { name: "Amit S.", rating: 5, date: "Jan 28, 2026", comment: "Bought this for a housewarming gift, and my sister loved it. Great quality." },
-    { name: "Sonal P.", rating: 4, date: "Jan 15, 2026", comment: "Very beautiful piece. Packaging was secure and delivery was on time." }
-  ];
+  const discount = product.regular_price 
+    ? Math.round(((product.regular_price - product.sale_price) / product.regular_price) * 100) 
+    : 0;
 
   const wishlisted = isWishlisted(product.id);
 
-  const recommendedProducts = PlaceHolderImages
-    .filter(p => p.id !== id && (p.id.startsWith(id.split('-')[0]) || p.description.includes(category)))
-    .slice(0, 4)
-    .map((img, i) => ({
-      id: img.id,
-      name: img.description.split(' ').slice(0, 3).join(' '),
-      description: img.description,
-      price: [899, 1299, 3500][i % 3],
-      originalPrice: [1200, 1800, 4500][i % 3],
-      imageUrl: img.imageUrl,
-      category: category,
-      tags: i % 2 === 0 ? ['Bestseller'] : []
-    }));
+  const recommendedProducts = useMemo(() => 
+    (productsData.products as Product[])
+      .filter(p => p.id !== id && p.category === product.category)
+      .slice(0, 4),
+  [id, product.category]);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -120,17 +95,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ catego
   ];
 
   const specifications = [
-    { label: "Dimensions", value: "12 x 12 inches" },
-    { label: "Weight", value: "850 grams" },
-    { label: "Material", value: "Handcrafted Ceramic / Clay" },
+    { label: "Dimensions", value: product.dimensions || "Custom Size" },
+    { label: "Weight", value: product.weight || "Lightweight" },
+    { label: "Material", value: "Handcrafted Premium Materials" },
     { label: "Finish", value: "Glossy Protective Coat" }
   ];
 
   const artisanBadges = [
     { icon: Medal, text: "Award Winning Artist", color: "text-amber-500" },
     { icon: Leaf, text: "Eco-Friendly", color: "text-green-600" },
-    { icon: ShieldCheck, text: "Authenticity Guaranteed", color: "text-blue-500" },
-    { icon: Sparkles, text: "Handmade with Love", color: "text-primary" }
+    { icon: ShieldCheck, text: "Authenticity Guaranteed", color: "text-blue-500" }
   ];
 
   return (
@@ -151,12 +125,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ catego
                 {galleryImages.map((img, idx) => (
                   <CarouselItem key={idx}>
                     <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border-2 border-white bg-white w-full">
-                      <Image src={img} alt={product.name} fill sizes="(max-width: 1023px) 100vw, 50vw" className="object-cover" priority={idx === 0} />
+                      <Image src={img} alt={product.name} fill className="object-cover" priority={idx === 0} />
                       {idx === 0 && (
                         <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
-                          <Badge className="bg-primary text-white border-none px-3 py-1 rounded-full uppercase tracking-widest text-[9px] font-black shadow-lg">
-                            {discount}% OFF
-                          </Badge>
+                          {discount > 0 && (
+                            <Badge className="bg-primary text-white border-none px-3 py-1 rounded-full uppercase tracking-widest text-[9px] font-black shadow-lg">
+                              {discount}% OFF
+                            </Badge>
+                          )}
                           <Badge className="bg-black/50 backdrop-blur-md text-white border-none px-3 py-1 rounded-full uppercase tracking-widest text-[9px] font-black shadow-lg">
                             BESTSELLER
                           </Badge>
@@ -183,7 +159,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ catego
                   <div className="flex text-amber-400">
                     {[1, 2, 3, 4, 5].map(s => <Star key={s} className="h-3 w-3 fill-current" />)}
                   </div>
-                  <span className="text-[10px] font-bold text-muted-foreground">({reviews.length} reviews)</span>
+                  <span className="text-[10px] font-bold text-muted-foreground">({product.rating ? '24' : '0'} reviews)</span>
                 </div>
                 
                 <div className="flex items-center gap-2">
@@ -201,8 +177,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ catego
               </h1>
 
               <div className="flex items-center gap-4">
-                <p className="text-3xl lg:text-5xl font-black font-headline text-primary">₹{product.price}</p>
-                <p className="text-xl lg:text-2xl text-muted-foreground line-through decoration-primary/20 font-black">₹{product.originalPrice}</p>
+                <p className="text-3xl lg:text-5xl font-black font-headline text-primary">₹{product.sale_price}</p>
+                {product.regular_price && (
+                  <p className="text-xl lg:text-2xl text-muted-foreground line-through decoration-primary/20 font-black">₹{product.regular_price}</p>
+                )}
               </div>
 
               <div className="flex flex-wrap gap-4 pt-2">
@@ -224,13 +202,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ catego
                 Artist's Story & Details
               </h3>
               <p className="text-sm lg:text-base leading-relaxed text-muted-foreground">
-                {product.description}. This unique piece is meticulously handcrafted using traditional techniques passed down through generations.
+                {product.description}. This unique piece is meticulously handcrafted using traditional techniques passed down through generations. Every stroke of paint and every mirror placement is done by hand, ensuring that you receive a one-of-a-kind masterpiece for your collection.
               </p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
               {specifications.map((spec, i) => (
-                <div key={i} className="space-y-2">
+                <div key={i} className="space-y-2 group">
                   <div className="space-y-1">
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{spec.label}</p>
                     <p className="text-sm font-black text-foreground">{spec.value}</p>
@@ -272,29 +250,23 @@ export default function ProductDetailPage({ params }: { params: Promise<{ catego
             </div>
 
             <div className="pt-8">
-              <Accordion type="single" collapsible className="w-full space-y-2">
-                <AccordionItem value="shipping" className="border-primary/5 bg-white/30 px-4 rounded-xl">
-                  <AccordionTrigger className="text-[11px] font-black uppercase tracking-widest">Shipping & Delivery</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground text-sm font-light leading-relaxed">
-                    We offer free shipping on all orders over ₹999. Since each piece is handmade, please allow 5-7 business days for creation and shipping.
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="shipping" className="border-primary/5">
+                  <AccordionTrigger className="text-[11px] font-bold uppercase tracking-widest hover:no-underline">Shipping & Delivery</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm font-light">
+                    We offer free shipping on all orders over ₹999. Since each item is handmade, please allow 3-7 business days for processing and shipment.
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="care" className="border-primary/5 bg-white/30 px-4 rounded-xl">
-                  <AccordionTrigger className="text-[11px] font-black uppercase tracking-widest">Care Instructions</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground text-sm font-light leading-relaxed">
-                    Clean gently with a dry microfibre cloth. Avoid direct exposure to moisture or prolonged direct sunlight to preserve the vibrant colors and mirror work.
+                <AccordionItem value="returns" className="border-primary/5">
+                  <AccordionTrigger className="text-[11px] font-bold uppercase tracking-widest hover:no-underline">Return Policy</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm font-light">
+                    As these are unique handcrafted pieces, we only accept returns in case of damage during transit. Please record an unboxing video for claim processing.
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="returns" className="border-primary/5 bg-white/30 px-4 rounded-xl">
-                  <AccordionTrigger className="text-[11px] font-black uppercase tracking-widest">Return Policy</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground text-sm font-light leading-relaxed">
-                    Due to the bespoke nature of our art, we only accept returns if the product arrives damaged. Please provide an unboxing video within 24 hours of delivery.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="gifting" className="border-primary/5 bg-white/30 px-4 rounded-xl">
-                  <AccordionTrigger className="text-[11px] font-black uppercase tracking-widest">Gift Wrapping</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground text-sm font-light leading-relaxed">
-                    Premium artisanal gift wrapping is available. You can add a personalized handwritten note at checkout for that special touch.
+                <AccordionItem value="custom" className="border-primary/5">
+                  <AccordionTrigger className="text-[11px] font-bold uppercase tracking-widest hover:no-underline">Custom Orders</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm font-light">
+                    We love creating bespoke pieces! If you want a specific size or color combination, reach out to us via WhatsApp for a personalized consultation.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
@@ -302,50 +274,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ catego
           </div>
         </div>
 
-        {/* Verified Reviews Section */}
-        <section className="py-20 border-t border-primary/5 overflow-hidden">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-2xl lg:text-4xl font-black font-headline uppercase tracking-tight">Voices of Collectors</h2>
-            <div className="flex items-center justify-center gap-3">
-              <div className="flex text-amber-400">
-                {[1,2,3,4,5].map(s => <Star key={s} className="h-4 w-4 fill-current" />)}
-              </div>
-              <span className="text-sm font-bold text-muted-foreground">4.9/5 Average Rating</span>
-            </div>
-          </div>
-
-          <Carousel className="w-full max-w-4xl mx-auto" opts={{ loop: true }}>
-            <CarouselContent>
-              {reviews.map((review, i) => (
-                <CarouselItem key={i}>
-                  <div className="flex flex-col items-center text-center space-y-6 px-4">
-                    <div className="flex text-amber-400 gap-1">
-                      {Array.from({ length: review.rating }).map((_, s) => (
-                        <Star key={s} className="h-5 w-5 fill-current" />
-                      ))}
-                    </div>
-                    <p className="text-lg lg:text-2xl text-foreground/80 leading-relaxed font-light italic max-w-2xl mx-auto">
-                      "{review.comment}"
-                    </p>
-                    <div className="space-y-1">
-                      <p className="text-xs font-black uppercase tracking-widest text-primary">{review.name}</p>
-                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-tight">{review.date}</p>
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-          
-          <div className="flex justify-center mt-12">
-            <Button variant="outline" className="rounded-xl border-primary text-primary font-black uppercase tracking-widest text-[10px] h-12 px-8">
-              Write a Review
-            </Button>
-          </div>
-        </section>
-
         {recommendedProducts.length > 0 && (
-          <div className="space-y-10 pt-20 border-t border-primary/5">
+          <div className="space-y-10">
             <div className="text-center">
               <h4 className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary mb-2">You May Also Like</h4>
               <h2 className="text-2xl lg:text-3xl font-black font-headline tracking-tight uppercase">Recommended Pieces</h2>

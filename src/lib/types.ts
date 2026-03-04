@@ -2,11 +2,15 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  price: number;
-  originalPrice?: number;
+  regular_price: number;
+  sale_price: number;
   imageUrl: string;
   category: string;
+  subcategory?: string | null;
+  weight?: string;
+  dimensions?: string;
   tags?: string[];
+  rating?: number;
 }
 
 export interface CartItem extends Product {

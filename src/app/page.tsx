@@ -14,6 +14,8 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import productsData from "@/lib/products.json";
+import { Product } from "@/lib/types";
 
 export default function Home() {
   const [api, setApi] = React.useState<CarouselApi>();
@@ -55,20 +57,14 @@ export default function Home() {
     { name: "Home Decor", image: "https://picsum.photos/seed/cat-decor/400/400" }
   ];
 
-  const productsByCategory: Record<string, any[]> = {
-    "Custom Name Plates": [
-      { id: "name-1", name: "Floral Name Plate", price: 1599, originalPrice: 2200, imageUrl: "https://picsum.photos/seed/name1/600/600", category: "Custom Name Plates", tags: ["Bestseller"], rating: 5 },
-      { id: "name-2", name: "Resin Door Sign", price: 1899, originalPrice: 2500, imageUrl: "https://picsum.photos/seed/name2/600/600", category: "Custom Name Plates", tags: ["New Arrival"], rating: 4 },
-      { id: "name-3", name: "Couple Name Plaque", price: 1299, originalPrice: 1800, imageUrl: "https://picsum.photos/seed/name3/600/600", category: "Custom Name Plates", tags: ["Top Selling"], rating: 5 },
-      { id: "name-4", name: "Modern Ceramic Nameplate", price: 2100, originalPrice: 3000, imageUrl: "https://picsum.photos/seed/name4/600/600", category: "Custom Name Plates", tags: ["Luxury"], rating: 5 },
-    ],
-    "Decorative Hangings": [
-      { id: "hang-1", name: "Artisanal Wall Charm", price: 899, originalPrice: 1200, imageUrl: "https://picsum.photos/seed/hang1/600/600", category: "Decorative Hangings", tags: ["Bestseller"], rating: 5 },
-      { id: "hang-2", name: "Nazar Battu Hanging", price: 550, originalPrice: 750, imageUrl: "https://picsum.photos/seed/hang2/600/600", category: "Evil Eye Protection Decor", tags: ["Protection"], rating: 4 },
-      { id: "hang-3", name: "Boho Macrame Tassel", price: 699, originalPrice: 950, imageUrl: "https://picsum.photos/seed/hang3/600/600", category: "Decorative Hangings", tags: ["Boho"], rating: 5 },
-      { id: "hang-4", name: "Mirror Work Toran", price: 1299, originalPrice: 1800, imageUrl: "https://picsum.photos/seed/hang4/600/600", category: "Decorative Hangings", tags: ["Traditional"], rating: 5 },
-    ]
-  };
+  const productsByCategory: Record<string, Product[]> = productsData.products.reduce((acc: Record<string, Product[]>, product: Product) => {
+    if (!acc[product.category]) {
+      acc[product.category] = [];
+    }
+    acc[product.category].push(product);
+    return acc;
+  }, {});
+
 
   const testimonials = [
     {
@@ -144,6 +140,7 @@ export default function Home() {
                       src={slide.image}
                       alt={slide.title}
                       fill
+                      sizes="100vw"
                       className={cn(
                         "object-cover transition-all duration-1000",
                         current === index ? "opacity-80 blur-0 scale-100" : "opacity-0 blur-md scale-110"
@@ -217,7 +214,8 @@ export default function Home() {
                   <Image 
                     src={cat.image} 
                     alt={cat.name} 
-                    fill 
+                    fill
+                    sizes="(max-width: 639px) 25vw, 16.66vw"
                     className="object-cover" 
                   />
                 </div>
@@ -274,7 +272,8 @@ export default function Home() {
                 <Image 
                   src={src} 
                   alt={`Instagram post ${i + 1}`} 
-                  fill 
+                  fill
+                  sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 16.66vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-110" 
                 />
                 <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

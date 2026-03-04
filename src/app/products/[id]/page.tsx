@@ -1,10 +1,10 @@
+
 "use client";
 
-import { use, useState } from 'react';
+import { use, useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, ShoppingCart, Share2, Star, Sparkles, ChevronRight, Zap, ShieldCheck, Leaf, Medal, Phone } from 'lucide-react';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Heart, ShoppingCart, Share2, Star, Sparkles, ChevronRight, Zap, ShieldCheck, Leaf, Medal } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +12,8 @@ import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { ProductCard } from '@/components/ProductCard';
 import { Separator } from '@/components/ui/separator';
+import productsData from "@/lib/products.json";
+import { Product } from "@/lib/types";
 import {
   Carousel,
   CarouselContent,
@@ -40,9 +42,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const { addToCart, addToWishlist, isWishlisted, removeFromWishlist } = useStore();
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  const productData = PlaceHolderImages.find(p => p.id === id);
+  const product = useMemo(() => (productsData.products as Product[]).find(p => p.id === id), [id]);
   
-  if (!productData) {
+  if (!product) {
     return (
       <div className="container mx-auto p-32 text-center space-y-6">
         <h1 className="text-3xl lg:text-5xl font-black uppercase">Product not found</h1>
@@ -54,38 +56,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     );
   }
 
-  const category = productData.id.startsWith('fest') ? 'Festive' : productData.id.startsWith('home') ? 'Home Decor' : 'Wedding';
-  const price = productData.id.startsWith('fest') ? 899 : productData.id.startsWith('home') ? 1299 : 3500;
-  const originalPrice = Math.round(price * 1.54);
-  const discount = Math.round(((originalPrice - price) / originalPrice) * 100);
-
-  const product = {
-    id: productData.id,
-    name: productData.id.includes('-') 
-      ? productData.description.split(' - ')[0] 
-      : productData.description.split(' ').slice(0, 3).join(' '),
-    description: productData.description,
-    price,
-    originalPrice,
-    imageUrl: productData.imageUrl,
-    category
-  };
+  const discount = product.regular_price 
+    ? Math.round(((product.regular_price - product.sale_price) / product.regular_price) * 100) 
+    : 0;
 
   const wishlisted = isWishlisted(product.id);
 
-  const recommendedProducts = PlaceHolderImages
-    .filter(p => p.id !== id && (p.id.startsWith(id.split('-')[0]) || p.description.includes(category)))
-    .slice(0, 4)
-    .map((img, i) => ({
-      id: img.id,
-      name: img.description.split(' ').slice(0, 3).join(' '),
-      description: img.description,
-      price: [899, 1299, 3500][i % 3],
-      originalPrice: [1200, 1800, 4500][i % 3],
-      imageUrl: img.imageUrl,
-      category: category,
-      tags: i % 2 === 0 ? ['Bestseller'] : []
-    }));
+  const recommendedProducts = useMemo(() => 
+    (productsData.products as Product[])
+      .filter(p => p.id !== id && p.category === product.category)
+      .slice(0, 4),
+  [id, product.category]);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -114,9 +95,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   ];
 
   const specifications = [
-    { label: "Dimensions", value: "12 x 12 inches" },
-    { label: "Weight", value: "850 grams" },
-    { label: "Material", value: "Handcrafted Ceramic / Clay" },
+    { label: "Dimensions", value: product.dimensions || "Custom Size" },
+    { label: "Weight", value: product.weight || "Lightweight" },
+    { label: "Material", value: "Handcrafted Premium Materials" },
     { label: "Finish", value: "Glossy Protective Coat" }
   ];
 
@@ -147,9 +128,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       <Image src={img} alt={product.name} fill className="object-cover" priority={idx === 0} />
                       {idx === 0 && (
                         <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
-                          <Badge className="bg-primary text-white border-none px-3 py-1 rounded-full uppercase tracking-widest text-[9px] font-black shadow-lg">
-                            {discount}% OFF
-                          </Badge>
+                          {discount > 0 && (
+                            <Badge className="bg-primary text-white border-none px-3 py-1 rounded-full uppercase tracking-widest text-[9px] font-black shadow-lg">
+                              {discount}% OFF
+                            </Badge>
+                          )}
                           <Badge className="bg-black/50 backdrop-blur-md text-white border-none px-3 py-1 rounded-full uppercase tracking-widest text-[9px] font-black shadow-lg">
                             BESTSELLER
                           </Badge>
@@ -176,7 +159,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   <div className="flex text-amber-400">
                     {[1, 2, 3, 4, 5].map(s => <Star key={s} className="h-3 w-3 fill-current" />)}
                   </div>
-                  <span className="text-[10px] font-bold text-muted-foreground">(24 reviews)</span>
+                  <span className="text-[10px] font-bold text-muted-foreground">({product.rating ? '24' : '0'} reviews)</span>
                 </div>
                 
                 <div className="flex items-center gap-2">
@@ -194,8 +177,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </h1>
 
               <div className="flex items-center gap-4">
-                <p className="text-3xl lg:text-5xl font-black font-headline text-primary">₹{product.price}</p>
-                <p className="text-xl lg:text-2xl text-muted-foreground line-through decoration-primary/20 font-black">₹{product.originalPrice}</p>
+                <p className="text-3xl lg:text-5xl font-black font-headline text-primary">₹{product.sale_price}</p>
+                {product.regular_price && (
+                  <p className="text-xl lg:text-2xl text-muted-foreground line-through decoration-primary/20 font-black">₹{product.regular_price}</p>
+                )}
               </div>
 
               <div className="flex flex-wrap gap-4 pt-2">

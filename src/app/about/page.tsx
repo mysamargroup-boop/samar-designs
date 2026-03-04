@@ -57,7 +57,8 @@ export default function AboutPage() {
             <Image 
               src="https://picsum.photos/seed/sumegha-artist/600/600" 
               alt="Sumegha - The Artist" 
-              fill 
+              fill
+              sizes="(max-width: 1023px) 50vw, 25vw"
               className="object-cover"
               priority
             />
@@ -113,7 +114,8 @@ export default function AboutPage() {
                 <Image 
                   src={src} 
                   alt={`Process photo ${i + 1}`} 
-                  fill 
+                  fill
+                  sizes="(max-width: 1023px) 50vw, 25vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-110" 
                 />
                 <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />

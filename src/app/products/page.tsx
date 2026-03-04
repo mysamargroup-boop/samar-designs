@@ -4,11 +4,12 @@
 import { useSearchParams } from 'next/navigation';
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { ProductCard } from '@/components/ProductCard';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Search, Mic } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
+import productsData from "@/lib/products.json";
+import { Product } from "@/lib/types";
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
@@ -42,16 +43,7 @@ export default function ProductsPage() {
     'Wedding'
   ];
 
-  const allProducts = useMemo(() => PlaceHolderImages.map((img: any) => ({
-    id: img.id,
-    name: img.name || img.description.split(' ').slice(0, 3).join(' '),
-    description: img.description,
-    price: img.price || 999,
-    originalPrice: Math.round((img.price || 999) * 1.4),
-    imageUrl: img.imageUrl,
-    category: img.category || 'Handmade Art',
-    tags: img.id.includes('name') ? ['Bestseller'] : img.id.includes('shubh') ? ['New Arrival'] : []
-  })), []);
+  const allProducts = useMemo(() => productsData.products as Product[], []);
 
   const filteredProducts = allProducts.filter(p => {
     const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
