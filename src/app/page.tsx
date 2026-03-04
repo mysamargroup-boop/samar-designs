@@ -188,7 +188,7 @@ export default function Home() {
         <div className="container-normal px-4">
           <div className="flex flex-col items-center text-center gap-2 mb-10">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary">Discover Our</h4>
-            <h2 className="text-2xl lg:text-5xl font-black uppercase tracking-tight">Artistic Categories</h2>
+            <h2 className="text-xl lg:text-5xl font-black uppercase tracking-tight">Artistic Categories</h2>
           </div>
           <div className="flex items-center gap-6 overflow-x-auto pb-6 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
             {categories.map((cat, index) => (
@@ -233,7 +233,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-10">
               <div className="space-y-1 pr-8">
                 <h4 className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary">{idx % 2 === 0 ? "Curated" : "Premium"} Selection</h4>
-                <h2 className="text-3xl lg:text-5xl font-black uppercase tracking-tight text-foreground leading-[1.1]">{catName}</h2>
+                <h2 className="text-2xl lg:text-5xl font-black uppercase tracking-tight text-foreground leading-[1.1]">{catName}</h2>
               </div>
               <Link href={`/products?category=${catName}`} className="flex items-center gap-3 text-primary font-black uppercase tracking-widest text-[10px] group shrink-0">
                 <div className="flex flex-col text-right leading-[1.2]">
