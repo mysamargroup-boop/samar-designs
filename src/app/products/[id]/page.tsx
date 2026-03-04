@@ -4,7 +4,7 @@
 import { use, useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, ShoppingCart, Share2, Star, Sparkles, ChevronRight, Zap, ShieldCheck, Leaf, Medal } from 'lucide-react';
+import { Heart, ShoppingCart, Share2, Star, Sparkles, ChevronRight, Zap, ShieldCheck, Leaf, Medal, MessageSquareQuote } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -62,11 +62,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   const wishlisted = isWishlisted(product.id);
 
+  // Basis for recommendations: Same category, excluding current product
   const recommendedProducts = useMemo(() => 
     (productsData.products as Product[])
       .filter(p => p.id !== id && p.category === product.category)
       .slice(0, 4),
   [id, product.category]);
+
+  const mockReviews = [
+    { name: "Aditi S.", rating: 5, comment: "Absolutely stunning! The detail on this piece is even better in person.", date: "2 weeks ago" },
+    { name: "Rahul M.", rating: 5, comment: "Bought this as a gift for my parents. They were overjoyed with the quality.", date: "1 month ago" },
+  ];
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -219,7 +225,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
 
             <div className="space-y-4 w-full">
-              <div className.flex gap-3 w-full">
+              <div className="flex gap-3 w-full">
                 <Button 
                   size="lg" 
                   variant="outline"
@@ -274,11 +280,55 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </div>
         </div>
 
+        {/* Reviews Section */}
+        <div className="mb-24 space-y-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-primary/5 pb-8">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-primary">
+                <MessageSquareQuote className="h-6 w-6" />
+                <h3 className="text-2xl lg:text-3xl font-black uppercase tracking-tight">Customer Voices</h3>
+              </div>
+              <p className="text-muted-foreground text-sm max-w-md">What our collectors have to say about their handcrafted treasures.</p>
+            </div>
+            <div className="flex items-center gap-6">
+              <div className="text-center">
+                <p className="text-4xl font-black text-foreground">4.9</p>
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Average Rating</p>
+              </div>
+              <div className="h-10 w-px bg-primary/10" />
+              <div className="text-center">
+                <p className="text-4xl font-black text-foreground">150+</p>
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Happy Homes</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {mockReviews.map((review, idx) => (
+              <div key={idx} className="bg-white/40 p-8 rounded-3xl border border-primary/5 shadow-sm space-y-4">
+                <div className="flex justify-between items-start">
+                  <div className="space-y-1">
+                    <p className="font-black text-sm uppercase">{review.name}</p>
+                    <div className="flex text-amber-400">
+                      {Array.from({ length: review.rating }).map((_, i) => (
+                        <Star key={i} className="h-3 w-3 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-bold text-muted-foreground">{review.date}</span>
+                </div>
+                <p className="text-sm italic text-foreground/70 leading-relaxed">"{review.comment}"</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {recommendedProducts.length > 0 && (
           <div className="space-y-10">
             <div className="text-center">
               <h4 className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary mb-2">You May Also Like</h4>
               <h2 className="text-2xl lg:text-3xl font-black font-headline tracking-tight uppercase">Recommended Pieces</h2>
+              <p className="text-muted-foreground text-[10px] uppercase tracking-widest mt-2">Based on your interest in {product.category}</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {recommendedProducts.map(p => (
