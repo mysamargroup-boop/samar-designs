@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -44,7 +45,7 @@ export function Header() {
           {/* Center: Logo Image */}
           <div className="flex justify-center">
             <Link href="/" className="flex items-center group">
-              <div className="relative h-10 lg:h-14 w-40 lg:w-56">
+              <div className="relative h-12 lg:h-16 w-48 lg:w-64">
                 <Image 
                   src="/logo.png" 
                   alt="Sumegha Handmades" 
