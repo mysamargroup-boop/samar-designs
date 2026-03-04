@@ -151,7 +151,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ catego
                 {galleryImages.map((img, idx) => (
                   <CarouselItem key={idx}>
                     <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border-2 border-white bg-white w-full">
-                      <Image src={img} alt={product.name} fill className="object-cover" priority={idx === 0} />
+                      <Image src={img} alt={product.name} fill sizes="(max-width: 1023px) 100vw, 50vw" className="object-cover" priority={idx === 0} />
                       {idx === 0 && (
                         <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
                           <Badge className="bg-primary text-white border-none px-3 py-1 rounded-full uppercase tracking-widest text-[9px] font-black shadow-lg">

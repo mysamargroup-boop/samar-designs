@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Truck, ChevronRight, Star, Quote, Sparkles } from 'lucide-react';
+import { Truck, ChevronRight, Star, Quote, Sparkles, Instagram } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard';
 import {
@@ -96,6 +96,15 @@ export default function Home() {
       content: "My bridal trunk box is a treasure. It's royal, elegant, and perfectly handcrafted.",
       stars: 5
     }
+  ];
+
+  const instagramPosts = [
+    "https://picsum.photos/seed/insta1/400/400",
+    "https://picsum.photos/seed/insta2/400/400",
+    "https://picsum.photos/seed/insta3/400/400",
+    "https://picsum.photos/seed/insta4/400/400",
+    "https://picsum.photos/seed/insta5/400/400",
+    "https://picsum.photos/seed/insta6/400/400"
   ];
 
   const heroSlides = [
@@ -250,6 +259,44 @@ export default function Home() {
           </div>
         </section>
       ))}
+
+      {/* Instagram Gallery Section */}
+      <section className="py-24 bg-white/40">
+        <div className="container-normal px-4">
+          <div className="text-center mb-16 space-y-4">
+            <div className="inline-flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-[0.5em]">
+              <Instagram className="h-4 w-4" />
+              @sumegha_handmades
+            </div>
+            <h2 className="text-2xl lg:text-5xl font-black uppercase tracking-tight">On the Gram</h2>
+            <p className="text-foreground/50 text-sm max-w-lg mx-auto">Follow our creative journey and see how our art comes to life in homes around the world.</p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+            {instagramPosts.map((src, i) => (
+              <a key={i} href="https://instagram.com/sumegha_handmades" target="_blank" className="relative aspect-square group overflow-hidden rounded-xl">
+                <Image 
+                  src={src} 
+                  alt={`Instagram post ${i + 1}`} 
+                  fill 
+                  className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                />
+                <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <Instagram className="text-white h-8 w-8" />
+                </div>
+              </a>
+            ))}
+          </div>
+          
+          <div className="flex justify-center mt-12">
+            <Link href="https://instagram.com/sumegha_handmades" target="_blank">
+              <Button variant="outline" className="rounded-xl border-primary text-primary font-black uppercase tracking-widest text-[10px] px-8 h-12">
+                Follow our Journey
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Testimonials Slider Section */}
       <section className="py-24 bg-white/60 overflow-hidden">

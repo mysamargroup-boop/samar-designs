@@ -30,7 +30,7 @@ export function Footer() {
       links: [
         { name: "Our Story", href: "/about" },
         { name: "The Blog", href: "/blog" },
-        { name: "The Craft", href: "#" },
+        { name: "The Craft", href: "/about" },
       ]
     },
     {
@@ -85,7 +85,7 @@ export function Footer() {
           
           <div className="flex flex-col items-center lg:items-end gap-10 w-full lg:w-auto">
             <div className="flex flex-wrap justify-center gap-6 lg:gap-8 items-center">
-              <Link href="#" className="text-white/40 hover:text-primary transition-all hover:scale-110">
+              <Link href="https://instagram.com/sumegha_handmades" target="_blank" className="text-white/40 hover:text-primary transition-all hover:scale-110">
                 <Instagram className="h-6 w-6 lg:h-7 lg:w-7" />
               </Link>
               <Link href="#" className="text-white/40 hover:text-blue-500 transition-all hover:scale-110">
@@ -94,7 +94,7 @@ export function Footer() {
               <Link href="#" className="text-white/40 hover:text-sky-400 transition-all hover:scale-110">
                 <Twitter className="h-6 w-6 lg:h-7 lg:w-7" />
               </Link>
-              <Link href="#" className="text-white/40 hover:text-red-500 transition-all hover:scale-110">
+              <Link href="https://youtube.com/@sumeghahandmades?si=7QC4EAYRar_qTx8j" target="_blank" className="text-white/40 hover:text-red-500 transition-all hover:scale-110">
                 <Youtube className="h-6 w-6 lg:h-7 lg:w-7" />
               </Link>
               <Link href="#" className="text-white/40 hover:text-green-500 transition-all hover:scale-110">

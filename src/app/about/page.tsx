@@ -1,8 +1,9 @@
+
 "use client";
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Star, Heart, ShoppingBag, TrendingUp, HandHeart, Leaf, Flower2 } from 'lucide-react';
+import { ArrowLeft, Star, Heart, ShoppingBag, TrendingUp, HandHeart, Leaf, Instagram, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function AboutPage() {
@@ -27,17 +28,11 @@ export default function AboutPage() {
     }
   ];
 
-  const philosophies = [
-    {
-      title: "100% Handmade",
-      description: "Every single piece is shaped, painted, and finished by hand.",
-      icon: HandHeart
-    },
-    {
-      title: "Sustainably Sourced",
-      description: "We use eco-friendly materials to minimize our footprint.",
-      icon: Leaf
-    }
+  const instagramPosts = [
+    "https://picsum.photos/seed/aboutinsta1/400/400",
+    "https://picsum.photos/seed/aboutinsta2/400/400",
+    "https://picsum.photos/seed/aboutinsta3/400/400",
+    "https://picsum.photos/seed/aboutinsta4/400/400"
   ];
 
   return (
@@ -99,6 +94,39 @@ export default function AboutPage() {
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Artist Instagram Section */}
+        <div className="pt-24 space-y-12">
+          <div className="text-center space-y-3">
+            <div className="flex items-center justify-center gap-2 text-primary">
+              <Instagram className="h-5 w-5" />
+              <span className="text-[10px] font-black uppercase tracking-widest">Behind the Scenes</span>
+            </div>
+            <h3 className="text-2xl lg:text-4xl font-black uppercase tracking-tight">Follow My Process</h3>
+          </div>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {instagramPosts.map((src, i) => (
+              <div key={i} className="relative aspect-square rounded-3xl overflow-hidden shadow-md group">
+                <Image 
+                  src={src} 
+                  alt={`Process photo ${i + 1}`} 
+                  fill 
+                  className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                />
+                <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+            ))}
+          </div>
+          
+          <div className="flex justify-center">
+            <Link href="https://instagram.com/sumegha_handmades" target="_blank">
+              <Button className="rounded-2xl gradient-primary h-14 px-10 text-[10px] font-bold uppercase tracking-widest">
+                Explore Studio on Instagram
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
