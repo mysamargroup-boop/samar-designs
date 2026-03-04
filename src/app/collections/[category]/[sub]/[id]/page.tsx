@@ -129,7 +129,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ catego
   const artisanBadges = [
     { icon: Medal, text: "Award Winning Artist", color: "text-amber-500" },
     { icon: Leaf, text: "Eco-Friendly", color: "text-green-600" },
-    { icon: ShieldCheck, text: "Authenticity Guaranteed", color: "text-blue-500" }
+    { icon: ShieldCheck, text: "Authenticity Guaranteed", color: "text-blue-500" },
+    { icon: Sparkles, text: "Handmade with Love", color: "text-primary" }
   ];
 
   return (
@@ -301,45 +302,45 @@ export default function ProductDetailPage({ params }: { params: Promise<{ catego
           </div>
         </div>
 
-        {/* Reviews Section */}
-        <section className="py-20 border-t border-primary/5">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-10 mb-12">
-            <div className="space-y-3">
-              <h2 className="text-2xl lg:text-4xl font-black font-headline uppercase tracking-tight">Verified Reviews</h2>
-              <div className="flex items-center gap-3">
-                <div className="flex text-amber-400">
-                  {[1,2,3,4,5].map(s => <Star key={s} className="h-4 w-4 fill-current" />)}
-                </div>
-                <span className="text-sm font-bold text-muted-foreground">4.9 out of 5 based on {reviews.length} reviews</span>
+        {/* Verified Reviews Section */}
+        <section className="py-20 border-t border-primary/5 overflow-hidden">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-2xl lg:text-4xl font-black font-headline uppercase tracking-tight">Voices of Collectors</h2>
+            <div className="flex items-center justify-center gap-3">
+              <div className="flex text-amber-400">
+                {[1,2,3,4,5].map(s => <Star key={s} className="h-4 w-4 fill-current" />)}
               </div>
+              <span className="text-sm font-bold text-muted-foreground">4.9/5 Average Rating</span>
             </div>
+          </div>
+
+          <Carousel className="w-full max-w-4xl mx-auto" opts={{ loop: true }}>
+            <CarouselContent>
+              {reviews.map((review, i) => (
+                <CarouselItem key={i}>
+                  <div className="flex flex-col items-center text-center space-y-6 px-4">
+                    <div className="flex text-amber-400 gap-1">
+                      {Array.from({ length: review.rating }).map((_, s) => (
+                        <Star key={s} className="h-5 w-5 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-lg lg:text-2xl text-foreground/80 leading-relaxed font-light italic max-w-2xl mx-auto">
+                      "{review.comment}"
+                    </p>
+                    <div className="space-y-1">
+                      <p className="text-xs font-black uppercase tracking-widest text-primary">{review.name}</p>
+                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-tight">{review.date}</p>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+          
+          <div className="flex justify-center mt-12">
             <Button variant="outline" className="rounded-xl border-primary text-primary font-black uppercase tracking-widest text-[10px] h-12 px-8">
               Write a Review
             </Button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {reviews.map((review, i) => (
-              <div key={i} className="bg-white/50 p-8 rounded-[2rem] border border-primary/5 space-y-4 shadow-sm hover:shadow-md transition-all">
-                <div className="flex justify-between items-start">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black">
-                      <User className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-widest">{review.name}</p>
-                      <p className="text-[10px] text-muted-foreground font-bold">{review.date}</p>
-                    </div>
-                  </div>
-                  <div className="flex text-amber-400 gap-0.5">
-                    {Array.from({ length: review.rating }).map((_, s) => (
-                      <Star key={s} className="h-3 w-3 fill-current" />
-                    ))}
-                  </div>
-                </div>
-                <p className="text-sm text-foreground/70 leading-relaxed font-light italic">"{review.comment}"</p>
-              </div>
-            ))}
           </div>
         </section>
 

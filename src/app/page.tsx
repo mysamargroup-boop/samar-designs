@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Truck, ChevronRight, Star, Quote } from 'lucide-react';
+import { Truck, ChevronRight, Star, Quote, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard';
 import {
@@ -81,21 +81,18 @@ export default function Home() {
       name: "Anjali Mehta",
       role: "Home Stylist",
       content: "The Lippan Art piece I bought is the soul of my living room. Every guest asks about it!",
-      avatar: "https://picsum.photos/seed/user1/100/100",
       stars: 5
     },
     {
       name: "Rohan Sharma",
       role: "Gifting Enthusiast",
       content: "The personalized nameplate exceeded my expectations. Sumegha's attention to detail is unmatched.",
-      avatar: "https://picsum.photos/seed/user2/100/100",
       stars: 5
     },
     {
       name: "Priya Das",
       role: "Bridal Client",
       content: "My bridal trunk box is a treasure. It's royal, elegant, and perfectly handcrafted.",
-      avatar: "https://picsum.photos/seed/user3/100/100",
       stars: 5
     }
   ];
@@ -253,33 +250,41 @@ export default function Home() {
         </section>
       ))}
 
-      {/* Testimonials Section */}
-      <section className="py-24 bg-white/60">
+      {/* Testimonials Slider Section */}
+      <section className="py-24 bg-white/60 overflow-hidden">
         <div className="container-normal px-4">
-          <div className="text-center mb-16 space-y-3">
-            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-primary">The Community</p>
-            <h2 className="text-2xl lg:text-5xl font-black uppercase tracking-tight">What Our Collectors Say</h2>
+          <div className="text-center mb-16 space-y-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-primary">Our Collectors</p>
+            <h2 className="text-2xl lg:text-5xl font-black uppercase tracking-tight">Kind Words & Stories</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((t, i) => (
-              <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-primary/5 shadow-sm space-y-6 relative group hover:shadow-xl transition-all duration-500">
-                <Quote className="absolute top-8 right-8 h-8 w-8 text-primary/5 group-hover:text-primary/10 transition-colors" />
-                <div className="flex items-center gap-4">
-                  <div className="relative h-12 w-12 rounded-full overflow-hidden border-2 border-primary/10">
-                    <Image src={t.avatar} alt={t.name} fill className="object-cover" />
+          
+          <Carousel className="w-full max-w-4xl mx-auto" opts={{ loop: true }}>
+            <CarouselContent>
+              {testimonials.map((t, i) => (
+                <CarouselItem key={i}>
+                  <div className="flex flex-col items-center text-center space-y-8 px-6">
+                    <Quote className="h-10 w-10 text-primary opacity-20" />
+                    <div className="flex text-amber-400 gap-1 justify-center">
+                      {Array.from({ length: t.stars }).map((_, s) => (
+                        <Star key={s} className="h-5 w-5 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-xl lg:text-3xl text-foreground/70 leading-relaxed italic font-light max-w-2xl">
+                      "{t.content}"
+                    </p>
+                    <div className="space-y-1">
+                      <h4 className="text-sm font-black uppercase tracking-widest text-primary">{t.name}</h4>
+                      <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-[0.2em]">{t.role}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-xs font-black uppercase tracking-widest">{t.name}</h4>
-                    <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-tight">{t.role}</p>
-                  </div>
-                </div>
-                <div className="flex text-amber-400 gap-0.5">
-                  {Array.from({ length: t.stars }).map((_, s) => (
-                    <Star key={s} className="h-3 w-3 fill-current" />
-                  ))}
-                </div>
-                <p className="text-sm text-foreground/70 leading-relaxed italic font-light">"{t.content}"</p>
-              </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+          
+          <div className="flex justify-center gap-2 mt-12">
+            {testimonials.map((_, idx) => (
+              <div key={idx} className="h-1.5 w-1.5 rounded-full bg-primary/20" />
             ))}
           </div>
         </div>
