@@ -23,7 +23,8 @@ const ProductSchema = z.object({
   productId: z.string().describe('A unique identifier for the suggested product.'),
   name: z.string().describe('The name of the suggested product.'),
   description: z.string().describe('A detailed description of the product, highlighting its handmade quality and relevance to the query.'),
-  price: z.number().describe('The estimated price of the product (e.g., 29.99, 50.00).'),
+  sale_price: z.number().describe('The estimated sale price of the product (e.g., 29.99, 50.00).'),
+  regular_price: z.number().optional().describe('The estimated original price of the product.'),
   imageUrl: z.string().url().describe('A placeholder URL for an image of the product.'),
   categories: z.array(z.string()).describe('List of categories this product belongs to.'),
 });
@@ -44,8 +45,8 @@ const productDiscoveryPrompt = ai.definePrompt({
   output: { schema: ProductDiscoveryOutputSchema },
   prompt: `You are an AI product discovery assistant for "Sumegha Handmades", a business specializing in unique handmade art products.
 Your goal is to understand the user's preferences and occasions, and then suggest relevant handmade products that fit their description.
-For each suggestion, provide a product name, a detailed description highlighting its handmade quality and relevance, an estimated price, a placeholder image URL, and relevant categories.
-Ensure the image URL is a valid placeholder.
+For each suggestion, provide a product name, a detailed description highlighting its handmade quality and relevance, an estimated sale_price, a regular_price (slightly higher), a placeholder image URL (from picsum.photos), and relevant categories.
+Ensure the image URL is a valid placeholder like https://picsum.photos/seed/ai-suggest-1/800/1000.
 If you cannot find suitable products, still provide a helpful response and explain why, returning an empty array for suggestedProducts.
 
 User's preferences/occasion: "{{{userQuery}}}"

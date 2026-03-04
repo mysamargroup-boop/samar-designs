@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from 'react';
@@ -42,7 +41,7 @@ export default function DiscoveryPage() {
           <Sparkles className="h-4 w-4" />
           <span>Powered by Sumegha AI</span>
         </div>
-        <h1 className="text-5xl lg:text-7xl font-black font-headline">AI Art Concierge</h1>
+        <h1 className="text-5xl lg:text-7xl font-black font-display">AI Art Concierge</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           Describe what you're looking for, the occasion, or the vibe you want to achieve, and let our AI curate the perfect handmade selection for you.
         </p>
@@ -90,7 +89,7 @@ export default function DiscoveryPage() {
       {result && !loading && (
         <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="bg-white p-8 rounded-[2rem] shadow-lg border border-primary/5">
-            <h3 className="text-2xl font-headline font-bold mb-4 flex items-center">
+            <h3 className="text-2xl font-display font-bold mb-4 flex items-center">
               <Sparkles className="h-6 w-6 mr-2 text-primary" />
               Sumegha's Suggestion
             </h3>
@@ -106,7 +105,8 @@ export default function DiscoveryPage() {
                     id: p.productId,
                     name: p.name,
                     description: p.description,
-                    price: p.price,
+                    sale_price: p.sale_price,
+                    regular_price: p.regular_price,
                     imageUrl: p.imageUrl,
                     category: p.categories[0] || 'Art'
                   }} 

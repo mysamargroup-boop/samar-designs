@@ -47,7 +47,7 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
 
   const handleCheckout = () => {
     const businessPhone = "919876543210"; 
-    const itemDetails = items.map(item => `- ${item.name} (Qty: ${item.quantity}, Price: ₹${item.price * item.quantity})`).join('\n');
+    const itemDetails = items.map(item => `- ${item.name} (Qty: ${item.quantity}, Price: ₹${item.sale_price * item.quantity})`).join('\n');
     
     const message = `*New Order from Sumegha Handmades*\n\n` +
       `*CUSTOMER DETAILS:*\n` +
@@ -75,10 +75,10 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[450px] md:max-w-[850px] rounded-[2.5rem] border-none shadow-2xl overflow-hidden p-0 bg-background transition-all duration-500">
         <div className="grid grid-cols-1 md:grid-cols-2 h-full">
-          {/* Left: Form (Portrait on Mobile, Column on Desktop) */}
+          {/* Left: Form */}
           <div className="p-6 md:p-10 space-y-6">
             <DialogHeader>
-              <DialogTitle className="font-headline text-2xl font-black uppercase tracking-tight flex items-center gap-2">
+              <DialogTitle className="font-display text-2xl font-black uppercase tracking-tight flex items-center gap-2">
                 <User className="h-6 w-6 text-primary" />
                 Delivery Details
               </DialogTitle>
@@ -124,10 +124,10 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
             </div>
           </div>
 
-          {/* Right: Summary (Visible as Sidebar on Desktop) */}
+          {/* Right: Summary */}
           <div className="bg-primary/[0.03] p-6 md:p-10 border-t md:border-t-0 md:border-l border-primary/5 flex flex-col justify-between">
             <div className="space-y-6">
-              <h3 className="font-headline text-xl font-black uppercase tracking-tight flex items-center gap-2">
+              <h3 className="font-display text-xl font-black uppercase tracking-tight flex items-center gap-2">
                 <ShoppingBag className="h-5 w-5 text-primary" />
                 Order Summary
               </h3>
@@ -136,7 +136,7 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
                 {items.map((item) => (
                   <div key={item.id} className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest">
                     <span className="text-foreground/60">{item.name} x {item.quantity}</span>
-                    <span className="text-foreground">₹{item.price * item.quantity}</span>
+                    <span className="text-foreground">₹{item.sale_price * item.quantity}</span>
                   </div>
                 ))}
               </div>
@@ -162,7 +162,7 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
             <div className="space-y-6 pt-8">
               <div className="flex justify-between items-end">
                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Total Payable</span>
-                <span className="text-4xl font-black font-headline text-primary">₹{total}</span>
+                <span className="text-4xl font-black font-display text-primary">₹{total}</span>
               </div>
               
               <div className="space-y-4">

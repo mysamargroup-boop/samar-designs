@@ -18,8 +18,9 @@ export default function CartPage() {
   const [appliedDiscount, setAppliedDiscount] = useState(0);
   const [isSparkling, setIsSparkling] = useState(false);
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const totalOriginal = cart.reduce((sum, item) => sum + ((item.originalPrice || item.price) * item.quantity), 0);
+  // Use sale_price for current value and regular_price for comparison
+  const subtotal = cart.reduce((sum, item) => sum + (item.sale_price * item.quantity), 0);
+  const totalOriginal = cart.reduce((sum, item) => sum + ((item.regular_price || item.sale_price) * item.quantity), 0);
   
   const discountFromCoupon = Math.round(subtotal * (appliedDiscount / 100));
   const finalTotal = subtotal - discountFromCoupon;
@@ -49,7 +50,7 @@ export default function CartPage() {
         <div className="w-24 h-24 bg-secondary rounded-full flex items-center justify-center mx-auto mb-8">
           <ShoppingBag className="h-12 w-12 text-primary" />
         </div>
-        <h1 className="text-2xl lg:text-6xl font-headline font-black mb-4 uppercase tracking-tight text-foreground">Your cart is empty</h1>
+        <h1 className="text-2xl lg:text-6xl font-display font-black mb-4 uppercase tracking-tight text-foreground">Your cart is empty</h1>
         <p className="text-muted-foreground mb-8 max-w-md mx-auto font-light text-sm">Looks like you haven't added any handmade treasures yet. Let's find something beautiful!</p>
         <Link href="/products">
           <Button size="lg" className="rounded-full gradient-primary px-10 text-[10px] font-bold uppercase tracking-widest h-14">Start Shopping</Button>
@@ -68,7 +69,7 @@ export default function CartPage() {
 
       <div className="text-center mb-12 space-y-2">
         <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary">Review Your Items</p>
-        <h1 className="text-3xl lg:text-5xl font-black font-headline uppercase tracking-tight text-foreground">Shopping Bag</h1>
+        <h1 className="text-3xl lg:text-5xl font-black font-display uppercase tracking-tight text-foreground">Shopping Bag</h1>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
@@ -95,9 +96,9 @@ export default function CartPage() {
                     </Button>
                   </div>
                   <div className="flex items-center gap-3">
-                    <p className="text-lg lg:text-2xl font-black text-primary">₹{item.price}</p>
-                    {item.originalPrice && (
-                      <p className="text-xs lg:text-sm text-muted-foreground line-through decoration-primary/40 font-bold">₹{item.originalPrice}</p>
+                    <p className="text-lg lg:text-2xl font-black text-primary">₹{item.sale_price}</p>
+                    {item.regular_price && item.regular_price > item.sale_price && (
+                      <p className="text-xs lg:text-sm text-muted-foreground line-through decoration-primary/40 font-bold">₹{item.regular_price}</p>
                     )}
                   </div>
                 </div>
@@ -123,7 +124,7 @@ export default function CartPage() {
                     </Button>
                   </div>
                   <span className="text-xs font-black uppercase tracking-widest text-foreground/40 hidden sm:block">
-                    Total: ₹{item.price * item.quantity}
+                    Total: ₹{item.sale_price * item.quantity}
                   </span>
                 </div>
               </div>
@@ -133,7 +134,7 @@ export default function CartPage() {
 
         <div className="lg:col-span-1 space-y-6">
           <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-primary/10 space-y-8">
-            <h2 className="text-xl font-headline font-black uppercase tracking-tight text-foreground">Order Summary</h2>
+            <h2 className="text-xl font-display font-black uppercase tracking-tight text-foreground">Order Summary</h2>
             
             <div className="space-y-4">
               <div className="flex items-center gap-2">
@@ -191,7 +192,7 @@ export default function CartPage() {
               <div className="pt-6 border-t border-primary/10 flex justify-between items-end">
                 <span className="text-base font-black uppercase tracking-tight">Net Total</span>
                 <div className="text-right">
-                  <span className="block text-3xl font-black font-headline text-primary leading-none">₹{finalTotal}</span>
+                  <span className="block text-3xl font-black font-display text-primary leading-none">₹{finalTotal}</span>
                 </div>
               </div>
             </div>
