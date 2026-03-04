@@ -19,8 +19,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-lg border-b border-gray-100">
-      <div className="container-normal h-24 flex items-center justify-between">
-        <div className="flex items-center gap-6">
+      <div className="container-normal h-24 grid grid-cols-3 items-center">
+        {/* Left Side: Mobile Menu */}
+        <div className="flex items-center">
           <Button 
             variant="ghost" 
             size="icon" 
@@ -30,6 +31,21 @@ export function Header() {
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
 
+          <nav className="hidden md:flex items-center space-x-8">
+            {navLinks.slice(1).map((link) => (
+              <Link 
+                key={link.name} 
+                href={link.href}
+                className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/60 hover:text-primary transition-all"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        {/* Center Side: Logo */}
+        <div className="flex justify-center">
           <Link href="/" className="flex items-center group">
             <h2 className="text-foreground text-2xl font-display font-black leading-tight tracking-[0.2em] uppercase transition-colors group-hover:text-primary">
               Sumegha
@@ -37,19 +53,8 @@ export function Header() {
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center space-x-12">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              href={link.href}
-              className="text-xs font-bold uppercase tracking-[0.2em] text-foreground/60 hover:text-primary transition-all hover:tracking-[0.25em]"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-4">
+        {/* Right Side: Cart */}
+        <div className="flex justify-end items-center gap-4">
           <Link href="/cart">
             <Button variant="ghost" size="icon" className="rounded-full hover:bg-black/5 text-foreground relative h-12 w-12 transition-transform hover:scale-110">
               <ShoppingBag className="h-6 w-6" />

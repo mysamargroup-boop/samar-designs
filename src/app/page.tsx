@@ -5,6 +5,15 @@ import Image from 'next/image';
 import { Sparkles, PanelsTopLeft, MousePointer2, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import * as React from "react";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg 
@@ -18,6 +27,31 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 );
 
 export default function Home() {
+  const plugin = React.useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true })
+  );
+
+  const heroSlides = [
+    {
+      title: "Handmade Elegance",
+      subtitle: "Curated for Your Home",
+      desc: "Experience contemporary design through bespoke handmade elegance. Every piece is a testament to sophisticated simplicity.",
+      image: "https://images.unsplash.com/photo-1665512594386-051aad8b9f68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    },
+    {
+      title: "Artisanal Soul",
+      subtitle: "Crafted With Love",
+      desc: "Discover unique, heartfelt creations from traditional pottery to modern paintings.",
+      image: "https://images.unsplash.com/photo-1582125169804-bc28f3ecf7ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    },
+    {
+      title: "Bespoke Jewelry",
+      subtitle: "Personalized For You",
+      desc: "Each piece is meticulously handcrafted, ensuring no two items are exactly alike.",
+      image: "https://images.unsplash.com/photo-1573227895118-8f8fa1172a09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    }
+  ];
+
   const featuredProducts = [
     {
       id: "lippan-1",
@@ -64,52 +98,72 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full overflow-hidden">
-      {/* Hero Section - Normal Width */}
-      <section className="relative min-h-[600px] flex items-center justify-center py-20">
-        <div className="container-normal relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 text-center lg:text-left">
-            <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              Modern Artistry
-            </div>
-            <h1 className="text-4xl lg:text-7xl font-black leading-tight uppercase tracking-tight text-foreground">
-              Handmade Elegance, <br /> <span className="text-primary">Curated for You.</span>
-            </h1>
-            <p className="text-lg lg:text-xl text-foreground/70 font-light max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Experience contemporary design through bespoke handmade elegance. Every piece is a testament to sophisticated simplicity.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-              <Link href="/products" className="w-full sm:w-auto">
-                <Button className="w-full h-14 px-10 rounded-xl text-xs font-bold uppercase tracking-widest gradient-primary">
-                  View Collection
-                </Button>
-              </Link>
-              <Button 
-                variant="secondary" 
-                className="w-full sm:w-auto h-14 px-10 rounded-xl text-xs font-bold uppercase tracking-widest bg-white border border-gray-100 shadow-sm flex items-center gap-2 group hover:bg-gray-50"
-                onClick={() => window.open('https://wa.me/919876543210', '_blank')}
-              >
-                <WhatsAppIcon className="h-5 w-5 text-green-600" />
-                Order on WhatsApp
-              </Button>
-            </div>
-          </div>
+      {/* Hero Slider Section */}
+      <section className="relative w-full overflow-hidden">
+        <Carousel 
+          plugins={[plugin.current]}
+          className="w-full"
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
+        >
+          <CarouselContent>
+            {heroSlides.map((slide, index) => (
+              <CarouselItem key={index}>
+                <div className="relative min-h-[600px] flex items-center justify-center py-20 bg-background/50">
+                  <div className="container-normal relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div className="space-y-8 text-center lg:text-left animate-in fade-in slide-in-from-left duration-700">
+                      <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                        {slide.subtitle}
+                      </div>
+                      <h1 className="text-4xl lg:text-7xl font-black leading-tight uppercase tracking-tight text-foreground">
+                        {slide.title.split(' ')[0]} <br /> <span className="text-primary">{slide.title.split(' ').slice(1).join(' ')}</span>
+                      </h1>
+                      <p className="text-lg lg:text-xl text-foreground/70 font-light max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        {slide.desc}
+                      </p>
+                      <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
+                        <Link href="/products" className="w-full sm:w-auto">
+                          <Button className="w-full h-14 px-10 rounded-xl text-xs font-bold uppercase tracking-widest gradient-primary">
+                            View Collection
+                          </Button>
+                        </Link>
+                        <Button 
+                          variant="secondary" 
+                          className="w-full sm:w-auto h-14 px-10 rounded-xl text-xs font-bold uppercase tracking-widest bg-white border border-gray-100 shadow-sm flex items-center gap-2 group hover:bg-gray-50"
+                          onClick={() => window.open('https://wa.me/919876543210', '_blank')}
+                        >
+                          <WhatsAppIcon className="h-5 w-5 text-green-600" />
+                          Order on WhatsApp
+                        </Button>
+                      </div>
+                    </div>
 
-          <div className="relative aspect-square max-w-[500px] mx-auto lg:ml-auto">
-            <div className="absolute inset-0 bg-primary/20 rounded-[3rem] rotate-3 scale-105"></div>
-            <div className="relative h-full w-full rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
-              <Image 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3qxN3LYJdPEaN5vCr3rv6aBTfqLL4k8KN0LXFYDWDX_mng1VVncE4k928Rq_CIGJndudXp5TOqeBl3fZmhfmuEqLlKVrL3HD-OeUcPTmS3IbPp_KE1vGv6Q5W1O7b1Y4ZDiluzJ1ZQSovyZPGC5BHsYfn0-sWe_L85C6SBl-8TdJixXWLBcpJasjrQkdoojyWJoN7V6JLDbwarf6Yct4S_0A2KG2E9W-LKaCQngO009UPMOEU2R4FiIQSecKqInQfQCKPhB8ioXLJ"
-                alt="Hero banner"
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
+                    <div className="relative aspect-square max-w-[500px] mx-auto lg:ml-auto animate-in fade-in slide-in-from-right duration-700">
+                      <div className="absolute inset-0 bg-primary/20 rounded-[3rem] rotate-3 scale-105"></div>
+                      <div className="relative h-full w-full rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
+                        <Image 
+                          src={slide.image}
+                          alt={slide.title}
+                          fill
+                          className="object-cover"
+                          priority
+                          data-ai-hint="handmade craft"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="hidden lg:block">
+            <CarouselPrevious className="left-8" />
+            <CarouselNext className="right-8" />
           </div>
-        </div>
+        </Carousel>
       </section>
 
-      {/* Featured Gallery - 5 Columns Desktop, 2 Mobile */}
+      {/* Featured Gallery */}
       <section className="py-24">
         <div className="container-normal">
           <div className="flex items-end justify-between mb-16">
@@ -171,7 +225,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AI Assistant CTA - Dark background, White text */}
+      {/* AI Assistant CTA */}
       <section className="py-24">
         <div className="container-normal">
           <div className="bg-foreground text-white p-12 lg:p-24 rounded-[4rem] text-center space-y-10 relative overflow-hidden shadow-2xl">
