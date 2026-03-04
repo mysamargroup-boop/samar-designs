@@ -124,15 +124,15 @@ export default function Home() {
             {heroSlides.map((slide, index) => (
               <CarouselItem key={index} className="relative pl-0">
                 <div className="relative h-[55vh] sm:h-[70vh] min-h-[400px] w-full rounded-[2rem] overflow-hidden shadow-2xl bg-black/5 border border-white/20">
-                  <div className="absolute inset-0 z-0">
+                  <div className="absolute inset-0 z-0 rounded-[2rem] overflow-hidden">
                     <Image 
                       src={slide.image}
                       alt={slide.title}
                       fill
-                      className="object-cover opacity-80"
+                      className="object-cover opacity-80 rounded-[2rem]"
                       priority
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/10 to-background/40" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/5 to-background/20 rounded-[2rem]" />
                   </div>
                   <div className="relative z-10 h-full flex items-center justify-center p-6 text-center">
                     <div className="flex flex-col items-center space-y-6">
@@ -184,7 +184,7 @@ export default function Home() {
         </Carousel>
       </section>
 
-      {/* Categories Grid - Reduced Roundness */}
+      {/* Categories Grid */}
       <section className="py-12 bg-white/40 border-b border-white">
         <div className="container-normal px-4">
           <div className="flex flex-col items-center text-center gap-2 mb-10">
@@ -212,13 +212,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Dynamic Category Sections with Background Designs */}
+      {/* Dynamic Category Sections */}
       {Object.entries(productsByCategory).map(([catName, products], idx) => (
         <section key={catName} className={cn(
           "py-16 relative overflow-hidden",
           idx % 2 === 0 ? "bg-white/20" : "bg-white/40"
         )}>
-          {/* Background Elements */}
           <div className="absolute inset-0 z-0 pointer-events-none opacity-5">
             {idx % 3 === 0 ? (
               <div className="absolute -right-20 -top-20 w-[400px] h-[400px] border-[20px] border-primary rounded-full animate-[spin_30s_linear_infinite]" />

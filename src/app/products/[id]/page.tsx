@@ -15,16 +15,31 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const { id } = use(params);
   const { addToCart, addToWishlist, isWishlisted, removeFromWishlist } = useStore();
   
+  // Find product in dummy data store
   const productData = PlaceHolderImages.find(p => p.id === id);
-  if (!productData) return <div className="container mx-auto p-20 text-center">Product not found.</div>;
+  
+  if (!productData) {
+    return (
+      <div className="container mx-auto p-32 text-center space-y-6">
+        <h1 className="text-4xl font-black uppercase">Product not found</h1>
+        <p className="text-muted-foreground">The masterpiece you are looking for is missing from our gallery.</p>
+        <Link href="/products">
+          <Button className="gradient-primary rounded-full px-8">Back to Gallery</Button>
+        </Link>
+      </div>
+    );
+  }
 
+  // Construct UI product object
   const product = {
     id: productData.id,
-    name: productData.description.split(' ').slice(0, 3).join(' '),
+    name: productData.id.includes('-') 
+      ? productData.description.split(' - ')[0] 
+      : productData.description.split(' ').slice(0, 3).join(' '),
     description: productData.description,
-    price: 899,
+    price: productData.id.startsWith('fest') ? 899 : productData.id.startsWith('home') ? 1299 : 3500,
     imageUrl: productData.imageUrl,
-    category: 'Handmade Art'
+    category: productData.id.startsWith('fest') ? 'Festive' : productData.id.startsWith('home') ? 'Home Decor' : 'Wedding'
   };
 
   const wishlisted = isWishlisted(product.id);
@@ -53,12 +68,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
         <div className="space-y-6">
-          <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white">
+          <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white bg-white">
             <Image src={product.imageUrl} alt={product.name} fill className="object-cover" priority />
           </div>
           <div className="grid grid-cols-4 gap-4">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="relative aspect-square rounded-2xl overflow-hidden shadow-md cursor-pointer hover:opacity-80 transition-opacity">
+              <div key={i} className="relative aspect-square rounded-2xl overflow-hidden shadow-md cursor-pointer hover:opacity-80 transition-opacity bg-white">
                 <Image src={`https://picsum.photos/seed/${product.id}${i}/400/400`} alt="Detail" fill className="object-cover" />
               </div>
             ))}
@@ -78,16 +93,18 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </div>
               <span className="text-xs text-muted-foreground">(24 Reviews)</span>
             </div>
-            <h1 className="text-5xl lg:text-7xl font-black font-headline tracking-tight">{product.name}</h1>
+            <h1 className="text-5xl lg:text-7xl font-black font-headline tracking-tight uppercase leading-tight">{product.name}</h1>
             <p className="text-4xl font-black font-headline text-primary">₹{product.price}</p>
           </div>
 
-          <div className="p-6 rounded-3xl bg-secondary/50 border border-primary/5 space-y-4">
+          <div className="p-6 rounded-3xl bg-white/50 backdrop-blur-sm border border-primary/5 space-y-4">
             <h3 className="font-bold flex items-center">
               <Sparkles className="h-5 w-5 mr-2 text-primary" />
               Artist's Description
             </h3>
-            <p className="text-lg leading-relaxed text-muted-foreground">{product.description}. Each piece is meticulously handcrafted, ensuring no two items are exactly alike. We use eco-friendly materials to create art that lasts a lifetime.</p>
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              {product.description} Each piece is meticulously handcrafted by Sumegha, ensuring no two items are exactly alike. We use premium materials to create art that lasts a lifetime.
+            </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -104,7 +121,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </div>
 
           <div className="pt-8 border-t space-y-4">
-            <div className="flex items-center justify-between p-4 rounded-2xl border border-dashed border-primary/30">
+            <div className="flex items-center justify-between p-4 rounded-2xl border border-dashed border-primary/30 bg-white/30">
               <div className="flex items-center">
                 <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
                   <MessageCircle className="h-5 w-5 text-green-600" />

@@ -1,6 +1,54 @@
 {
   "placeholderImages": [
     {
+      "id": "fest-1",
+      "description": "Floral Pooja Thali - Hand-painted with intricate traditional motifs for auspicious occasions.",
+      "imageUrl": "https://picsum.photos/seed/pooja/600/600",
+      "imageHint": "pooja thali"
+    },
+    {
+      "id": "fest-2",
+      "description": "Handpainted Diya Set - Set of 6 colorful clay diyas perfect for festive evenings.",
+      "imageUrl": "https://picsum.photos/seed/diya/600/600",
+      "imageHint": "festive diya"
+    },
+    {
+      "id": "fest-3",
+      "description": "Custom Gift Hamper - A curated selection of handmade treasures in a traditional box.",
+      "imageUrl": "https://picsum.photos/seed/hamper/600/600",
+      "imageHint": "gift hamper"
+    },
+    {
+      "id": "home-1",
+      "description": "Lippan Mirror Art - Traditional Kutch mirror work on a modern circular canvas.",
+      "imageUrl": "https://picsum.photos/seed/lippan/600/600",
+      "imageHint": "lippan art"
+    },
+    {
+      "id": "home-2",
+      "description": "Ceramic Floor Vase - Elegant oversized floor vase with organic textures.",
+      "imageUrl": "https://images.unsplash.com/photo-1631125915732-b98f8774f675?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2VyYW1pYyUyMHZhc2V8ZW58MHx8fHwxNzcyNTI3MTU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "ceramic vase"
+    },
+    {
+      "id": "home-3",
+      "description": "Macrame Wall Decor - Bohemian hand-knotted wall hanging for a cozy study or bedroom.",
+      "imageUrl": "https://picsum.photos/seed/macrame-home/600/600",
+      "imageHint": "macrame decor"
+    },
+    {
+      "id": "wed-1",
+      "description": "Bridal Trunk Box - Velvet-lined luxury trunk for keeping bridal ensembles and memories.",
+      "imageUrl": "https://picsum.photos/seed/trunk/600/600",
+      "imageHint": "bridal box"
+    },
+    {
+      "id": "wed-2",
+      "description": "Wedding Shagun Envelope - Hand-embroidered silk envelopes for special occasions.",
+      "imageUrl": "https://picsum.photos/seed/env/600/600",
+      "imageHint": "wedding envelope"
+    },
+    {
       "id": "pottery-1",
       "description": "Hand-painted ceramic vase with floral motifs",
       "imageUrl": "https://images.unsplash.com/photo-1665512594386-051aad8b9f68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjZXJhbWljJTIwdmFzZXxlbnwwfHx8fDE3NzI1MjcxNTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
@@ -17,24 +65,6 @@
       "description": "Handcrafted silver earrings with turquoise stones",
       "imageUrl": "https://images.unsplash.com/photo-1573227895118-8f8fa1172a09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8aGFuZG1hZGUlMjBqZXdlbHJ5fGVufDB8fHx8MTc3MjU4MDc3Nnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "handmade jewelry"
-    },
-    {
-      "id": "macrame-1",
-      "description": "Bohemian wall hanging macrame art",
-      "imageUrl": "https://picsum.photos/seed/macrame1/600/800",
-      "imageHint": "macrame art"
-    },
-    {
-      "id": "candle-1",
-      "description": "Scented soy wax candle in decorative glass",
-      "imageUrl": "https://images.unsplash.com/photo-1735380675871-cadd8ca29caf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxoYW5kbWFkZSUyMGNhbmRsZXxlbnwwfHx8fDE3NzI1MzE3MjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "handmade candle"
-    },
-    {
-      "id": "textile-1",
-      "description": "Hand-woven cushion cover with ethnic patterns",
-      "imageUrl": "https://picsum.photos/seed/textile1/600/600",
-      "imageHint": "woven textile"
     }
   ]
 }
