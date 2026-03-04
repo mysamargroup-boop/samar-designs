@@ -1,8 +1,7 @@
-
 "use client";
 
 import { useSearchParams } from 'next/navigation';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { ProductCard } from '@/components/ProductCard';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
@@ -12,8 +11,17 @@ import { cn } from '@/lib/utils';
 export default function ProductsPage() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const searchModeParam = searchParams.get('search');
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(categoryParam || 'All');
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (searchModeParam === 'true' && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchModeParam]);
 
   const categories = ['All', 'Festive / Special Gifts', 'Home Decor', 'Wedding', 'Diwali decor', 'Anniversary'];
 
@@ -40,30 +48,28 @@ export default function ProductsPage() {
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
         <div className="text-center md:text-left space-y-2">
           <p className="text-[11px] font-bold uppercase tracking-[0.5em] text-primary">The Collection</p>
-          <h1 className="text-5xl lg:text-7xl font-black font-headline uppercase tracking-tight">Art Gallery</h1>
-          <p className="text-muted-foreground text-lg max-w-md font-light">Hand-picked treasures waiting for a home.</p>
+          <h1 className="text-3xl lg:text-6xl font-black font-headline uppercase tracking-tight">Art Gallery</h1>
+          <p className="text-muted-foreground text-sm lg:text-lg max-w-md font-light">Hand-picked treasures waiting for a home.</p>
         </div>
         
         <div className="flex flex-col gap-6 w-full md:max-w-2xl">
           <div className="relative flex-grow group">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground transition-colors group-focus-within:text-primary" />
             <input 
+              ref={searchInputRef}
               placeholder="Search unique art..." 
               className="w-full pl-12 h-14 rounded-2xl border border-primary/10 bg-white/50 backdrop-blur-sm focus:bg-white shadow-sm outline-none px-4"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="flex items-center gap-4 overflow-x-auto pb-4 scrollbar-hide">
-            <div className="flex items-center justify-center p-3 rounded-xl bg-white shadow-sm border border-primary/5">
-              <SlidersHorizontal className="h-4 w-4 text-primary" />
-            </div>
+          <div className="flex items-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
             {categories.map(cat => (
               <Button 
                 key={cat} 
                 variant={selectedCategory === cat ? 'default' : 'outline'}
                 className={cn(
-                  "rounded-full h-10 px-6 text-[10px] font-bold uppercase tracking-widest transition-all",
+                  "rounded-full h-10 px-6 text-[10px] font-bold uppercase tracking-widest transition-all shrink-0",
                   selectedCategory === cat 
                     ? "gradient-primary border-none shadow-lg shadow-primary/20" 
                     : "border-primary/10 bg-white/50 hover:bg-white"
@@ -89,13 +95,13 @@ export default function ProductsPage() {
             <Search className="h-10 w-10 text-primary/30" />
           </div>
           <div className="space-y-2">
-            <p className="text-2xl font-black uppercase tracking-tight">No Results Found</p>
-            <p className="text-muted-foreground font-light max-w-xs mx-auto">Try adjusting your filters or search terms to find what you're looking for.</p>
+            <p className="text-xl font-black uppercase tracking-tight">No Results Found</p>
+            <p className="text-muted-foreground text-xs font-light max-w-xs mx-auto">Try adjusting your filters or search terms.</p>
           </div>
           <Button 
             variant="link" 
             onClick={() => {setSearchTerm(''); setSelectedCategory('All');}} 
-            className="text-primary font-black uppercase tracking-widest text-xs"
+            className="text-primary font-black uppercase tracking-widest text-[10px]"
           >
             Clear all filters
           </Button>

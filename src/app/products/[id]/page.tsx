@@ -1,4 +1,3 @@
-
 "use client";
 
 import { use, useState } from 'react';
@@ -11,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { ProductCard } from '@/components/ProductCard';
 import {
   Carousel,
   CarouselContent,
@@ -38,7 +38,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   if (!productData) {
     return (
       <div className="container mx-auto p-32 text-center space-y-6">
-        <h1 className="text-4xl font-black uppercase">Product not found</h1>
+        <h1 className="text-3xl lg:text-5xl font-black uppercase">Product not found</h1>
         <p className="text-muted-foreground">The masterpiece you are looking for is missing from our gallery.</p>
         <Link href="/products">
           <Button className="gradient-primary rounded-full px-8">Back to Gallery</Button>
@@ -66,6 +66,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   const wishlisted = isWishlisted(product.id);
 
+  const recommendedProducts = PlaceHolderImages
+    .filter(p => p.id !== id && (p.id.startsWith(id.split('-')[0]) || p.description.includes(category)))
+    .slice(0, 4)
+    .map((img, i) => ({
+      id: img.id,
+      name: img.description.split(' ').slice(0, 3).join(' '),
+      description: img.description,
+      price: [899, 1299, 3500][i % 3],
+      originalPrice: [1200, 1800, 4500][i % 3],
+      imageUrl: img.imageUrl,
+      category: category,
+      tags: i % 2 === 0 ? ['Bestseller'] : []
+    }));
+
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -86,7 +100,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
-  // Mock secondary images for slider
   const galleryImages = [
     product.imageUrl,
     `https://picsum.photos/seed/${product.id}2/800/1000`,
@@ -96,19 +109,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   return (
     <div className="w-full overflow-x-hidden">
       <div className="container mx-auto px-4 py-8 lg:py-12 max-w-7xl">
-        {/* Breadcrumbs */}
         <nav className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-8">
           <Link href="/" className="hover:text-primary transition-colors">Home</Link>
           <ChevronRight className="h-3 w-3" />
           <Link href="/products" className="hover:text-primary transition-colors">Gallery</Link>
           <ChevronRight className="h-3 w-3" />
           <span className="text-primary">{product.category}</span>
-          <ChevronRight className="h-3 w-3 hidden sm:block" />
-          <span className="hidden sm:block truncate max-w-[150px]">{product.name}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          {/* Sliding Gallery Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start mb-24">
           <div className="space-y-4 w-full relative">
             <Carousel className="w-full" onSelect={(api) => setCurrentSlide(api?.selectedScrollSnap() || 0)}>
               <CarouselContent>
@@ -129,7 +138,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </CarouselContent>
             </Carousel>
             
-            {/* Gallery Dots */}
             <div className="flex justify-center gap-2">
               {galleryImages.map((_, idx) => (
                 <div key={idx} className={cn("h-1.5 rounded-full transition-all duration-300", currentSlide === idx ? "w-6 bg-primary" : "w-1.5 bg-primary/20")} />
@@ -146,7 +154,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 </div>
                 <span className="text-[10px] font-bold text-muted-foreground">(24 reviews)</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-6xl font-black font-headline tracking-tight uppercase leading-[1.1] text-foreground">
+              <h1 className="text-2xl lg:text-5xl font-black font-headline tracking-tight uppercase leading-tight text-foreground">
                 {product.name}
               </h1>
               <div className="flex items-center gap-4">
@@ -160,23 +168,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 <Sparkles className="h-4 w-4 mr-2 text-primary" />
                 Artist's Story & Details
               </h3>
-              <div className="space-y-3">
-                <p className="text-sm lg:text-base leading-relaxed text-muted-foreground italic">
-                  {product.description}
-                </p>
-                <p className="text-sm lg:text-base leading-relaxed text-muted-foreground">
-                  Every stroke and detail in this {product.name} is a testament to the hours of patience and creative passion Sumegha pours into her craft. Hand-finished in our Jaipur studio, this piece uses eco-friendly materials and traditional techniques that have been preserved for generations. No two pieces are ever identical, giving you a truly unique fragment of imagination.
-                </p>
-              </div>
+              <p className="text-sm lg:text-base leading-relaxed text-muted-foreground italic">
+                {product.description}
+              </p>
             </div>
 
-            {/* Action Buttons */}
             <div className="space-y-4 w-full">
               <div className="flex gap-3 w-full">
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="h-14 lg:h-16 rounded-2xl text-[10px] font-bold uppercase tracking-widest border-primary text-primary hover:bg-primary/5 bg-transparent flex-1 shadow-sm px-2" 
+                  className="h-14 lg:h-16 rounded-2xl text-[10px] font-bold uppercase tracking-widest border-primary text-primary hover:bg-primary/5 flex-1 shadow-sm px-2" 
                   onClick={() => {addToCart(product); toast({title: "Added to bag", description: product.name});}}
                 >
                   <ShoppingCart className="h-4 w-4 mr-1.5" />
@@ -189,11 +191,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 >
                   <Zap className="h-4 w-4 mr-1.5 group-hover:animate-bounce" />
                   Buy Now
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Button>
               </div>
 
-              {/* Utility Row */}
               <div className="flex items-center gap-3 pt-2 w-full">
                 <Button 
                   size="icon" 
@@ -222,24 +222,24 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 >
                   <WhatsAppIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
-                
-                <div className="h-px flex-grow bg-primary/5 mx-1" />
-                
-                <Link href="https://wa.me/919876543210" target="_blank" className="text-[9px] font-black uppercase tracking-widest text-primary flex items-center hover:opacity-70 transition-opacity whitespace-nowrap">
-                  ASK THE ARTIST
-                </Link>
               </div>
-            </div>
-
-            <div className="pt-6 border-t border-primary/5 flex flex-wrap items-center gap-4 sm:gap-6">
-              <div className="flex items-center gap-2">
-                <div className="size-1.5 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Available to Ship</span>
-              </div>
-              <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Handmade in Jaipur</div>
             </div>
           </div>
         </div>
+
+        {recommendedProducts.length > 0 && (
+          <div className="space-y-10">
+            <div className="text-center md:text-left">
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary mb-2">You May Also Like</h4>
+              <h2 className="text-2xl lg:text-5xl font-black font-headline tracking-tight uppercase">Recommended Pieces</h2>
+            </div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-10">
+              {recommendedProducts.map(p => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

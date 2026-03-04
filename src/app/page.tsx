@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from 'next/link';
@@ -113,7 +112,6 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full overflow-hidden">
-      {/* Hero Slider Section */}
       <section className="relative w-full px-4 sm:px-6 pt-6 pb-12">
         <Carousel 
           setApi={setApi}
@@ -123,40 +121,38 @@ export default function Home() {
           <CarouselContent className="ml-0">
             {heroSlides.map((slide, index) => (
               <CarouselItem key={index} className="relative pl-0">
-                <div className="relative h-[65vh] sm:h-[75vh] min-h-[450px] w-full rounded-2xl overflow-hidden shadow-2xl bg-black/5 border border-white/20">
-                  {/* Background & Overlay Layer */}
+                <div className="relative h-[55vh] sm:h-[70vh] min-h-[400px] w-full rounded-2xl overflow-hidden shadow-2xl bg-black/5 border border-white/20">
                   <div className="absolute inset-0 z-0">
                     <Image 
                       src={slide.image}
                       alt={slide.title}
                       fill
-                      className="object-cover opacity-80 rounded-2xl"
+                      className="object-cover opacity-80"
                       priority
                     />
-                    <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] rounded-2xl" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-black/40 rounded-2xl" />
+                    <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-black/30" />
                   </div>
 
-                  {/* Content Layer */}
                   <div className="relative z-10 h-full flex items-center justify-center p-6 text-center">
-                    <div className="flex flex-col items-center space-y-6">
-                      <div className="inline-block px-4 py-1.5 rounded-full border border-white/20 text-[10px] font-bold uppercase tracking-[0.4em] text-white bg-white/10 backdrop-blur-md">
+                    <div className="flex flex-col items-center space-y-4">
+                      <div className="inline-block px-3 py-1 rounded-full border border-white/20 text-[9px] font-bold uppercase tracking-[0.3em] text-white bg-white/10 backdrop-blur-md">
                         {slide.badge}
                       </div>
                       <div className="space-y-1">
-                        <h1 className="text-3xl sm:text-6xl lg:text-8xl font-black leading-none uppercase tracking-tighter text-white">
+                        <h1 className="text-3xl sm:text-6xl font-black leading-none uppercase tracking-tighter text-white">
                           {slide.title}
                         </h1>
-                        <h2 className="text-3xl sm:text-6xl lg:text-8xl font-black leading-none uppercase tracking-tighter text-primary">
+                        <h2 className="text-3xl sm:text-6xl font-black leading-none uppercase tracking-tighter text-primary">
                           {slide.highlight}
                         </h2>
                       </div>
-                      <p className="text-xs sm:text-lg text-white/90 font-medium max-w-xl leading-relaxed">
+                      <p className="text-[10px] sm:text-lg text-white/90 font-medium max-w-sm sm:max-w-xl leading-relaxed">
                         {slide.desc}
                       </p>
-                      <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-sm pt-4">
+                      <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-sm pt-2">
                         <Link href="/products" className="w-full">
-                          <Button className="w-full h-14 rounded-2xl text-xs font-bold uppercase tracking-widest gradient-primary border-none shadow-3xl shadow-primary/20">
+                          <Button className="w-full h-12 rounded-xl text-[10px] font-bold uppercase tracking-widest gradient-primary border-none shadow-xl shadow-primary/20">
                             Shop Now
                           </Button>
                         </Link>
@@ -168,11 +164,11 @@ export default function Home() {
             ))}
           </CarouselContent>
           
-          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20">
             {Array.from({ length: count }).map((_, i) => (
               <button
                 key={i}
-                className="relative h-1.5 w-10 bg-primary/10 rounded-full overflow-hidden transition-all duration-300"
+                className="relative h-1 w-8 bg-primary/10 rounded-full overflow-hidden transition-all duration-300"
                 onClick={() => api?.scrollTo(i)}
               >
                 {current === i && (
@@ -187,26 +183,24 @@ export default function Home() {
         </Carousel>
       </section>
 
-      {/* Categories Slider */}
       <section className="py-12 bg-white/40 border-b border-white">
         <div className="container-normal px-4">
-          <div className="flex flex-col items-center text-center gap-2 mb-10">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary">Discover Our</h4>
-            <h2 className="text-xl lg:text-5xl font-black uppercase tracking-tight">Artistic Categories</h2>
+          <div className="flex flex-col items-center text-center gap-1 mb-8">
+            <h4 className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary">Discover Our</h4>
+            <h2 className="text-xl lg:text-4xl font-black uppercase tracking-tight">Artistic Categories</h2>
           </div>
-          <div className="flex items-center gap-6 overflow-x-auto pb-6 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex items-center gap-4 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
             {categories.map((cat, index) => (
-              <Link key={index} href={`/products?category=${cat.name}`} className="group block shrink-0 text-center space-y-3 w-32 sm:w-40">
-                <div className="relative aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md transition-all duration-500 group-hover:scale-105">
+              <Link key={index} href={`/products?category=${cat.name}`} className="group block shrink-0 text-center space-y-2 w-28 sm:w-40">
+                <div className="relative aspect-square rounded-xl overflow-hidden border-2 border-white shadow-sm transition-all duration-500 group-hover:scale-105">
                   <Image 
                     src={cat.image} 
                     alt={cat.name} 
                     fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                    className="object-cover" 
                   />
-                  <div className="absolute inset-0 bg-black/5" />
                 </div>
-                <span className="block text-[10px] font-black uppercase tracking-widest text-foreground/60 group-hover:text-primary whitespace-normal leading-tight h-8 flex items-center justify-center">
+                <span className="block text-[9px] font-black uppercase tracking-widest text-foreground/60 group-hover:text-primary leading-tight">
                   {cat.name}
                 </span>
               </Link>
@@ -215,7 +209,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Dynamic Category Sections */}
       {Object.entries(productsByCategory).map(([catName, products], idx) => (
         <section key={catName} className={cn(
           "py-16 relative overflow-hidden",
@@ -223,35 +216,31 @@ export default function Home() {
         )}>
           <div className="absolute inset-0 z-0 pointer-events-none opacity-5">
             {idx % 3 === 0 ? (
-              <div className="absolute -right-20 -top-20 w-[400px] h-[400px] border-[20px] border-primary rounded-full animate-[spin_30s_linear_infinite]" />
-            ) : idx % 3 === 1 ? (
-              <svg viewBox="0 0 1000 1000" className="w-full h-full text-primary" preserveAspectRatio="none">
-                <path d="M0,1000 C300,800 400,1000 1000,800 L1000,1000 L0,1000 Z" fill="currentColor" />
-              </svg>
+              <div className="absolute -right-20 -top-20 w-80 h-80 border-[15px] border-primary rounded-full animate-[spin_40s_linear_infinite]" />
             ) : (
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border-[1px] border-dashed border-primary rounded-full opacity-20" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] border-[1px] border-dashed border-primary rounded-full opacity-10" />
             )}
           </div>
 
           <div className="container-normal relative z-10 px-4">
-            <div className="flex items-center justify-between mb-10">
-              <div className="space-y-1 pr-8">
-                <h4 className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary">{idx % 2 === 0 ? "Curated" : "Premium"} Selection</h4>
-                <h2 className="text-xl lg:text-5xl font-black uppercase tracking-tight text-foreground leading-[1.1]">{catName}</h2>
+            <div className="flex items-center justify-between mb-8">
+              <div className="space-y-1">
+                <h4 className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary">{idx % 2 === 0 ? "Curated" : "Premium"} Selection</h4>
+                <h2 className="text-xl lg:text-4xl font-black uppercase tracking-tight text-foreground leading-tight">{catName}</h2>
               </div>
-              <Link href={`/products?category=${catName}`} className="flex items-center gap-3 text-primary font-black uppercase tracking-widest text-[10px] group shrink-0">
-                <div className="flex flex-col text-right leading-[1.2]">
+              <Link href={`/products?category=${catName}`} className="flex items-center gap-2 text-primary font-black uppercase tracking-widest text-[9px] group">
+                <div className="flex flex-col text-right leading-none">
                   <span>VIEW</span>
                   <span>ALL</span>
                 </div>
-                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <ChevronRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
 
             <Carousel opts={{ align: "start", loop: true }} className="w-full">
-              <CarouselContent className="-ml-4">
+              <CarouselContent className="-ml-3">
                 {products.slice(0, 6).map((product) => (
-                  <CarouselItem key={product.id} className="pl-4 basis-[75%] sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                  <CarouselItem key={product.id} className="pl-3 basis-[70%] sm:basis-1/2 lg:basis-1/4">
                     <ProductCard product={product} />
                   </CarouselItem>
                 ))}
@@ -261,25 +250,24 @@ export default function Home() {
         </section>
       ))}
 
-      {/* Experience Section */}
       <section className="py-16">
         <div className="container-normal px-4">
-          <h4 className="text-[12px] font-bold text-center mb-12 uppercase tracking-[0.5em] text-primary">The Art Experience</h4>
-          <div className="grid grid-cols-3 gap-4 sm:gap-24">
+          <h4 className="text-[10px] font-bold text-center mb-10 uppercase tracking-[0.4em] text-primary">The Art Experience</h4>
+          <div className="grid grid-cols-3 gap-6 sm:gap-24">
             {[
-              { title: "CURATE", desc: "Select from our gallery.", icon: MousePointer2 },
-              { title: "CONNECT", desc: "Direct consultation.", icon: WhatsAppIcon },
+              { title: "CURATE", desc: "Select from gallery.", icon: MousePointer2 },
+              { title: "CONNECT", desc: "Consult directly.", icon: WhatsAppIcon },
               { title: "CHERISH", desc: "Bespoke delivery.", icon: Truck }
             ].map((step, idx) => {
               const Icon = step.icon;
               return (
-                <div key={idx} className="flex flex-col items-center text-center space-y-4 sm:space-y-6 group">
-                  <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-white shadow-lg border border-primary/10 flex items-center justify-center transition-all duration-500 group-hover:shadow-2xl group-hover:scale-110">
-                    <Icon className="h-6 w-6 sm:h-10 sm:w-10 text-primary stroke-[1.5px]" />
+                <div key={idx} className="flex flex-col items-center text-center space-y-3 group">
+                  <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-full bg-white shadow-md border border-primary/5 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                    <Icon className="h-5 w-5 sm:h-8 sm:w-8 text-primary stroke-[1.5px]" />
                   </div>
-                  <div className="space-y-1 sm:space-y-2">
-                    <h5 className="font-black text-[10px] sm:text-lg uppercase tracking-widest text-foreground">{step.title}</h5>
-                    <p className="text-foreground/50 text-[8px] sm:text-xs font-light leading-relaxed max-w-[80px] sm:max-w-[200px] mx-auto">{step.desc}</p>
+                  <div className="space-y-1">
+                    <h5 className="font-black text-[9px] sm:text-base uppercase tracking-widest text-foreground">{step.title}</h5>
+                    <p className="text-foreground/40 text-[8px] sm:text-xs font-light leading-tight">{step.desc}</p>
                   </div>
                 </div>
               );
@@ -288,21 +276,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AI Assistant CTA */}
-      <section className="py-16 lg:py-24">
+      <section className="py-16">
         <div className="container-normal px-4">
-          <div className="bg-[#181113] text-white p-12 lg:p-24 rounded-[3rem] text-center space-y-8 relative overflow-hidden shadow-2xl">
-            <div className="space-y-4">
-              <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-bold uppercase tracking-[0.4em] text-white">
+          <div className="bg-charcoal text-white p-10 lg:p-20 rounded-[2.5rem] text-center space-y-6 relative overflow-hidden shadow-2xl">
+            <div className="space-y-3">
+              <div className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/20 text-[8px] font-bold uppercase tracking-[0.3em]">
                 AI Powered Concierge
               </div>
-              <h3 className="text-3xl lg:text-7xl font-black uppercase tracking-tight leading-tight text-white">Your Personal Art Curator</h3>
-              <p className="text-white/60 text-sm lg:text-xl font-light tracking-wide max-w-2xl mx-auto leading-relaxed">
-                Not sure which piece fits your aesthetic? Our AI Assistant can curate a selection based on your unique style and space.
+              <h3 className="text-2xl lg:text-5xl font-black uppercase tracking-tight text-white">Your Personal Curator</h3>
+              <p className="text-white/60 text-xs lg:text-lg font-light max-w-md mx-auto leading-relaxed">
+                Describe your vibe, and let our AI curate the perfect handmade selection for you.
               </p>
             </div>
-            <Link href="/discovery" className="inline-block pt-4">
-              <Button className="h-16 px-12 rounded-xl text-xs font-bold uppercase tracking-widest gradient-primary border-none shadow-3xl shadow-primary/40">
+            <Link href="/discovery" className="inline-block">
+              <Button className="h-12 px-10 rounded-xl text-[10px] font-bold uppercase tracking-widest gradient-primary">
                 Start Discovery
               </Button>
             </Link>
