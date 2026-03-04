@@ -49,7 +49,7 @@ export function Header() {
           <div className="flex justify-end items-center gap-0.5">
             <Link href="/wishlist">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-black/5 text-foreground relative h-12 w-12 transition-transform hover:scale-110">
-                <Heart className="h-8 w-8" />
+                <Heart className="h-9 w-9" />
                 {wishlist.length > 0 && (
                   <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-white border-2 border-white">
                     {wishlist.length}
@@ -59,7 +59,7 @@ export function Header() {
             </Link>
             <Link href="/cart">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-black/5 text-foreground relative h-12 w-12 transition-transform hover:scale-110">
-                <ShoppingBag className="h-8 w-8" />
+                <ShoppingBag className="h-9 w-9" />
                 {cart.length > 0 && (
                   <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-white border-2 border-white">
                     {cart.length}
