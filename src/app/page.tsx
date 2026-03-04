@@ -261,21 +261,21 @@ export default function Home() {
       <section className="py-16">
         <div className="container-normal px-4">
           <h4 className="text-[12px] font-bold text-center mb-12 uppercase tracking-[0.5em] text-primary">The Art Experience</h4>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 sm:gap-24">
+          <div className="grid grid-cols-3 gap-4 sm:gap-24">
             {[
-              { title: "CURATE", desc: "Select from our gallery of artisan creations.", icon: MousePointer2 },
-              { title: "CONNECT", desc: "Direct consultation via WhatsApp.", icon: WhatsAppIcon },
-              { title: "CHERISH", desc: "Bespoke delivery for your home.", icon: Truck }
+              { title: "CURATE", desc: "Select from our gallery.", icon: MousePointer2 },
+              { title: "CONNECT", desc: "Direct consultation.", icon: WhatsAppIcon },
+              { title: "CHERISH", desc: "Bespoke delivery.", icon: Truck }
             ].map((step, idx) => {
               const Icon = step.icon;
               return (
-                <div key={idx} className="flex flex-col items-center text-center space-y-6 group">
-                  <div className="w-24 h-24 rounded-2xl bg-white shadow-lg border border-primary/10 flex items-center justify-center transition-all duration-500 group-hover:shadow-2xl group-hover:scale-110">
-                    <Icon className="h-10 w-10 text-primary stroke-[1.5px]" />
+                <div key={idx} className="flex flex-col items-center text-center space-y-4 sm:space-y-6 group">
+                  <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl bg-white shadow-lg border border-primary/10 flex items-center justify-center transition-all duration-500 group-hover:shadow-2xl group-hover:scale-110">
+                    <Icon className="h-6 w-6 sm:h-10 sm:w-10 text-primary stroke-[1.5px]" />
                   </div>
-                  <div className="space-y-2">
-                    <h5 className="font-black text-lg uppercase tracking-widest text-foreground">{step.title}</h5>
-                    <p className="text-foreground/50 text-xs font-light leading-relaxed max-w-[200px] mx-auto">{step.desc}</p>
+                  <div className="space-y-1 sm:space-y-2">
+                    <h5 className="font-black text-[10px] sm:text-lg uppercase tracking-widest text-foreground">{step.title}</h5>
+                    <p className="text-foreground/50 text-[8px] sm:text-xs font-light leading-relaxed max-w-[80px] sm:max-w-[200px] mx-auto">{step.desc}</p>
                   </div>
                 </div>
               );
@@ -289,10 +289,10 @@ export default function Home() {
         <div className="container-normal px-4">
           <div className="bg-[#181113] text-white p-12 lg:p-24 rounded-[3rem] text-center space-y-8 relative overflow-hidden shadow-2xl">
             <div className="space-y-4">
-              <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-bold uppercase tracking-[0.4em]">
+              <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-bold uppercase tracking-[0.4em] text-white">
                 AI Powered Concierge
               </div>
-              <h3 className="text-3xl lg:text-7xl font-black uppercase tracking-tight leading-tight">Your Personal Art Curator</h3>
+              <h3 className="text-3xl lg:text-7xl font-black uppercase tracking-tight leading-tight text-white">Your Personal Art Curator</h3>
               <p className="text-white/60 text-sm lg:text-xl font-light tracking-wide max-w-2xl mx-auto leading-relaxed">
                 Not sure which piece fits your aesthetic? Our AI Assistant can curate a selection based on your unique style and space.
               </p>
