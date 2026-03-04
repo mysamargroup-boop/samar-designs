@@ -1,7 +1,7 @@
 
 "use client";
 
-import { use } from 'react';
+import { use, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Heart, ShoppingCart, Share2, Star, Sparkles, ChevronRight, Zap } from 'lucide-react';
@@ -11,6 +11,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg 
@@ -26,6 +31,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { addToCart, addToWishlist, isWishlisted, removeFromWishlist } = useStore();
+  const [currentSlide, setCurrentSlide] = useState(0);
   
   const productData = PlaceHolderImages.find(p => p.id === id);
   
@@ -43,7 +49,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   const category = productData.id.startsWith('fest') ? 'Festive' : productData.id.startsWith('home') ? 'Home Decor' : 'Wedding';
   const price = productData.id.startsWith('fest') ? 899 : productData.id.startsWith('home') ? 1299 : 3500;
-  const originalPrice = Math.round(price * 1.35);
+  const originalPrice = Math.round(price * 1.54);
+  const discount = Math.round(((originalPrice - price) / originalPrice) * 100);
 
   const product = {
     id: productData.id,
@@ -79,6 +86,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
+  // Mock secondary images for slider
+  const galleryImages = [
+    product.imageUrl,
+    `https://picsum.photos/seed/${product.id}2/800/1000`,
+    `https://picsum.photos/seed/${product.id}3/800/1000`
+  ];
+
   return (
     <div className="w-full overflow-x-hidden">
       <div className="container mx-auto px-4 py-8 lg:py-12 max-w-7xl">
@@ -94,9 +108,32 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          <div className="space-y-4 w-full">
-            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-2 border-white bg-white w-full">
-              <Image src={product.imageUrl} alt={product.name} fill className="object-cover" priority />
+          {/* Sliding Gallery Section */}
+          <div className="space-y-4 w-full relative">
+            <Carousel className="w-full" onSelect={(api) => setCurrentSlide(api?.selectedScrollSnap() || 0)}>
+              <CarouselContent>
+                {galleryImages.map((img, idx) => (
+                  <CarouselItem key={idx}>
+                    <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border-2 border-white bg-white w-full">
+                      <Image src={img} alt={product.name} fill className="object-cover" priority={idx === 0} />
+                      {idx === 0 && (
+                        <div className="absolute top-4 left-4 z-10">
+                          <Badge className="bg-primary text-white border-none px-3 py-1 rounded-full uppercase tracking-widest text-[9px] font-black shadow-lg">
+                            {discount}% OFF
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+            
+            {/* Gallery Dots */}
+            <div className="flex justify-center gap-2">
+              {galleryImages.map((_, idx) => (
+                <div key={idx} className={cn("h-1.5 rounded-full transition-all duration-300", currentSlide === idx ? "w-6 bg-primary" : "w-1.5 bg-primary/20")} />
+              ))}
             </div>
           </div>
 
@@ -107,30 +144,34 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 <div className="flex text-amber-400">
                   {[1, 2, 3, 4, 5].map(s => <Star key={s} className="h-3 w-3 fill-current" />)}
                 </div>
-                <span className="text-[10px] font-bold text-muted-foreground">(24)</span>
+                <span className="text-[10px] font-bold text-muted-foreground">(24 reviews)</span>
               </div>
-              <h1 className="text-2xl sm:text-4xl lg:text-7xl font-black font-headline tracking-tight uppercase leading-[1.1] text-foreground">
+              <h1 className="text-2xl sm:text-3xl lg:text-6xl font-black font-headline tracking-tight uppercase leading-[1.1] text-foreground">
                 {product.name}
               </h1>
-              <div className="flex items-center gap-3">
-                <p className="text-2xl lg:text-5xl font-black font-headline text-primary">₹{product.price}</p>
-                <p className="text-lg lg:text-2xl text-muted-foreground line-through decoration-primary/30 font-light italic">₹{product.originalPrice}</p>
+              <div className="flex items-center gap-4">
+                <p className="text-3xl lg:text-5xl font-black font-headline text-primary">₹{product.price}</p>
+                <p className="text-xl lg:text-2xl text-muted-foreground line-through decoration-primary/30 font-light italic">₹{product.originalPrice}</p>
               </div>
             </div>
 
-            <div className="p-5 rounded-2xl bg-white/40 backdrop-blur-sm border border-primary/5 space-y-2">
+            <div className="p-6 rounded-2xl bg-white/40 backdrop-blur-sm border border-primary/5 space-y-4">
               <h3 className="font-bold text-[11px] uppercase tracking-widest flex items-center text-foreground">
                 <Sparkles className="h-4 w-4 mr-2 text-primary" />
-                Artist's Story
+                Artist's Story & Details
               </h3>
-              <p className="text-sm lg:text-base leading-relaxed text-muted-foreground italic">
-                {product.description} Each piece is meticulously handcrafted by Sumegha, ensuring no two items are exactly alike.
-              </p>
+              <div className="space-y-3">
+                <p className="text-sm lg:text-base leading-relaxed text-muted-foreground italic">
+                  {product.description}
+                </p>
+                <p className="text-sm lg:text-base leading-relaxed text-muted-foreground">
+                  Every stroke and detail in this {product.name} is a testament to the hours of patience and creative passion Sumegha pours into her craft. Hand-finished in our Jaipur studio, this piece uses eco-friendly materials and traditional techniques that have been preserved for generations. No two pieces are ever identical, giving you a truly unique fragment of imagination.
+                </p>
+              </div>
             </div>
 
             {/* Action Buttons */}
             <div className="space-y-4 w-full">
-              {/* Primary Actions - Sidewise with no horizontal scroll */}
               <div className="flex gap-3 w-full">
                 <Button 
                   size="lg" 
@@ -143,15 +184,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 </Button>
                 <Button 
                   size="lg" 
-                  className="h-14 lg:h-16 rounded-2xl text-[10px] font-bold uppercase tracking-widest gradient-primary flex-1 shadow-lg shadow-primary/20 px-2" 
+                  className="h-14 lg:h-16 rounded-2xl text-[10px] font-bold uppercase tracking-widest gradient-primary flex-1 shadow-lg shadow-primary/20 px-2 group relative overflow-hidden transition-all hover:scale-[1.02] active:scale-95" 
                   onClick={() => {addToCart(product); window.location.href = '/cart';}}
                 >
-                  <Zap className="h-4 w-4 mr-1.5" />
+                  <Zap className="h-4 w-4 mr-1.5 group-hover:animate-bounce" />
                   Buy Now
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Button>
               </div>
 
-              {/* Utility Actions - Properly Aligned Row */}
+              {/* Utility Row */}
               <div className="flex items-center gap-3 pt-2 w-full">
                 <Button 
                   size="icon" 
@@ -192,7 +234,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             <div className="pt-6 border-t border-primary/5 flex flex-wrap items-center gap-4 sm:gap-6">
               <div className="flex items-center gap-2">
                 <div className="size-1.5 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">In Stock</span>
+                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Available to Ship</span>
               </div>
               <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Handmade in Jaipur</div>
             </div>

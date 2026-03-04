@@ -9,7 +9,6 @@ import { cn } from '@/lib/utils';
 export function BottomNav() {
   const pathname = usePathname();
 
-  // Updated navigation order: HOME, COLLECTIONS | [CENTER] | ABOUT, SEARCH (Contact removed)
   const navItems = [
     { name: 'HOME', href: '/', icon: Home },
     { name: 'COLLECTIONS', href: '/products', icon: Shapes },
