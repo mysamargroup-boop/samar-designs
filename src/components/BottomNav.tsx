@@ -2,57 +2,70 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, LayoutGrid, Heart, Phone } from 'lucide-react';
+import { Home, Shapes, Heart, User, Gem } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function BottomNav() {
   const pathname = usePathname();
 
   const navItems = [
-    { name: 'Home', href: '/', icon: Home },
-    { name: 'View', href: '/products', icon: LayoutGrid },
-    { name: 'Saved', href: '/wishlist', icon: Heart },
-    { name: 'Contact', href: 'https://wa.me/919876543210', icon: Phone, external: true },
+    { name: 'HOME', href: '/', icon: Home },
+    { name: 'SHOP', href: '/products', icon: Shapes },
+    { name: 'WISHLIST', href: '/wishlist', icon: Heart },
+    { name: 'PROFILE', href: '/profile', icon: User },
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-t border-gray-100 md:hidden">
-      <div className="flex justify-around items-center h-16 px-4">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = pathname === item.href;
-          
-          const content = (
-            <>
-              <Icon className={cn("h-5 w-5", isActive ? "text-primary" : "text-charcoal/40")} />
-              <span className={cn("text-[8px] font-bold uppercase tracking-widest", isActive ? "text-primary" : "text-charcoal/40")}>{item.name}</span>
-            </>
-          );
-
-          if (item.external) {
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-t border-gray-100 md:hidden h-20 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <div className="flex justify-around items-center h-full px-2 relative">
+        {/* Left Side Items */}
+        <div className="flex justify-around w-2/5">
+          {navItems.slice(0, 2).map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
             return (
-              <a 
+              <Link 
                 key={item.name} 
-                href={item.href} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center w-full gap-1 transition-colors"
+                href={item.href}
+                className="flex flex-col items-center justify-center gap-1 group transition-all duration-300"
               >
-                {content}
-              </a>
+                <Icon className={cn("h-6 w-6 transition-colors", isActive ? "text-[#065f46]" : "text-gray-400")} />
+                <span className={cn("text-[9px] font-bold tracking-[0.1em] transition-colors", isActive ? "text-[#065f46]" : "text-gray-400")}>
+                  {item.name}
+                </span>
+              </Link>
             );
-          }
+          })}
+        </div>
 
-          return (
-            <Link 
-              key={item.name} 
-              href={item.href}
-              className="flex flex-col items-center justify-center w-full gap-1 transition-colors"
-            >
-              {content}
-            </Link>
-          );
-        })}
+        {/* Central Raised Button */}
+        <div className="absolute -top-10 left-1/2 -translate-x-1/2">
+          <Link href="/discovery">
+            <div className="size-20 rounded-full bg-[#065f46] border-[6px] border-[#FFF1EB] shadow-xl flex items-center justify-center group active:scale-95 transition-transform duration-200">
+              <Gem className="h-9 w-9 text-[#fbbf24] fill-[#fbbf24] drop-shadow-md" />
+            </div>
+          </Link>
+        </div>
+
+        {/* Right Side Items */}
+        <div className="flex justify-around w-2/5">
+          {navItems.slice(2).map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
+            return (
+              <Link 
+                key={item.name} 
+                href={item.href}
+                className="flex flex-col items-center justify-center gap-1 group transition-all duration-300"
+              >
+                <Icon className={cn("h-6 w-6 transition-colors", isActive ? "text-[#065f46]" : "text-gray-400")} />
+                <span className={cn("text-[9px] font-bold tracking-[0.1em] transition-colors", isActive ? "text-[#065f46]" : "text-gray-400")}>
+                  {item.name}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
