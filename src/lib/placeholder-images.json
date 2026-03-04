@@ -19,6 +19,24 @@
       "imageHint": "gift hamper"
     },
     {
+      "id": "fest-4",
+      "description": "Artisan Decorative Box - Handcrafted wooden box with metallic accents.",
+      "imageUrl": "https://picsum.photos/seed/box/600/600",
+      "imageHint": "artisan box"
+    },
+    {
+      "id": "fest-5",
+      "description": "Traditional Wall Hanging - Vibrant textile art with mirror and bead work.",
+      "imageUrl": "https://picsum.photos/seed/hang/600/600",
+      "imageHint": "wall hanging"
+    },
+    {
+      "id": "fest-6",
+      "description": "Silver Plated Pooja Plate - Premium silver-finished plate for religious ceremonies.",
+      "imageUrl": "https://picsum.photos/seed/silver/600/600",
+      "imageHint": "silver plate"
+    },
+    {
       "id": "home-1",
       "description": "Lippan Mirror Art - Traditional Kutch mirror work on a modern circular canvas.",
       "imageUrl": "https://picsum.photos/seed/lippan/600/600",
@@ -32,39 +50,63 @@
     },
     {
       "id": "home-3",
-      "description": "Macrame Wall Decor - Bohemian hand-knotted wall hanging for a cozy study or bedroom.",
+      "description": "Macrame Wall Decor - Bohemian hand-knotted wall hanging for a cozy space.",
       "imageUrl": "https://picsum.photos/seed/macrame-home/600/600",
       "imageHint": "macrame decor"
     },
     {
+      "id": "home-4",
+      "description": "Abstract Hand-painted Canvas - Modern art piece for contemporary living rooms.",
+      "imageUrl": "https://picsum.photos/seed/canvas/600/600",
+      "imageHint": "abstract painting"
+    },
+    {
+      "id": "home-5",
+      "description": "Scented Candle Gift Set - Hand-poured soy wax candles in artistic ceramic jars.",
+      "imageUrl": "https://picsum.photos/seed/candle-home/600/600",
+      "imageHint": "scented candles"
+    },
+    {
+      "id": "home-6",
+      "description": "Handwoven Cotton Cushions - Set of textured cushions for ethnic home styling.",
+      "imageUrl": "https://picsum.photos/seed/cushion/600/600",
+      "imageHint": "woven cushions"
+    },
+    {
       "id": "wed-1",
-      "description": "Bridal Trunk Box - Velvet-lined luxury trunk for keeping bridal ensembles and memories.",
+      "description": "Bridal Trunk Box - Velvet-lined luxury trunk for bridal ensembles.",
       "imageUrl": "https://picsum.photos/seed/trunk/600/600",
-      "imageHint": "bridal box"
+      "imageHint": "bridal trunk"
     },
     {
       "id": "wed-2",
-      "description": "Wedding Shagun Envelope - Hand-embroidered silk envelopes for special occasions.",
+      "description": "Hand-embroidered Silk Envelopes - Premium Shagun envelopes for weddings.",
       "imageUrl": "https://picsum.photos/seed/env/600/600",
       "imageHint": "wedding envelope"
     },
     {
-      "id": "pottery-1",
-      "description": "Hand-painted ceramic vase with floral motifs",
-      "imageUrl": "https://images.unsplash.com/photo-1665512594386-051aad8b9f68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjZXJhbWljJTIwdmFzZXxlbnwwfHx8fDE3NzI1MjcxNTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "ceramic vase"
+      "id": "wed-3",
+      "description": "Bespoke Wedding Invitation - Hand-designed wedding cards with gold foiling.",
+      "imageUrl": "https://picsum.photos/seed/card/600/600",
+      "imageHint": "wedding card"
     },
     {
-      "id": "painting-1",
-      "description": "Abstract watercolor sunset on canvas",
-      "imageUrl": "https://images.unsplash.com/photo-1582125169804-bc28f3ecf7ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3YXRlcmNvbG9yJTIwcGFpbnRpbmd8ZW58MHx8fHwxNzcyNTY0Njg0fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "watercolor painting"
+      "id": "wed-4",
+      "description": "Bridal Floral Jewelry - Handcrafted gota-patti and floral jewelry for Haldi/Mehendi.",
+      "imageUrl": "https://picsum.photos/seed/floral/600/600",
+      "imageHint": "floral jewelry"
     },
     {
-      "id": "jewelry-1",
-      "description": "Handcrafted silver earrings with turquoise stones",
-      "imageUrl": "https://images.unsplash.com/photo-1573227895118-8f8fa1172a09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8aGFuZG1hZGUlMjBqZXdlbHJ5fGVufDB8fHx8MTc3MjU4MDc3Nnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "handmade jewelry"
+      "id": "wed-5",
+      "description": "Luxury Wedding Potli - Silk potli bag with intricate Zardosi embroidery.",
+      "imageUrl": "https://picsum.photos/seed/potli/600/600",
+      "imageHint": "silk potli"
+    },
+    {
+      "id": "wed-6",
+      "description": "Customized Shubh Labh Hangings - Traditional door hangings for wedding decor.",
+      "imageUrl": "https://picsum.photos/seed/labh/600/600",
+      "imageHint": "door hangings"
     }
   ]
 }

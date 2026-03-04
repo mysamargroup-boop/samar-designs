@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Sparkles, PanelsTopLeft, MousePointer2, Truck, Star, ArrowRight, ChevronRight } from 'lucide-react';
+import { MousePointer2, Truck, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard';
 import {
@@ -78,7 +78,7 @@ export default function Home() {
     ],
     "Home Decor": [
       { id: "home-1", name: "Lippan Mirror Art", price: 1299, originalPrice: 1800, imageUrl: "https://picsum.photos/seed/lippan/600/600", category: "Home Decor", tags: ["Bestseller"], rating: 5 },
-      { id: "home-2", name: "Ceramic Floor Vase", price: 2500, originalPrice: 3500, imageUrl: "https://picsum.photos/seed/vase-home/600/600", category: "Home Decor", tags: ["Top Selling"], rating: 4 },
+      { id: "home-2", name: "Ceramic Floor Vase", price: 2500, originalPrice: 3500, imageUrl: "https://images.unsplash.com/photo-1631125915732-b98f8774f675?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2VyYW1pYyUyMHZhc2V8ZW58MHx8fHwxNzcyNTI3MTU5fDA&ixlib=rb-4.1.0&q=80&w=1080", category: "Home Decor", tags: ["Top Selling"], rating: 4 },
       { id: "home-3", name: "Macrame Wall Decor", price: 850, originalPrice: 1100, imageUrl: "https://picsum.photos/seed/macrame-home/600/600", category: "Home Decor", tags: ["New Arrival"], rating: 5 },
       { id: "home-4", name: "Abstract Canvas", price: 1800, originalPrice: 2200, imageUrl: "https://picsum.photos/seed/canvas/600/600", category: "Home Decor", tags: ["Trending"], rating: 4 },
       { id: "home-5", name: "Scented Candle Set", price: 599, originalPrice: 799, imageUrl: "https://picsum.photos/seed/candle-home/600/600", category: "Home Decor", tags: ["Bestseller"], rating: 5 },
@@ -164,7 +164,6 @@ export default function Home() {
             ))}
           </CarouselContent>
           
-          {/* Autoplay Progress Indicators */}
           <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
             {Array.from({ length: count }).map((_, i) => (
               <button
@@ -184,16 +183,16 @@ export default function Home() {
         </Carousel>
       </section>
 
-      {/* Categories Grid */}
+      {/* Categories Slider */}
       <section className="py-12 bg-white/40 border-b border-white">
         <div className="container-normal px-4">
           <div className="flex flex-col items-center text-center gap-2 mb-10">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary">Discover Our</h4>
             <h2 className="text-2xl lg:text-5xl font-black uppercase tracking-tight">Artistic Categories</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+          <div className="flex items-center gap-6 overflow-x-auto pb-6 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
             {categories.map((cat, index) => (
-              <Link key={index} href={`/products?category=${cat.name}`} className="group block text-center space-y-3">
+              <Link key={index} href={`/products?category=${cat.name}`} className="group block shrink-0 text-center space-y-3 w-32 sm:w-40">
                 <div className="relative aspect-square rounded-lg overflow-hidden border-2 border-white shadow-md transition-all duration-500 group-hover:scale-105">
                   <Image 
                     src={cat.image} 
@@ -203,7 +202,7 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-black/5" />
                 </div>
-                <span className="block text-[10px] font-black uppercase tracking-widest text-foreground/60 group-hover:text-primary">
+                <span className="block text-[10px] font-black uppercase tracking-widest text-foreground/60 group-hover:text-primary whitespace-normal leading-tight h-8 flex items-center justify-center">
                   {cat.name}
                 </span>
               </Link>
@@ -231,13 +230,17 @@ export default function Home() {
           </div>
 
           <div className="container-normal relative z-10 px-4">
-            <div className="flex items-end justify-between mb-8">
-              <div className="space-y-1">
-                <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary">{idx % 2 === 0 ? "Curated" : "Premium"} Selection</h4>
-                <h2 className="text-2xl lg:text-5xl font-black uppercase tracking-tight text-foreground">{catName}</h2>
+            <div className="flex items-center justify-between mb-10">
+              <div className="space-y-1 pr-8">
+                <h4 className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary">{idx % 2 === 0 ? "Curated" : "Premium"} Selection</h4>
+                <h2 className="text-3xl lg:text-5xl font-black uppercase tracking-tight text-foreground leading-[1.1]">{catName}</h2>
               </div>
-              <Link href={`/products?category=${catName}`} className="flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-[10px] group">
-                View All <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Link href={`/products?category=${catName}`} className="flex items-center gap-3 text-primary font-black uppercase tracking-widest text-[10px] group shrink-0">
+                <div className="flex flex-col text-right leading-[1.2]">
+                  <span>VIEW</span>
+                  <span>ALL</span>
+                </div>
+                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
 
