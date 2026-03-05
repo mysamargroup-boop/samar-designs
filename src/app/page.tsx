@@ -128,7 +128,7 @@ export default function Home() {
                 </div>
               </div>
               <span className="text-[9px] font-black uppercase tracking-widest text-foreground/70 group-hover:text-primary transition-colors text-center w-16 leading-tight">
-                {cat.name.split(' ')[0]}
+                {cat.name}
               </span>
             </Link>
           ))}
@@ -145,7 +145,7 @@ export default function Home() {
           <CarouselContent className="ml-0">
             {heroSlides.map((slide, index) => (
               <CarouselItem key={index} className="relative pl-0">
-                <div className="relative h-[70vh] sm:h-[85vh] min-h-[500px] w-full bg-black/5">
+                <div className="relative h-[60vh] sm:h-[70vh] min-h-[400px] w-full bg-black/5">
                   <div className="absolute inset-0 z-0">
                     <Image 
                       src={slide.image}
@@ -166,26 +166,26 @@ export default function Home() {
                     "relative z-10 h-full flex items-center justify-center p-6 sm:p-12 text-center transition-all duration-1000",
                     current === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                   )}>
-                    <div className="max-w-4xl w-full flex flex-col items-center space-y-6 sm:space-y-10">
+                    <div className="max-w-4xl w-full flex flex-col items-center space-y-6 sm:space-y-8">
                       <div className="flex flex-col items-center gap-4">
                         <div className="inline-block px-5 py-2 rounded-full border border-white/30 text-[10px] font-black uppercase tracking-[0.4em] text-white bg-white/10 backdrop-blur-md">
                           {slide.badge}
                         </div>
                       </div>
-                      <div className="space-y-2 sm:space-y-4">
-                        <h1 className="text-3xl sm:text-8xl font-black leading-none uppercase tracking-tighter text-white drop-shadow-lg">
+                      <div className="space-y-1 sm:space-y-2">
+                        <h1 className="text-3xl sm:text-6xl font-black leading-none uppercase tracking-tighter text-white drop-shadow-lg">
                           {slide.title}
                         </h1>
-                        <h2 className="text-3xl sm:text-8xl font-black leading-none uppercase tracking-tighter text-primary drop-shadow-lg">
+                        <h2 className="text-3xl sm:text-6xl font-black leading-none uppercase tracking-tighter text-primary drop-shadow-lg">
                           {slide.highlight}
                         </h2>
                       </div>
-                      <p className="text-xs sm:text-xl text-white/90 font-light leading-relaxed max-w-2xl drop-shadow-md px-4">
+                      <p className="text-xs sm:text-base text-white/90 font-light leading-relaxed max-w-2xl drop-shadow-md px-4">
                         {slide.desc}
                       </p>
-                      <div className="pt-4 sm:pt-6">
+                      <div className="pt-4 sm:pt-4">
                         <Link href={`/products?category=${encodeURIComponent(slide.categoryName)}`}>
-                          <Button className="h-12 sm:h-16 px-8 sm:px-14 rounded-2xl text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] gradient-primary border-none shadow-none active:scale-95 transition-all hover:scale-105">
+                          <Button className="h-12 sm:h-14 px-8 sm:px-12 rounded-2xl text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] gradient-primary border-none shadow-none active:scale-95 transition-all hover:scale-105">
                             Shop {slide.categoryName}
                           </Button>
                         </Link>
@@ -197,7 +197,7 @@ export default function Home() {
             ))}
           </CarouselContent>
           
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
             {Array.from({ length: count }).map((_, i) => (
               <button
                 key={i}
