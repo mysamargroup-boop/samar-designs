@@ -1,0 +1,59 @@
+
+> nextn@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.9
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 44s
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+   Generating static pages (0/39) ...
+   Generating static pages (9/39) 
+   Generating static pages (19/39) 
+   Generating static pages (29/39) 
+ ✓ Generating static pages (39/39)
+   Finalizing page optimization ...
+   Collecting build traces ...
+   Exporting (0/2) ...
+ ✓ Exporting (2/2)
+
+Route (app)                                             Size  First Load JS
+┌ ○ /                                                8.05 kB         174 kB
+├ ○ /_not-found                                        128 B         102 kB
+├ ○ /about                                            5.3 kB         124 kB
+├ ○ /blog                                            4.04 kB         164 kB
+├ ● /blog/[id]                                       7.49 kB         167 kB
+├   ├ /blog/1
+├   ├ /blog/2
+├   └ /blog/3
+├ ○ /cart                                             184 kB         316 kB
+├ ○ /collections                                      2.4 kB         113 kB
+├ ● /collections/[category]/[sub]/[id]               7.67 kB         179 kB
+├   ├ /collections/Custom Name Plates/all/SH-CNP-03
+├   ├ /collections/Custom Name Plates/all/SH-CNP-04
+├   ├ /collections/Shubh Symbols/all/SH-SS-01
+├   └ [+7 more paths]
+├ ○ /contact                                         4.85 kB         128 kB
+├ ○ /discovery                                       3.66 kB         113 kB
+├ ○ /privacy                                         3.24 kB         116 kB
+├ ○ /products                                        3.44 kB         162 kB
+├ ● /products/[id]                                   7.67 kB         179 kB
+├   ├ /products/SH-CNP-03
+├   ├ /products/SH-CNP-04
+├   ├ /products/SH-SS-01
+├   └ [+7 more paths]
+├ ○ /returns                                         2.94 kB         116 kB
+├ ○ /terms                                           2.98 kB         116 kB
+└ ○ /wishlist                                        4.67 kB         123 kB
++ First Load JS shared by all                         102 kB
+  ├ chunks/1255-df408693800eca2b.js                  45.3 kB
+  ├ chunks/4bd1b696-182b6b13bdad92e3.js              54.2 kB
+  └ other shared chunks (total)                      2.13 kB
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses generateStaticParams)
+

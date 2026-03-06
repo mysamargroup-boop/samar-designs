@@ -11,9 +11,9 @@ import { MessageCircle, ShoppingBag, Sparkles, CreditCard, MapPin, User, Mail, T
 import { cn } from '@/lib/utils';
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
-  <svg 
-    viewBox="0 0 24 24" 
-    fill="currentColor" 
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
     className={className}
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -28,7 +28,7 @@ interface WhatsAppCheckoutProps {
   coupon?: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSuccess: () => void;
+  onSuccess: (orderData: any) => void;
 }
 
 export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenChange, onSuccess }: WhatsAppCheckoutProps) {
@@ -46,9 +46,9 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
   };
 
   const handleCheckout = () => {
-    const businessPhone = "919876543210"; 
+    const businessPhone = "919876543210";
     const itemDetails = items.map(item => `- ${item.name} (Qty: ${item.quantity}, Price: ₹${item.sale_price * item.quantity})`).join('\n');
-    
+
     const message = `*New Order from Sumegha Handmades*\n\n` +
       `*CUSTOMER DETAILS:*\n` +
       `- Name: ${formData.name}\n` +
@@ -65,7 +65,20 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
 
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${businessPhone}?text=${encodedMessage}`, '_blank');
-    onSuccess();
+
+    // Generate order ID and pass data back
+    const orderId = `SH-${Date.now().toString().slice(-6)}`;
+    const orderData = {
+      orderId,
+      date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+      customer: formData,
+      items,
+      total,
+      savings,
+      coupon
+    };
+
+    onSuccess(orderData);
     onOpenChange(false);
   };
 
@@ -148,7 +161,7 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
                     <span>{coupon.toUpperCase()}</span>
                   </div>
                 )}
-                
+
                 <div className="p-4 bg-green-50 rounded-2xl border border-green-100 flex justify-between items-center">
                   <span className="text-[10px] font-black text-green-700 uppercase tracking-widest flex items-center">
                     <Sparkles className="h-3 w-3 mr-2 animate-pulse" />
@@ -164,10 +177,10 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Total Payable</span>
                 <span className="text-4xl font-black font-display text-primary">₹{total}</span>
               </div>
-              
+
               <div className="space-y-4">
-                <Button 
-                  className="w-full h-16 rounded-2xl gradient-primary text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]" 
+                <Button
+                  className="w-full h-16 rounded-2xl gradient-primary text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                   onClick={handleCheckout}
                   disabled={!isFormValid}
                 >

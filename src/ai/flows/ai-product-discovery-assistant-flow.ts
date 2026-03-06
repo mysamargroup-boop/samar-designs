@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview An AI product discovery assistant that suggests handmade products based on user queries.
  *

@@ -1,4 +1,4 @@
-import { createClient } from 'next-sanity';
+import { createClient } from '@sanity/client';
 
 export const client = createClient({
     projectId: 'zhi2v4xf',
@@ -6,4 +6,7 @@ export const client = createClient({
     apiVersion: '2024-01-01',
     // Set to false for production — data is fetched from CDN for speed
     useCdn: true,
+    stega: {
+        enabled: false,
+    },
 });

@@ -7,13 +7,17 @@ import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, Sparkles, Ticket } from '
 import { useStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { WhatsAppCheckout } from '@/components/WhatsAppCheckout';
+import { OrderConfirmation } from '@/components/OrderConfirmation';
 import { toast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
+  const router = useRouter();
   const { cart, removeFromCart, updateCartQuantity, clearCart } = useStore();
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [completedOrder, setCompletedOrder] = useState<any>(null);
   const [couponCode, setCouponCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState(0);
   const [isSparkling, setIsSparkling] = useState(false);
@@ -21,7 +25,7 @@ export default function CartPage() {
   // Use sale_price for current value and regular_price for comparison
   const subtotal = cart.reduce((sum, item) => sum + (item.sale_price * item.quantity), 0);
   const totalOriginal = cart.reduce((sum, item) => sum + ((item.regular_price || item.sale_price) * item.quantity), 0);
-  
+
   const discountFromCoupon = Math.round(subtotal * (appliedDiscount / 100));
   const finalTotal = subtotal - discountFromCoupon;
   const totalSavings = (totalOriginal - subtotal) + discountFromCoupon;
@@ -53,7 +57,7 @@ export default function CartPage() {
     }
   };
 
-  if (cart.length === 0) {
+  if (cart.length === 0 && !completedOrder) {
     return (
       <div className="container mx-auto px-4 py-32 text-center">
         <div className="w-24 h-24 bg-secondary rounded-full flex items-center justify-center mx-auto mb-8">
@@ -75,8 +79,8 @@ export default function CartPage() {
         <div className="fixed inset-0 pointer-events-none z-[100] flex items-center justify-center overflow-hidden">
           <div className="relative w-full h-full">
             {[...Array(20)].map((_, i) => (
-              <Sparkles 
-                key={i} 
+              <Sparkles
+                key={i}
                 className={cn(
                   "absolute h-12 w-12 text-primary animate-bounce opacity-80",
                   "animate-in fade-in zoom-in duration-1000"
@@ -98,7 +102,7 @@ export default function CartPage() {
         <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary">Review Your Items</p>
         <h1 className="text-3xl lg:text-5xl font-black font-display uppercase tracking-tight text-foreground">Shopping Bag</h1>
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
         <div className="lg:col-span-2 space-y-6">
           {cart.map((item) => (
@@ -106,17 +110,17 @@ export default function CartPage() {
               <div className="relative w-24 h-32 sm:w-32 sm:h-40 flex-shrink-0 rounded-[1.5rem] overflow-hidden shadow-sm border border-primary/5">
                 <Image src={item.imageUrl} alt={item.name} fill className="object-cover transition-transform group-hover:scale-105" />
               </div>
-              
+
               <div className="flex-grow flex flex-col justify-between self-stretch py-1">
                 <div className="space-y-2">
                   <div className="flex justify-between items-start gap-4">
                     <h3 className="text-sm lg:text-xl font-black uppercase tracking-tight text-foreground leading-tight line-clamp-2">
                       {item.name}
                     </h3>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="text-destructive/40 hover:text-destructive hover:bg-destructive/5 rounded-full h-8 w-8 -mt-1 -mr-1" 
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-destructive/40 hover:text-destructive hover:bg-destructive/5 rounded-full h-8 w-8 -mt-1 -mr-1"
                       onClick={() => removeFromCart(item.id)}
                     >
                       <Trash2 className="h-4 w-4" />
@@ -132,19 +136,19 @@ export default function CartPage() {
 
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex items-center bg-primary/5 rounded-full p-1 border border-primary/10">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-8 w-8 rounded-full hover:bg-white transition-colors" 
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 rounded-full hover:bg-white transition-colors"
                       onClick={() => updateCartQuantity(item.id, -1)}
                     >
                       <Minus className="h-3 w-3" />
                     </Button>
                     <span className="w-10 text-center font-black text-sm">{item.quantity}</span>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-8 w-8 rounded-full hover:bg-white transition-colors" 
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 rounded-full hover:bg-white transition-colors"
                       onClick={() => updateCartQuantity(item.id, 1)}
                     >
                       <Plus className="h-3 w-3" />
@@ -162,17 +166,17 @@ export default function CartPage() {
         <div className="lg:col-span-1 space-y-6">
           <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-primary/10 space-y-8">
             <h2 className="text-xl font-display font-black uppercase tracking-tight text-foreground">Order Summary</h2>
-            
+
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <Input 
-                  placeholder="COUPON CODE" 
+                <Input
+                  placeholder="COUPON CODE"
                   className="rounded-xl border-primary/10 bg-primary/5 h-12 text-[10px] font-bold tracking-widest uppercase"
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
                   onKeyDown={handleKeyDown}
                 />
-                <Button 
+                <Button
                   onClick={handleApplyCoupon}
                   variant="outline"
                   className="rounded-xl h-12 px-6 border-primary text-primary font-black text-[10px] uppercase tracking-widest"
@@ -203,7 +207,7 @@ export default function CartPage() {
                 <span>Shipping</span>
                 <span className="text-green-600 font-black">FREE</span>
               </div>
-              
+
               {totalSavings > 0 && (
                 <div className={cn(
                   "flex justify-between items-center p-4 bg-green-50 rounded-2xl border border-green-100 transition-all",
@@ -224,9 +228,9 @@ export default function CartPage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="space-y-4">
-              <Button 
+              <Button
                 className="w-full h-16 rounded-2xl gradient-primary text-[10px] font-bold uppercase tracking-[0.25em] shadow-xl shadow-primary/20 group active:scale-[0.98] transition-all"
                 onClick={() => setIsCheckoutOpen(true)}
               >
@@ -238,16 +242,30 @@ export default function CartPage() {
         </div>
       </div>
 
-      <WhatsAppCheckout 
-        open={isCheckoutOpen} 
-        onOpenChange={setIsCheckoutOpen} 
-        items={cart} 
-        total={finalTotal} 
+      <WhatsAppCheckout
+        open={isCheckoutOpen}
+        onOpenChange={setIsCheckoutOpen}
+        items={cart}
+        total={finalTotal}
         savings={totalSavings}
-        coupon={appliedDiscount > 0 ? couponCode : undefined}
-        onSuccess={() => {
+        coupon={appliedDiscount > 0 ? (couponCode as any) : undefined}
+        onSuccess={(orderData: any) => {
+          setCompletedOrder(orderData);
+          toast({
+            title: "Order processing!",
+            description: "WhatsApp opened to finalize with the artist.",
+            duration: 4000
+          });
+        }}
+      />
+
+      <OrderConfirmation
+        open={!!completedOrder}
+        onOpenChange={(open: boolean) => !open && setCompletedOrder(null)}
+        orderData={completedOrder}
+        onClose={() => {
           clearCart();
-          toast({ title: "Order sent!", description: "Check WhatsApp to finalize with the artist." });
+          router.push('/');
         }}
       />
     </div>
