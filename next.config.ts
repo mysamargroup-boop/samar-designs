@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
-  output: 'export',
+  // No output: 'export' — using OpenNext SSR on Cloudflare Workers
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -10,7 +10,6 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
