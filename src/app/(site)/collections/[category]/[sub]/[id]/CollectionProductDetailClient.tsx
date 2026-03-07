@@ -78,8 +78,38 @@ export default function CollectionProductDetailClient({ id }: { id: string }) {
     });
   }, [api]);
 
+  // Move hooks above early returns
+  const fallbackRecommended = useMemo(() => {
+    if (!product) return [];
+    return (productsData.products as Product[])
+      .filter((p) => p.id !== id && p.category === product?.category)
+      .slice(0, 4);
+  }, [id, product?.category]);
+
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin"></div></div>;
+    return (
+      <div className="w-full overflow-x-hidden container mx-auto px-4 py-8 lg:py-12 max-w-7xl animate-pulse">
+        <div className="h-4 w-48 bg-primary/10 rounded mb-8"></div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+          <div className="aspect-[4/5] w-full bg-primary/5 rounded-[2rem] border-2 border-white"></div>
+          <div className="space-y-8 w-full">
+            <div className="space-y-4">
+              <div className="h-6 w-24 bg-primary/10 rounded-full"></div>
+              <div className="h-12 lg:h-16 w-3/4 bg-primary/5 rounded-2xl"></div>
+              <div className="h-8 lg:h-10 w-1/4 bg-primary/5 rounded-xl"></div>
+            </div>
+            <div className="h-20 w-full bg-primary/5 rounded-2xl"></div>
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map(i => <div key={i} className="h-12 bg-primary/5 rounded-xl"></div>)}
+            </div>
+            <div className="flex gap-4">
+              <div className="h-16 flex-1 bg-primary/10 rounded-2xl"></div>
+              <div className="h-16 flex-1 bg-primary/20 rounded-2xl"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!product) {
@@ -103,11 +133,7 @@ export default function CollectionProductDetailClient({ id }: { id: string }) {
 
   const recommendedProducts = sanityRelated && sanityRelated.length > 0
     ? sanityRelated
-    : useMemo(() =>
-      (productsData.products as Product[])
-        .filter((p) => p.id !== id && p.category === product.category)
-        .slice(0, 4),
-      [id, product.category]);
+    : fallbackRecommended;
 
   const mockReviews = [
     { name: "Aditi S.", rating: 5, comment: "Absolutely stunning! The detail on this piece is even better in person.", date: "2 weeks ago" },
@@ -134,13 +160,16 @@ export default function CollectionProductDetailClient({ id }: { id: string }) {
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
-  const galleryImages = [
-    product.imageUrl,
-    ...(product.images && product.images.length > 0 ? product.images : [
-      `https://picsum.photos/seed/${product.id}2/800/1000`,
-      `https://picsum.photos/seed/${product.id}3/800/1000`
-    ])
-  ].filter(Boolean);
+  const extraImages = product.additionalImages && product.additionalImages.length > 0
+    ? product.additionalImages
+    : product.images && product.images.length > 0
+      ? product.images
+      : [
+        `https://picsum.photos/seed/${product.id}2/800/1000`,
+        `https://picsum.photos/seed/${product.id}3/800/1000`
+      ];
+
+  const galleryImages = [product.imageUrl, ...extraImages].filter(Boolean);
 
   const specifications = [
     { label: "Dimensions", value: product.dimensions || "Custom Size" },

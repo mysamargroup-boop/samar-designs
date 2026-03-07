@@ -134,13 +134,16 @@ export default function ProductDetailClient({ id }: { id: string }) {
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
-  const galleryImages = [
-    product.imageUrl,
-    ...(product.images && product.images.length > 0 ? product.images : [
-      `https://picsum.photos/seed/${product.id}2/800/1000`,
-      `https://picsum.photos/seed/${product.id}3/800/1000`
-    ])
-  ].filter(Boolean);
+  const extraImages = product.additionalImages && product.additionalImages.length > 0
+    ? product.additionalImages
+    : product.images && product.images.length > 0
+      ? product.images
+      : [
+          `https://picsum.photos/seed/${product.id}2/800/1000`,
+          `https://picsum.photos/seed/${product.id}3/800/1000`
+        ];
+
+  const galleryImages = [product.imageUrl, ...extraImages].filter(Boolean);
 
   const specifications = [
     { label: "Dimensions", value: product.dimensions || "Custom Size" },

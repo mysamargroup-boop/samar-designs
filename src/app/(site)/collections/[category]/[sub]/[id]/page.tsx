@@ -5,7 +5,7 @@ export function generateStaticParams() {
   return (productsDataStatic.products as any[]).map((p) => ({
     category: p.category || 'all',
     sub: p.sub_category || 'all',
-    id: p.id,
+    id: p.slug || p.id,
   }));
 }
 

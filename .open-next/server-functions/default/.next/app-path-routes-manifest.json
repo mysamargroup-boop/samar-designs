@@ -1,0 +1,20 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/studio/[[...tool]]/page": "/studio/[[...tool]]",
+  "/(site)/about/page": "/about",
+  "/(site)/blog/page": "/blog",
+  "/(site)/collections/page": "/collections",
+  "/(site)/contact/page": "/contact",
+  "/(site)/cart/page": "/cart",
+  "/(site)/discovery/page": "/discovery",
+  "/(site)/page": "/",
+  "/(site)/returns/page": "/returns",
+  "/(site)/privacy/page": "/privacy",
+  "/(site)/products/page": "/products",
+  "/(site)/terms/page": "/terms",
+  "/(site)/wishlist/page": "/wishlist",
+  "/(site)/collections/[category]/[sub]/[id]/page": "/collections/[category]/[sub]/[id]",
+  "/(site)/products/[id]/page": "/products/[id]",
+  "/(site)/blog/[id]/page": "/blog/[id]"
+}

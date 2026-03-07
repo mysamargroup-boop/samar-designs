@@ -36,7 +36,10 @@ export function ProductCard({ product }: ProductCardProps) {
   // Generate SEO friendly nested slug
   const categorySlug = product.category.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   const subCategorySlug = product.subcategory ? product.subcategory.toLowerCase().replace(/[^a-z0-9]+/g, '-') : "handcrafted";
-  const productUrl = `/collections/${categorySlug}/${subCategorySlug}/${product.id}`;
+
+  // Use slug if available, otherwise fallback to ID
+  const productIdentifier = product.slug || product.id;
+  const productUrl = `/collections/${categorySlug}/${subCategorySlug}/${productIdentifier}`;
 
   return (
     <div className="group flex flex-col gap-3 bg-white p-2 rounded-xl shadow-sm hover:shadow-md hover:bg-primary/5 transition-all duration-300 border border-primary/5 w-full">

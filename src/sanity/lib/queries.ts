@@ -8,6 +8,7 @@ import type { Product } from '@/lib/types';
 export async function getAllProducts(): Promise<Product[]> {
   const query = `*[_type == "product"] | order(_createdAt desc) {
     "id": productId,
+    "slug": slug.current,
     name,
     description,
     "imageUrl": image.asset->url,
@@ -27,6 +28,7 @@ export async function getAllProducts(): Promise<Product[]> {
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   const query = `*[_type == "product" && slug.current == $slug][0] {
     "id": productId,
+    "slug": slug.current,
     name,
     description,
     "imageUrl": image.asset->url,
@@ -46,6 +48,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 export async function getProductById(productId: string): Promise<Product | null> {
   const query = `*[_type == "product" && productId == $productId][0] {
     "id": productId,
+    "slug": slug.current,
     name,
     description,
     "imageUrl": image.asset->url,
@@ -65,6 +68,7 @@ export async function getProductById(productId: string): Promise<Product | null>
 export async function getProductsByCategory(categoryName: string): Promise<Product[]> {
   const query = `*[_type == "product" && category->name == $categoryName] | order(_createdAt desc) {
     "id": productId,
+    "slug": slug.current,
     name,
     description,
     "imageUrl": image.asset->url,
