@@ -1,11 +1,14 @@
 import dynamic from "next/dynamic";
 
 /**
- * Sanity Studio - loaded only on client to reduce Cloudflare Worker bundle size.
- * ssr: false keeps @sanity/* and next-sanity out of the server/Worker bundle.
+ * Sanity Studio page for /studio route.
+ *
+ * NOTE: This file is a Server Component. We keep `ssr: false` inside a
+ * separate Client Component wrapper to satisfy Next.js 15 rules.
  */
-const StudioWithConfig = dynamic(
-  () => import("@/components/StudioWithConfig"),
+
+const StudioClient = dynamic(
+  () => import("./StudioClient").then((mod) => mod.default),
   {
     ssr: false,
     loading: () => (
@@ -17,5 +20,5 @@ const StudioWithConfig = dynamic(
 );
 
 export default function StudioPage() {
-  return <StudioWithConfig />;
+  return <StudioClient />;
 }
