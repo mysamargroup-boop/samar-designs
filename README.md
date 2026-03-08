@@ -2,7 +2,7 @@
 
 **Crafted With Love** — A premium e-commerce platform for unique handmade creations, from custom name plates to decorative hangings.
 
-![Next.js](https://img.shields.io/badge/Next.js-15.5-black?logo=next.js) ![Sanity](https://img.shields.io/badge/Sanity_CMS-v3-red?logo=sanity) ![Cloudflare](https://img.shields.io/badge/Cloudflare_Pages-deployed-orange?logo=cloudflare)
+![Next.js](https://img.shields.io/badge/Next.js-15.5-black?logo=next.js) ![Sanity](https://img.shields.io/badge/Sanity_CMS-v3-red?logo=sanity) ![Cloudflare](https://img.shields.io/badge/Cloudflare_Pages-deployed-orange?logo=cloudflare) ![Branch](https://img.shields.io/badge/Branch-static-blue)
 
 ## ✨ Features
 

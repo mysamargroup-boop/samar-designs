@@ -10,9 +10,8 @@ export const metadata: Metadata = {
   title: 'Sumegha Handmades | Crafted With Love',
   description: 'Unique, heartfelt handmade creations from jewelry to custom portraits.',
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: '/icon.png',
+    apple: '/icon.png',
   },
 };
 

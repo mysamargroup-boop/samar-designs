@@ -44,6 +44,31 @@ interface CategorySectionProps {
 }
 
 function CategorySection({ collection, index }: CategorySectionProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 5);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 5);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    const el = scrollRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkScroll);
+      window.addEventListener('resize', checkScroll);
+      return () => {
+        el.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+      };
+    }
+  }, []);
+
   const isEven = index % 2 === 0;
 
   return (
@@ -157,6 +182,7 @@ function CategorySection({ collection, index }: CategorySectionProps) {
           <div className="relative">
             <p className="text-[8px] font-black uppercase tracking-[0.3em] text-foreground/40 mb-3 px-1">Sub Categories</p>
             <div
+              ref={scrollRef}
               className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 -mx-1 px-1 scrollbar-hide"
             >
               {collection.subCategories.map((sub, sIdx) => (
@@ -174,6 +200,15 @@ function CategorySection({ collection, index }: CategorySectionProps) {
                 </Link>
               ))}
             </div>
+            {/* Scroll indicators */}
+            {/* Left fade indicator */}
+            {canScrollLeft && (
+              <div className="absolute left-0 top-6 bottom-6 w-16 pointer-events-none z-10" style={{ background: 'linear-gradient(to right, var(--background) 20%, transparent)' }} />
+            )}
+            {/* Right fade indicator */}
+            {canScrollRight && (
+              <div className="absolute right-0 top-6 bottom-6 w-16 pointer-events-none z-10" style={{ background: 'linear-gradient(to left, var(--background) 20%, transparent)' }} />
+            )}
           </div>
         )}
       </div>

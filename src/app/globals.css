@@ -65,3 +65,9 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Rounded Icon Settings (specifically for standalone PWA/Apple icons if rendered visibly) */
+img[src*="icon.png"], link[rel="apple-touch-icon"] {
+  border-radius: 50% !important;
+  overflow: hidden !important;
+}

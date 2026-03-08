@@ -13,6 +13,7 @@
 /out/
 /.opennext/
 /.sanity/
+/dist/
 
 # production
 /build
