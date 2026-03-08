@@ -9,11 +9,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: 'Sumegha Handmades | Crafted With Love',
   description: 'Unique, heartfelt handmade creations from jewelry to custom portraits.',
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
-  },
 };
 
 export default function RootLayout({
