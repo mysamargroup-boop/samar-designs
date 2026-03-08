@@ -1,17 +1,19 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 18 100% 96%; /* #FFF1EB */
-    --foreground: 343 25% 7%; /* Deep Charcoal Maroon #181113 */
+    --background: 18 100% 96%;
+    /* #FFF1EB */
+    --foreground: 343 25% 7%;
+    /* Deep Charcoal Maroon #181113 */
     --card: 0 0% 100%;
     --card-foreground: 343 25% 7%;
     --popover: 0 0% 100%;
     --popover-foreground: 343 25% 7%;
-    --primary: 343 80% 45%; /* #cf1745 */
+    --primary: 343 80% 45%;
+    /* #cf1745 */
     --primary-foreground: 0 0% 100%;
     --secondary: 343 15% 96%;
     --secondary-foreground: 343 80% 45%;
@@ -32,12 +34,19 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground font-display antialiased;
     background: linear-gradient(180deg, #FFF1EB 0%, #FFDDE1 100%);
     min-height: 100vh;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-display font-bold text-foreground;
   }
 }
@@ -61,13 +70,34 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
+/* Custom Diagonal Strikethrough for Prices */
+.diagonal-strike {
+  position: relative;
+  display: inline-block;
+}
+
+.diagonal-strike::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -5%;
+  width: 110%;
+  height: 2px;
+  background-color: currentColor;
+  transform: translateY(-50%) rotate(-12deg);
+  opacity: 0.8;
+  border-radius: 1px;
+}
+
 /* Rounded Icon Settings (specifically for standalone PWA/Apple icons if rendered visibly) */
-img[src*="icon.png"], link[rel="apple-touch-icon"] {
+img[src*="icon.png"],
+link[rel="apple-touch-icon"] {
   border-radius: 50% !important;
   overflow: hidden !important;
 }

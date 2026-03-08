@@ -129,7 +129,7 @@ export default function CartPage() {
                   <div className="flex items-center gap-3">
                     <p className="text-lg lg:text-2xl font-black text-primary">₹{item.sale_price}</p>
                     {item.regular_price && item.regular_price > item.sale_price && (
-                      <p className="text-xs lg:text-sm text-muted-foreground line-through decoration-primary/40 font-bold">₹{item.regular_price}</p>
+                      <p className="text-xs lg:text-sm text-muted-foreground diagonal-strike decoration-primary/40 font-bold">₹{item.regular_price}</p>
                     )}
                   </div>
                 </div>

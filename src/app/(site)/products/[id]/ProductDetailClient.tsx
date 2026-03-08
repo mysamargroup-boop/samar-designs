@@ -131,6 +131,14 @@ export default function ProductDetailClient({ id }: { id: string }) {
         .slice(0, 4),
       [id, product?.category]);
 
+  // ==========================================
+  // 📝 CUSTOMER REVIEWS (Currently Mocked)
+  // ==========================================
+  // To connect these to live Sanity data:
+  // 1. You already have a 'testimonial' schema in Sanity.
+  // 2. You can query testimonials that reference this product ID.
+  // Example GROQ connection: `*[_type == "testimonial" && product->_ref == ^._id]`
+  // Once fetched, map that data here instead of this hardcoded array.
   const mockReviews = [
     { name: "Aditi S.", rating: 5, comment: "Absolutely stunning! The detail on this piece is even better in person.", date: "2 weeks ago" },
     { name: "Rahul M.", rating: 5, comment: "Bought this as a gift for my parents. They were overjoyed with the quality.", date: "1 month ago" },
@@ -174,12 +182,20 @@ export default function ProductDetailClient({ id }: { id: string }) {
   return (
     <div className="w-full overflow-x-hidden">
       <div className="container mx-auto px-4 py-8 lg:py-12 max-w-7xl">
-        <nav className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-8">
-          <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-          <ChevronRight className="h-3 w-3" />
-          <Link href="/products" className="hover:text-primary transition-colors">Gallery</Link>
-          <ChevronRight className="h-3 w-3" />
-          <span className="text-primary">{product.category}</span>
+        <nav className="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-8">
+          <Link href="/" className="hover:text-primary transition-colors whitespace-nowrap">Home</Link>
+          <ChevronRight className="h-3 w-3 shrink-0" />
+          <Link href={`/collections/${product.category?.toLowerCase().replace(/\s+/g, '-') || ''}`} className="hover:text-primary transition-colors whitespace-nowrap">{product.category}</Link>
+          {product.subcategory && (
+            <>
+              <ChevronRight className="h-3 w-3 shrink-0" />
+              <Link href={`/collections/${product.category?.toLowerCase().replace(/\s+/g, '-') || ''}/${product.subcategory.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-primary transition-colors whitespace-nowrap">
+                {product.subcategory}
+              </Link>
+            </>
+          )}
+          <ChevronRight className="h-3 w-3 shrink-0" />
+          <span className="text-primary truncate max-w-[150px] sm:max-w-[200px]">{product.name}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start mb-24">
@@ -278,7 +294,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
                 <div className="flex items-center gap-4">
                   <p className="text-3xl lg:text-5xl font-black font-headline text-primary">₹{product.sale_price}</p>
                   {product.regular_price && (
-                    <p className="text-xl lg:text-2xl text-muted-foreground line-through decoration-primary/20 decoration-2 font-black">₹{product.regular_price}</p>
+                    <p className="text-xl lg:text-2xl text-muted-foreground diagonal-strike decoration-primary/20 decoration-2 font-black">₹{product.regular_price}</p>
                   )}
                 </div>
                 {isFreeDelivery && (
