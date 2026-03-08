@@ -1,11 +1,20 @@
 import CollectionProductDetailClient from './CollectionProductDetailClient';
 import productsDataStatic from "@/lib/products.json";
 
-export function generateStaticParams() {
-  return (productsDataStatic.products as any[]).map((p) => ({
-    category: p.category || 'all',
-    sub: p.sub_category || 'all',
-    id: p.slug || p.id,
+import { clientNoCache } from '@/sanity/lib/client';
+
+export async function generateStaticParams() {
+  // Fetch from Sanity to include all new products added via CMS
+  const products = await clientNoCache.fetch(`*[_type == "product"] {
+    "category": category->name,
+    subcategory,
+    "id": slug.current
+  }`);
+
+  return products.map((p: any) => ({
+    category: (p.category || 'all').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    sub: (p.subcategory || 'handcrafted').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    id: p.id,
   }));
 }
 

@@ -26,6 +26,38 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { getProductBySlug, getProductById, getAllProducts } from '@/sanity/lib/queries';
+import useSWR from 'swr';
+import { clientNoCache } from '@/sanity/lib/client';
+
+const sanityFetcher = (query: string, vars?: any) => clientNoCache.fetch(query, vars);
+const PRODUCT_BY_ID_QUERY = `*[_type == "product" && productId == $id][0] {
+  "id": productId,
+  "slug": slug.current,
+  name,
+  description,
+  "imageUrl": coalesce(image.asset->url, image.url),
+  "additionalImages": additionalImages[].asset->url,
+  "category": category->name,
+  subcategory,
+  regular_price,
+  sale_price,
+  weight,
+  dimensions,
+  tags,
+  rating
+}`;
+
+const RELATED_PRODUCTS_QUERY = `*[_type == "product" && category->name == $category && productId != $id][0...4] {
+  "id": productId,
+  "slug": slug.current,
+  name,
+  description,
+  "imageUrl": coalesce(image.asset->url, image.url),
+  "category": category->name,
+  regular_price,
+  sale_price,
+  rating
+}`;
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   // icon svg
@@ -38,38 +70,28 @@ export default function ProductDetailClient({ id }: { id: string }) {
   const { addToCart, addToWishlist, isWishlisted, removeFromWishlist } = useStore();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [api, setApi] = useState<CarouselApi>();
+  const [isBuyLoading, setIsBuyLoading] = useState(false);
 
-  // Sanity data
-  const [sanityProduct, setSanityProduct] = useState<Product | null>(null);
-  const [sanityRelated, setSanityRelated] = useState<Product[] | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Use SWR for live product data - NO auto-refresh (0), only revalidate on focus
+  const { data: liveProduct, error: productError } = useSWR(
+    id ? [PRODUCT_BY_ID_QUERY, { id }] : null,
+    ([query, vars]) => sanityFetcher(query, vars),
+    { refreshInterval: 0, revalidateOnFocus: true, revalidateOnReconnect: true }
+  );
 
-  useEffect(() => {
-    async function fetchSanityProduct() {
-      try {
-        let p = await getProductBySlug(id);
-        if (!p) p = await getProductById(id);
-
-        if (p) {
-          setSanityProduct(p);
-          // Try fetching related products if we found this product
-          const allP = await getAllProducts();
-          if (allP) {
-            setSanityRelated(allP.filter((rp: Product) => rp.id !== p?.id && rp.category === p?.category).slice(0, 4));
-          }
-        }
-      } catch (err) {
-        console.log("Sanity product fetch failed:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchSanityProduct();
-  }, [id]);
+  // Use SWR for related products
+  const { data: liveRelated } = useSWR(
+    liveProduct?.category ? [RELATED_PRODUCTS_QUERY, { category: liveProduct.category, id }] : null,
+    ([query, vars]) => sanityFetcher(query, vars),
+    { refreshInterval: 0, revalidateOnFocus: true, revalidateOnReconnect: true }
+  );
 
   const fallbackProduct = useMemo(() => (productsData.products as Product[]).find((p) => p.id === id), [id]);
 
-  const product = sanityProduct || fallbackProduct;
+  // Priority: Live Product from Sanity.
+  // We only show the fallback if there's no live data and it's NOT loading (to support old local products).
+  const loading = !liveProduct && !productError;
+  const product = liveProduct || fallbackProduct;
 
   useEffect(() => {
     if (!api) return;
@@ -101,13 +123,13 @@ export default function ProductDetailClient({ id }: { id: string }) {
   const wishlisted = isWishlisted(product.id);
   const isFreeDelivery = product.sale_price >= 999;
 
-  const recommendedProducts = sanityRelated && sanityRelated.length > 0
-    ? sanityRelated
+  const recommendedProducts = liveRelated && liveRelated.length > 0
+    ? liveRelated
     : useMemo(() =>
       (productsData.products as Product[])
-        .filter((p) => p.id !== id && p.category === product.category)
+        .filter((p) => p.id !== id && p.category === product?.category)
         .slice(0, 4),
-      [id, product.category]);
+      [id, product?.category]);
 
   const mockReviews = [
     { name: "Aditi S.", rating: 5, comment: "Absolutely stunning! The detail on this piece is even better in person.", date: "2 weeks ago" },
@@ -138,10 +160,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
     ? product.additionalImages
     : product.images && product.images.length > 0
       ? product.images
-      : [
-          `https://picsum.photos/seed/${product.id}2/800/1000`,
-          `https://picsum.photos/seed/${product.id}3/800/1000`
-        ];
+      : [];
 
   const galleryImages = [product.imageUrl, ...extraImages].filter(Boolean);
 
@@ -177,7 +196,14 @@ export default function ProductDetailClient({ id }: { id: string }) {
                       : "border-transparent opacity-60 hover:opacity-100"
                   )}
                 >
-                  <Image src={String(img)} alt={`${product.name} detail ${idx + 1}`} fill sizes="80px" className="object-cover" />
+                  <Image
+                    src={String(img)}
+                    alt={`${product.name} detail ${idx + 1}`}
+                    fill
+                    sizes="80px"
+                    className="object-cover"
+                    loading="lazy"
+                  />
                 </button>
               ))}
             </div>
@@ -188,7 +214,16 @@ export default function ProductDetailClient({ id }: { id: string }) {
                   {galleryImages.map((img, idx) => (
                     <CarouselItem key={idx}>
                       <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border-2 border-white bg-white w-full">
-                        <Image src={String(img)} alt={product.name} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" priority={idx === 0} />
+                        <Image
+                          src={String(img)}
+                          alt={product.name}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover"
+                          priority={idx === 0}
+                          loading={idx === 0 ? undefined : "lazy"}
+                        />
+
                         {idx === 0 && (
                           <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
                             {discount > 0 && (
@@ -305,9 +340,24 @@ export default function ProductDetailClient({ id }: { id: string }) {
                   <ShoppingCart className="h-4 w-4 mr-1.5" />
                   Add to Bag
                 </Button>
-                <Button size="lg" className="h-14 lg:h-16 rounded-2xl text-[10px] font-bold uppercase tracking-widest gradient-primary flex-1 shadow-lg shadow-primary/20" onClick={() => { addToCart(product); window.location.href = '/cart'; }}>
-                  <Zap className="h-4 w-4 mr-1.5" />
-                  Buy Now
+                <Button
+                  size="lg"
+                  className="h-14 lg:h-16 rounded-2xl text-[10px] font-bold uppercase tracking-widest gradient-primary flex-1 shadow-lg shadow-primary/20"
+                  disabled={isBuyLoading}
+                  onClick={() => {
+                    setIsBuyLoading(true);
+                    addToCart(product);
+                    setTimeout(() => {
+                      window.location.href = '/cart';
+                    }, 800);
+                  }}
+                >
+                  {isBuyLoading ? (
+                    <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  ) : (
+                    <Zap className="h-4 w-4 mr-1.5" />
+                  )}
+                  {isBuyLoading ? 'Processing...' : 'Buy Now'}
                 </Button>
               </div>
 

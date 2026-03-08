@@ -4,10 +4,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight, Sparkles, ArrowRight } from 'lucide-react';
-import categoriesData from "@/lib/categories.json";
 import { useRef, useState, useEffect } from 'react';
+import { getAllCategories } from '@/sanity/lib/queries';
 
-export default function CollectionsPage() {
+
+export default async function CollectionsPage() {
+  const sanityCategories = await getAllCategories();
+
   return (
     <div className="min-h-screen pb-24">
       <div className="container-normal mx-auto py-8 lg:py-16 px-4 space-y-12 lg:space-y-16">
@@ -22,8 +25,8 @@ export default function CollectionsPage() {
 
         {/* Categories */}
         <div className="space-y-16 lg:space-y-24">
-          {categoriesData.categories.map((collection, index) => (
-            <CategorySection key={index} collection={collection} index={index} />
+          {sanityCategories.map((collection, index) => (
+            <CategorySection key={collection.id || index} collection={collection} index={index} />
           ))}
         </div>
       </div>
@@ -83,6 +86,8 @@ function CategorySection({ collection, index }: CategorySectionProps) {
                 src={collection.imageUrl}
                 alt={collection.name}
                 fill
+                priority={index === 0}
+                loading={index === 0 ? undefined : "lazy"}
                 sizes="(max-width: 1023px) 100vw, 40vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
@@ -118,18 +123,18 @@ function CategorySection({ collection, index }: CategorySectionProps) {
           </div>
 
           {/* Sub Categories Grid */}
-          {collection.subCategories.length > 0 && (
+          {collection.subCategories && collection.subCategories.length > 0 && (
             <div className="space-y-4">
               <p className="text-[9px] font-black uppercase tracking-[0.3em] text-foreground/40">Sub Categories</p>
               <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
                 {collection.subCategories.map((sub, sIdx) => (
                   <Link
                     key={sIdx}
-                    href={`/products?category=${encodeURIComponent(collection.name)}`}
+                    href={`/products?category=${encodeURIComponent(sub.name)}`}
                     className="group/sub text-center space-y-2.5"
                   >
                     <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-white shadow-md transition-all duration-500 group-hover/sub:scale-105 group-hover/sub:shadow-lg group-hover/sub:shadow-primary/10">
-                      <Image src={sub.imageUrl} alt={sub.name} fill sizes="15vw" className="object-cover transition-transform duration-500 group-hover/sub:scale-110" />
+                      <Image src={sub.imageUrl} alt={sub.name} fill sizes="15vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover/sub:scale-110" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover/sub:opacity-100 transition-opacity duration-300" />
                     </div>
                     <p className="text-[9px] font-black uppercase tracking-widest text-foreground/60 group-hover/sub:text-primary transition-colors leading-tight">
@@ -152,6 +157,8 @@ function CategorySection({ collection, index }: CategorySectionProps) {
               src={collection.imageUrl}
               alt={collection.name}
               fill
+              loading={index === 0 ? undefined : "lazy"}
+              priority={index === 0}
               sizes="100vw"
               className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
@@ -178,7 +185,7 @@ function CategorySection({ collection, index }: CategorySectionProps) {
         </Link>
 
         {/* Sub Categories — Horizontal Slider */}
-        {collection.subCategories.length > 0 && (
+        {collection.subCategories && collection.subCategories.length > 0 && (
           <div className="relative">
             <p className="text-[8px] font-black uppercase tracking-[0.3em] text-foreground/40 mb-3 px-1">Sub Categories</p>
             <div
@@ -188,11 +195,11 @@ function CategorySection({ collection, index }: CategorySectionProps) {
               {collection.subCategories.map((sub, sIdx) => (
                 <Link
                   key={sIdx}
-                  href={`/products?category=${encodeURIComponent(collection.name)}`}
+                  href={`/products?category=${encodeURIComponent(sub.name)}`}
                   className="group/sub flex-shrink-0 w-28 snap-start text-center space-y-2"
                 >
                   <div className="relative aspect-square rounded-xl overflow-hidden border border-white shadow-sm transition-all duration-300 group-hover/sub:scale-105 group-hover/sub:shadow-md">
-                    <Image src={sub.imageUrl} alt={sub.name} fill sizes="30vw" className="object-cover" />
+                    <Image src={sub.imageUrl} alt={sub.name} fill sizes="30vw" loading="lazy" className="object-cover" />
                   </div>
                   <p className="text-[7px] font-black uppercase tracking-widest text-foreground/60 group-hover/sub:text-primary transition-colors leading-tight px-0.5 truncate">
                     {sub.name}

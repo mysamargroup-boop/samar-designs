@@ -4,9 +4,20 @@ export const client = createClient({
     projectId: 'zhi2v4xf',
     dataset: 'production',
     apiVersion: '2024-01-01',
-    // Set to false for production — data is fetched from CDN for speed
     useCdn: true,
     stega: {
         enabled: false,
     },
 });
+
+// For client-side fetching where we want the absolute latest data
+export const clientNoCache = createClient({
+    projectId: 'zhi2v4xf',
+    dataset: 'production',
+    apiVersion: '2024-01-01',
+    useCdn: false,
+    stega: {
+        enabled: false,
+    },
+});
+

@@ -10,7 +10,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import categoriesData from "@/lib/categories.json";
+import type { SanityCategory } from "@/sanity/lib/queries";
+
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg
@@ -23,11 +24,11 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export function Footer() {
+export function Footer({ categories }: { categories: SanityCategory[] }) {
   const shopLinks = [
     { name: "All Works", href: "/products" },
     { name: "AI Art Concierge", href: "/discovery" },
-    ...categoriesData.categories.map(cat => ({
+    ...(categories || []).map(cat => ({
       name: cat.name,
       href: `/products?category=${encodeURIComponent(cat.name)}`
     }))

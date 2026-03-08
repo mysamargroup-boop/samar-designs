@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, Heart, Menu, X, Home, Shapes, Info, Phone, Gem, BookText, Trash2, Plus, Minus, ArrowRight } from 'lucide-react';
+import { ShoppingBag, Heart, Menu, X, Home, Shapes, Info, Phone, Gem, BookText, Trash2, Plus, Minus, ArrowRight, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
@@ -16,12 +16,15 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ScrollArea } from '@/components/ui/scroll-area';
+import type { SanityCategory } from "@/sanity/lib/queries";
 
-export function Header() {
+export function Header({ categories }: { categories?: SanityCategory[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const pathname = usePathname();
   const { cart, wishlist, removeFromCart, updateCartQuantity } = useStore();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY || 0);
@@ -38,6 +41,7 @@ export function Header() {
     { name: 'Home', href: '/', icon: Home },
     { name: 'Collections', href: '/collections', icon: Shapes },
     { name: 'Gallery', href: '/products', icon: Shapes },
+    ...(categories || []).map((c) => ({ name: c.name, href: `/products?category=${encodeURIComponent(c.name)}`, icon: Shapes })),
     { name: 'Our Story', href: '/about', icon: Info },
     { name: 'Blog', href: '/blog', icon: BookText },
     { name: 'AI Concierge', href: '/discovery', icon: Gem },
@@ -66,6 +70,7 @@ export function Header() {
 
       <div className={cn('container-normal relative', isScrolled ? 'py-1.5 lg:py-2' : 'py-2 lg:py-3')}>
         <div className="grid grid-cols-3 items-center w-full">
+          {/* Mobile Menu Button - Left Column */}
           <div className="flex items-center justify-start">
             <Button
               variant="ghost"
@@ -77,10 +82,11 @@ export function Header() {
             </Button>
           </div>
 
+          {/* Logo in Center */}
           <div className="flex justify-center">
             <Link href="/" className="flex items-center group">
               <div
-                className="relative h-10 lg:h-12 w-80 lg:w-[420px] transition-transform duration-500"
+                className="relative h-10 lg:h-12 w-64 lg:w-[380px] transition-transform duration-500"
                 style={{ transform: `scale(${1 - headerProgress * 0.06})` }}
               >
                 <Image
@@ -94,7 +100,30 @@ export function Header() {
             </Link>
           </div>
 
-          <div className="flex justify-end items-center gap-1 -mr-2">
+          <div className="flex justify-end items-center gap-1 sm:gap-2 -mr-2">
+            {/* Desktop Search */}
+            <div className="hidden lg:flex items-center relative mr-2">
+              <div className={cn(
+                "flex items-center gap-2 bg-primary/5 border border-primary/10 rounded-full px-4 py-2 transition-all duration-300",
+                isSearchFocused ? "w-64 border-primary/30 bg-white shadow-lg" : "w-48"
+              )}>
+                <Search className="h-4 w-4 text-primary opacity-60" />
+                <input
+                  type="text"
+                  placeholder="Search masterpices..."
+                  className="bg-transparent border-none outline-none text-[11px] font-medium w-full placeholder:text-muted-foreground/50"
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && searchQuery.trim()) {
+                      window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`;
+                    }
+                  }}
+                />
+              </div>
+            </div>
             <Link href="/wishlist">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-black/5 text-foreground relative h-10 w-10 sm:h-12 sm:w-12 transition-transform hover:scale-110">
                 <Heart className="h-7 w-7 sm:h-9 sm:w-9" />
@@ -210,37 +239,39 @@ export function Header() {
             );
           })}
         </nav>
-      </div>
+      </div >
 
       <div
         className="pointer-events-none h-[2px] w-full origin-left bg-gradient-to-r from-primary/50 via-primary/20 to-transparent transition-transform duration-300"
         style={{ transform: `scaleX(${0.2 + headerProgress * 0.8})` }}
       />
 
-      {isOpen && (
-        <div className="absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-100 p-8 animate-in slide-in-from-top duration-300 lg:hidden shadow-2xl z-50">
-          <nav className="flex flex-col space-y-2">
-            {navLinks.map((link) => {
-              const Icon = link.icon;
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className={cn(
-                    'flex items-center gap-4 px-4 py-3 rounded-xl transition-all text-sm font-bold uppercase tracking-[0.2em]',
-                    isActive ? 'bg-primary/10 text-primary' : 'hover:bg-primary/5 text-foreground hover:text-primary'
-                  )}
-                >
-                  <Icon className={cn('h-5 w-5', isActive ? 'opacity-100' : 'opacity-60')} />
-                  {link.name}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-      )}
-    </header>
+      {
+        isOpen && (
+          <div className="absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-100 p-8 animate-in slide-in-from-top duration-300 lg:hidden shadow-2xl z-50">
+            <nav className="flex flex-col space-y-2">
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      'flex items-center gap-4 px-4 py-3 rounded-xl transition-all text-sm font-bold uppercase tracking-[0.2em]',
+                      isActive ? 'bg-primary/10 text-primary' : 'hover:bg-primary/5 text-foreground hover:text-primary'
+                    )}
+                  >
+                    <Icon className={cn('h-5 w-5', isActive ? 'opacity-100' : 'opacity-60')} />
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        )
+      }
+    </header >
   );
 }

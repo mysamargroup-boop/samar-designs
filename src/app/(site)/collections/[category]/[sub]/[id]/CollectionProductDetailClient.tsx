@@ -26,6 +26,38 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { getProductBySlug, getProductById, getAllProducts } from '@/sanity/lib/queries';
+import useSWR from 'swr';
+import { clientNoCache } from '@/sanity/lib/client';
+
+const sanityFetcher = (query: string, vars?: any) => clientNoCache.fetch(query, vars);
+const PRODUCT_BY_SLUG_OR_ID_QUERY = `*[_type == "product" && (slug.current == $id || productId == $id)][0] {
+  "id": productId,
+  "slug": slug.current,
+  name,
+  description,
+  "imageUrl": coalesce(image.asset->url, image.url),
+  "additionalImages": additionalImages[].asset->url,
+  "category": category->name,
+  subcategory,
+  regular_price,
+  sale_price,
+  weight,
+  dimensions,
+  tags,
+  rating
+}`;
+
+const RELATED_PRODUCTS_QUERY = `*[_type == "product" && category->name == $category && (slug.current != $id && productId != $id)][0...4] {
+  "id": productId,
+  "slug": slug.current,
+  name,
+  description,
+  "imageUrl": coalesce(image.asset->url, image.url),
+  "category": category->name,
+  regular_price,
+  sale_price,
+  rating
+}`;
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   // icon svg
@@ -38,38 +70,26 @@ export default function CollectionProductDetailClient({ id }: { id: string }) {
   const { addToCart, addToWishlist, isWishlisted, removeFromWishlist } = useStore();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [api, setApi] = useState<CarouselApi>();
+  const [isBuyLoading, setIsBuyLoading] = useState(false);
 
-  // Sanity data
-  const [sanityProduct, setSanityProduct] = useState<Product | null>(null);
-  const [sanityRelated, setSanityRelated] = useState<Product[] | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Use SWR for live product data
+  const { data: liveProduct, error: productError } = useSWR(
+    id ? [PRODUCT_BY_SLUG_OR_ID_QUERY, { id }] : null,
+    ([query, vars]) => sanityFetcher(query, vars),
+    { refreshInterval: 0, revalidateOnFocus: true, revalidateOnReconnect: true }
+  );
 
-  useEffect(() => {
-    async function fetchSanityProduct() {
-      try {
-        let p = await getProductBySlug(id);
-        if (!p) p = await getProductById(id);
+  // Use SWR for related products
+  const { data: liveRelated } = useSWR(
+    liveProduct?.category ? [RELATED_PRODUCTS_QUERY, { category: liveProduct.category, id }] : null,
+    ([query, vars]) => sanityFetcher(query, vars),
+    { refreshInterval: 0, revalidateOnFocus: true, revalidateOnReconnect: true }
+  );
 
-        if (p) {
-          setSanityProduct(p);
-          // Try fetching related products if we found this product
-          const allP = await getAllProducts();
-          if (allP) {
-            setSanityRelated(allP.filter((rp: Product) => rp.id !== p?.id && rp.category === p?.category).slice(0, 4));
-          }
-        }
-      } catch (err) {
-        console.log("Sanity product fetch failed:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchSanityProduct();
-  }, [id]);
+  const fallbackProduct = useMemo(() => (productsData.products as Product[]).find((p) => p.slug === id || p.id === id), [id]);
 
-  const fallbackProduct = useMemo(() => (productsData.products as Product[]).find((p) => p.id === id), [id]);
-
-  const product = sanityProduct || fallbackProduct;
+  const product = liveProduct || fallbackProduct;
+  const loading = !liveProduct && !productError;
 
   useEffect(() => {
     if (!api) return;
@@ -131,8 +151,8 @@ export default function CollectionProductDetailClient({ id }: { id: string }) {
   const wishlisted = isWishlisted(product.id);
   const isFreeDelivery = product.sale_price >= 999;
 
-  const recommendedProducts = sanityRelated && sanityRelated.length > 0
-    ? sanityRelated
+  const recommendedProducts = liveRelated && liveRelated.length > 0
+    ? liveRelated
     : fallbackRecommended;
 
   const mockReviews = [
@@ -164,10 +184,7 @@ export default function CollectionProductDetailClient({ id }: { id: string }) {
     ? product.additionalImages
     : product.images && product.images.length > 0
       ? product.images
-      : [
-        `https://picsum.photos/seed/${product.id}2/800/1000`,
-        `https://picsum.photos/seed/${product.id}3/800/1000`
-      ];
+      : [];
 
   const galleryImages = [product.imageUrl, ...extraImages].filter(Boolean);
 
@@ -203,7 +220,7 @@ export default function CollectionProductDetailClient({ id }: { id: string }) {
                       : "border-transparent opacity-60 hover:opacity-100"
                   )}
                 >
-                  <Image src={String(img)} alt={`${product.name} detail ${idx + 1}`} fill sizes="80px" className="object-cover" />
+                  <Image src={String(img)} alt={`${product.name} detail ${idx + 1}`} fill sizes="80px" className="object-cover" loading="lazy" />
                 </button>
               ))}
             </div>
@@ -214,7 +231,7 @@ export default function CollectionProductDetailClient({ id }: { id: string }) {
                   {galleryImages.map((img, idx) => (
                     <CarouselItem key={idx}>
                       <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border-2 border-white bg-white w-full">
-                        <Image src={String(img)} alt={product.name} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" priority={idx === 0} />
+                        <Image src={String(img)} alt={product.name} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" priority={idx === 0} loading={idx === 0 ? undefined : "lazy"} />
                         {idx === 0 && (
                           <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
                             {discount > 0 && (
@@ -331,9 +348,24 @@ export default function CollectionProductDetailClient({ id }: { id: string }) {
                   <ShoppingCart className="h-4 w-4 mr-1.5" />
                   Add to Bag
                 </Button>
-                <Button size="lg" className="h-14 lg:h-16 rounded-2xl text-[10px] font-bold uppercase tracking-widest gradient-primary flex-1 shadow-lg shadow-primary/20" onClick={() => { addToCart(product); window.location.href = '/cart'; }}>
-                  <Zap className="h-4 w-4 mr-1.5" />
-                  Buy Now
+                <Button
+                  size="lg"
+                  className="h-14 lg:h-16 rounded-2xl text-[10px] font-bold uppercase tracking-widest gradient-primary flex-1 shadow-lg shadow-primary/20"
+                  disabled={isBuyLoading}
+                  onClick={() => {
+                    setIsBuyLoading(true);
+                    addToCart(product);
+                    setTimeout(() => {
+                      window.location.href = '/cart';
+                    }, 800);
+                  }}
+                >
+                  {isBuyLoading ? (
+                    <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  ) : (
+                    <Zap className="h-4 w-4 mr-1.5" />
+                  )}
+                  {isBuyLoading ? 'Processing...' : 'Buy Now'}
                 </Button>
               </div>
 
@@ -395,7 +427,7 @@ export default function CollectionProductDetailClient({ id }: { id: string }) {
               <h2 className="text-2xl lg:text-3xl font-black font-headline tracking-tight uppercase">Recommended Pieces</h2>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-              {recommendedProducts.map((p, i) => <ProductCard key={p.id || i} product={p as any} />)}
+              {recommendedProducts.map((p: Product, i: number) => <ProductCard key={p.id || i} product={p as any} />)}
             </div>
           </div>
         )}

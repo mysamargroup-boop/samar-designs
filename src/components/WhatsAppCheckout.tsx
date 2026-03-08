@@ -187,9 +187,30 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
                   <WhatsAppIcon className="h-5 w-5 mr-2" />
                   Confirm on WhatsApp
                 </Button>
-                <div className="flex justify-center gap-4 opacity-30 grayscale items-center">
-                  <CreditCard className="h-4 w-4" />
-                  <span className="text-[8px] font-bold uppercase tracking-widest">Safe & Secure Chat</span>
+                <div className="flex flex-col items-center gap-4">
+                  <div className="flex flex-wrap justify-center gap-6 opacity-30 grayscale saturate-0 items-center">
+                    {/* Simulated Payment Icons using Lucide and styled text */}
+                    <div className="flex flex-col items-center gap-1">
+                      <CreditCard className="h-5 w-5" />
+                      <span className="text-[7px] font-bold uppercase tracking-widest">Cards</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="h-5 w-8 border border-foreground/50 rounded flex items-center justify-center font-black text-[8px]">UPI</div>
+                      <span className="text-[7px] font-bold uppercase tracking-widest">UPI</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="h-5 w-8 border border-foreground/50 rounded flex items-center justify-center font-black text-[8px]">GPay</div>
+                      <span className="text-[7px] font-bold uppercase tracking-widest">Google Pay</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1">
+                      <ShoppingBag className="h-5 w-5" />
+                      <span className="text-[7px] font-bold uppercase tracking-widest">Net Banking</span>
+                    </div>
+                  </div>
+                  <div className="text-[8px] font-bold uppercase tracking-widest opacity-20 flex items-center gap-1">
+                    <Sparkles className="h-2 w-2" />
+                    Trusted & Secure Transactions
+                  </div>
                 </div>
               </div>
             </div>

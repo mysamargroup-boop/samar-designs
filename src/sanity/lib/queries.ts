@@ -22,7 +22,7 @@ export async function getAllProducts(): Promise<Product[]> {
     rating,
     isFeatured
   }`;
-  return client.fetch(query, {}, { next: { revalidate: 60 } });
+  return client.fetch(query);
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
@@ -42,7 +42,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     tags,
     rating
   }`;
-  return client.fetch(query, { slug }, { next: { revalidate: 60 } });
+  return client.fetch(query, { slug });
 }
 
 export async function getProductById(productId: string): Promise<Product | null> {
@@ -62,7 +62,7 @@ export async function getProductById(productId: string): Promise<Product | null>
     tags,
     rating
   }`;
-  return client.fetch(query, { productId }, { next: { revalidate: 60 } });
+  return client.fetch(query, { productId });
 }
 
 export async function getProductsByCategory(categoryName: string): Promise<Product[]> {
@@ -81,7 +81,7 @@ export async function getProductsByCategory(categoryName: string): Promise<Produ
     tags,
     rating
   }`;
-  return client.fetch(query, { categoryName }, { next: { revalidate: 60 } });
+  return client.fetch(query, { categoryName });
 }
 
 // ==========================================
@@ -109,7 +109,7 @@ export async function getAllCategories(): Promise<SanityCategory[]> {
       "imageUrl": image.asset->url
     }
   }`;
-  return client.fetch(query, {}, { next: { revalidate: 60 } });
+  return client.fetch(query);
 }
 
 // ==========================================
@@ -139,7 +139,7 @@ export async function getAllBlogPosts(): Promise<SanityBlogPost[]> {
     category,
     publishedAt
   }`;
-  return client.fetch(query, {}, { next: { revalidate: 60 } });
+  return client.fetch(query);
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | null> {
@@ -154,7 +154,7 @@ export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | 
     category,
     publishedAt
   }`;
-  return client.fetch(query, { slug }, { next: { revalidate: 60 } });
+  return client.fetch(query, { slug });
 }
 
 export async function getBlogPostById(id: string): Promise<SanityBlogPost | null> {
@@ -192,7 +192,7 @@ export async function getAllTestimonials(): Promise<SanityTestimonial[]> {
     stars,
     "avatarUrl": avatar.asset->url
   }`;
-  return client.fetch(query, {}, { next: { revalidate: 60 } });
+  return client.fetch(query);
 }
 
 // ==========================================

@@ -11,6 +11,27 @@ import productsData from "@/lib/products.json";
 import categoriesData from "@/lib/categories.json";
 import { Product } from "@/lib/types";
 import { getAllProducts, getAllCategories, type SanityCategory } from "@/sanity/lib/queries";
+import useSWR from 'swr';
+import { clientNoCache } from '@/sanity/lib/client';
+
+// Fetcher for SWR using the no-cache client
+const sanityFetcher = (query: string) => clientNoCache.fetch(query);
+const PRODUCTS_QUERY = `*[_type == "product"] | order(_createdAt desc) {
+  "id": productId,
+  "slug": slug.current,
+  name,
+  description,
+  "imageUrl": coalesce(image.asset->url, image.url),
+  "category": category->name,
+  subcategory,
+  regular_price,
+  sale_price,
+  weight,
+  dimensions,
+  tags,
+  rating,
+  isFeatured
+}`;
 
 export default function ProductGrid() {
   const searchParams = useSearchParams();
@@ -19,30 +40,27 @@ export default function ProductGrid() {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(categoryParam || 'All');
-  const [isLoading, setIsLoading] = useState(true);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Sanity data states
-  const [sanityProducts, setSanityProducts] = useState<Product[] | null>(null);
+  // Use SWR for live updates - NO auto-refresh (0), only revalidate on focus
+  const { data: liveProducts, error: productsError } = useSWR(PRODUCTS_QUERY, sanityFetcher, {
+    refreshInterval: 0,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true
+  });
+
   const [sanityCategories, setSanityCategories] = useState<SanityCategory[] | null>(null);
 
   useEffect(() => {
-    async function fetchSanityData() {
+    async function fetchCategories() {
       try {
-        const [products, cats] = await Promise.all([
-          getAllProducts(),
-          getAllCategories(),
-        ]);
-        if (products && products.length > 0) setSanityProducts(products);
+        const cats = await getAllCategories();
         if (cats && cats.length > 0) setSanityCategories(cats);
       } catch (error) {
-        console.log("Sanity product fetch failed, using local data:", error);
-      } finally {
-        // Small delay to show skeleton
-        setTimeout(() => setIsLoading(false), 600);
+        console.log("Sanity category fetch failed:", error);
       }
     }
-    fetchSanityData();
+    fetchCategories();
   }, []);
 
   useEffect(() => {
@@ -56,7 +74,14 @@ export default function ProductGrid() {
     : categoriesData.categories.map(c => c.name)
   )];
 
-  const allProducts = useMemo(() => sanityProducts || productsData.products as Product[], [sanityProducts]);
+  const allProducts = useMemo(() => {
+    // Priority: Live Data from Sanity
+    // We no longer fallback to hardcoded productsData.products to avoid showing stale data.
+    return (liveProducts as Product[]) || [];
+  }, [liveProducts]);
+
+  // Show loading skeleton if data is missing and there's no error yet
+  const isLoading = !liveProducts && !productsError;
 
   const filteredProducts = allProducts.filter(p => {
     const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
@@ -100,7 +125,7 @@ export default function ProductGrid() {
                         "rounded-full h-11 px-8 text-[10px] font-black uppercase tracking-widest transition-all shrink-0 border border-transparent",
                         isActive
                           ? "bg-primary text-white shadow-lg shadow-primary/30"
-                          : "bg-[#FDF6F9] text-foreground/80 hover:bg-primary/5"
+                          : "bg-[#FDF6F9] text-foreground/80 hover:bg-primary/5 hover:text-primary"
                       )}
                       onClick={() => setSelectedCategory(cat)}
                     >

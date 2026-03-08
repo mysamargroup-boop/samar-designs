@@ -42,15 +42,16 @@ export function ProductCard({ product }: ProductCardProps) {
   const productUrl = `/collections/${categorySlug}/${subCategorySlug}/${productIdentifier}`;
 
   return (
-    <div className="group flex flex-col gap-3 bg-white p-2 rounded-xl shadow-sm hover:shadow-md hover:bg-primary/5 transition-all duration-300 border border-primary/5 w-full">
+    <div className="group flex flex-col gap-3 bg-white p-2 rounded-xl border border-primary/5 w-full transition-all duration-300">
       <Link href={productUrl} className="block">
-        <div className="relative w-full aspect-square bg-gray-50 rounded-lg overflow-hidden">
+        <div className="relative w-full aspect-square bg-white rounded-lg overflow-hidden">
           <Image
             src={product.imageUrl}
             alt={product.name}
             fill
+            loading="lazy"
             sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            className="object-cover transition-transform duration-300 group-hover:scale-110"
             data-ai-hint="handmade product"
           />
 
