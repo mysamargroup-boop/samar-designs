@@ -140,13 +140,17 @@ export default function BlogDetailClient({ id }: { id: string }) {
                             </div>
                         </div>
 
-                        <aside className="w-full max-w-lg mx-auto space-y-8">
-                            <div className="bg-white p-8 rounded-[2.5rem] border border-primary/5 shadow-sm space-y-6">
-                                <h4 className="text-[10px] font-black uppercase tracking-widest text-primary">About Sumegha</h4>
-                                <div className="relative w-20 h-20 rounded-full overflow-hidden mb-4">
-                                    <Image src="https://picsum.photos/seed/artist/200/200" alt="Artist" fill className="object-cover" />
+                        <aside className="w-full max-w-3xl mx-auto space-y-8 mt-16">
+                            <div className="bg-white px-8 pt-16 pb-8 rounded-[2.5rem] border border-primary/5 shadow-sm relative flex flex-col items-center text-center">
+                                <div className="absolute -top-12 left-1/2 -translate-x-1/2">
+                                    <div className="relative w-24 h-24 rounded-full p-1 bg-gradient-to-br from-primary via-primary/50 to-amber-400 shadow-md">
+                                        <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white bg-white">
+                                            <Image src="https://picsum.photos/seed/artist/200/200" alt="Artist" fill className="object-cover" />
+                                        </div>
+                                    </div>
                                 </div>
-                                <p className="text-xs text-foreground/60 leading-relaxed font-light italic">
+                                <h4 className="text-[12px] font-black uppercase tracking-widest text-primary mb-3">About Sumegha</h4>
+                                <p className="text-sm md:text-base text-foreground/70 leading-relaxed font-light italic max-w-xl">
                                     "Every piece in our gallery is a chapter of a larger story about tradition, patience, and the beauty of the human touch."
                                 </p>
                             </div>
