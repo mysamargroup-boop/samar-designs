@@ -37,8 +37,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const categorySlug = product.category.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   const subCategorySlug = product.subcategory ? product.subcategory.toLowerCase().replace(/[^a-z0-9]+/g, '-') : "handcrafted";
 
-  // Use slug if available, otherwise fallback to ID
-  const productIdentifier = product.slug || product.id;
+  // Use slug if available, otherwise generate from name to avoid IDs in URL
+  const productIdentifier = product.slug || product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   const productUrl = `/collections/${categorySlug}/${subCategorySlug}/${productIdentifier}`;
 
   return (

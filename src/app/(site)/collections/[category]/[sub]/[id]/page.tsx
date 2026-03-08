@@ -8,14 +8,26 @@ export async function generateStaticParams() {
   const products = await clientNoCache.fetch(`*[_type == "product"] {
     "category": category->name,
     subcategory,
-    "id": slug.current
+    "slug": slug.current,
+    "productId": productId
   }`);
 
-  return products.map((p: any) => ({
-    category: (p.category || 'all').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-    sub: (p.subcategory || 'handcrafted').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-    id: p.id,
-  }));
+  // Generate routes for BOTH slug and productId to ensure all URL formats work
+  const params: { category: string; sub: string; id: string }[] = [];
+  for (const p of products) {
+    const category = (p.category || 'all').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const sub = (p.subcategory || 'handcrafted').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+    // Route for slug-based URL
+    if (p.slug) {
+      params.push({ category, sub, id: p.slug });
+    }
+    // Route for productId-based URL (backward compatibility)
+    if (p.productId && p.productId !== p.slug) {
+      params.push({ category, sub, id: p.productId });
+    }
+  }
+  return params;
 }
 
 export default async function CollectionProductDetailPage({ params }: { params: Promise<{ category: string, sub: string, id: string }> }) {

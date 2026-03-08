@@ -103,10 +103,16 @@ export async function getAllCategories(): Promise<SanityCategory[]> {
     name,
     "slug": slug.current,
     description,
-    "imageUrl": image.asset->url,
+    "imageUrl": coalesce(
+      image.asset->url,
+      *[_type == "product" && category._ref == ^._id && defined(image.asset)][0].image.asset->url
+    ),
     "subCategories": subCategories[] {
       name,
-      "imageUrl": image.asset->url
+      "imageUrl": coalesce(
+        image.asset->url,
+        *[_type == "product" && category._ref == ^.^._id && subcategory == ^.name && defined(image.asset)][0].image.asset->url
+      )
     }
   }`;
   return client.fetch(query);

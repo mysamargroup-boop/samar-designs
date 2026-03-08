@@ -41,7 +41,6 @@ export function Header({ categories }: { categories?: SanityCategory[] }) {
     { name: 'Home', href: '/', icon: Home },
     { name: 'Collections', href: '/collections', icon: Shapes },
     { name: 'Gallery', href: '/products', icon: Shapes },
-    ...(categories || []).map((c) => ({ name: c.name, href: `/products?category=${encodeURIComponent(c.name)}`, icon: Shapes })),
     { name: 'Our Story', href: '/about', icon: Info },
     { name: 'Blog', href: '/blog', icon: BookText },
     { name: 'AI Concierge', href: '/discovery', icon: Gem },
@@ -218,20 +217,69 @@ export function Header({ categories }: { categories?: SanityCategory[] }) {
 
         <nav className={cn('hidden lg:flex items-center justify-center transition-all duration-500', isScrolled ? 'space-x-9 mt-2 pt-2 border-t border-primary/10' : 'space-x-12 mt-4 pt-3 border-t border-gray-50')}>
           {navLinks.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = pathname === link.href || (link.name === 'Collections' && pathname.startsWith('/collections'));
+
+            if (link.name === 'Collections' && categories && categories.length > 0) {
+              return (
+                <div key={link.name} className="relative group">
+                  <Link
+                    href={link.href}
+                    className={cn(
+                      'text-[11px] font-bold uppercase tracking-[0.3em] transition-all relative group-hover:text-primary py-4',
+                      isActive ? 'text-primary' : 'text-foreground/60 hover:text-primary'
+                    )}
+                  >
+                    {link.name}
+                    <span
+                      className={cn(
+                        'absolute bottom-2 left-0 h-[1.5px] bg-primary transition-all',
+                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                      )}
+                    />
+                  </Link>
+                  <div className="absolute top-[80%] left-1/2 -translate-x-1/2 pt-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 w-[700px] z-50">
+                    <div className="bg-white/95 backdrop-blur-xl border border-primary/10 rounded-3xl p-6 shadow-2xl grid grid-cols-2 gap-4 relative overflow-hidden">
+                      <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-primary/5 via-transparent to-transparent" />
+                      {categories.map((cat) => (
+                        <Link
+                          key={cat.id}
+                          href={`/products?category=${encodeURIComponent(cat.name)}`}
+                          className="group/cat flex items-center gap-4 p-3 rounded-2xl hover:bg-primary/5 hover:border-primary/20 border border-transparent transition-all duration-300 bg-white shadow-sm"
+                        >
+                          <div className="relative h-16 w-16 rounded-xl overflow-hidden shrink-0 border border-primary/10 shadow-sm">
+                            {cat.imageUrl ? (
+                              <Image src={cat.imageUrl} alt={cat.name} fill sizes="64px" className="object-cover group-hover/cat:scale-110 transition-transform duration-500" />
+                            ) : (
+                              <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                                <Shapes className="h-6 w-6 text-primary/40" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-xs font-black uppercase tracking-widest text-foreground group-hover/cat:text-primary transition-colors">{cat.name}</p>
+                            <p className="text-[10px] uppercase font-bold text-muted-foreground line-clamp-1 decoration-primary/30 group-hover/cat:underline underline-offset-4">{cat.subCategories?.length || 0} Subcategories</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={link.name}
                 href={link.href}
                 className={cn(
-                  'text-[11px] font-bold uppercase tracking-[0.3em] transition-all relative group',
+                  'text-[11px] font-bold uppercase tracking-[0.3em] transition-all relative group py-2',
                   isActive ? 'text-primary' : 'text-foreground/60 hover:text-primary'
                 )}
               >
                 {link.name}
                 <span
                   className={cn(
-                    'absolute -bottom-1 left-0 h-[1.5px] bg-primary transition-all',
+                    'absolute bottom-0 left-0 h-[1.5px] bg-primary transition-all',
                     isActive ? 'w-full' : 'w-0 group-hover:w-full'
                   )}
                 />

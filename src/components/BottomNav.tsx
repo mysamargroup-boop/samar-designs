@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Shapes, User, Gem, Search } from 'lucide-react';
+import { Home, Shapes, User, ShoppingBag, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function BottomNav() {
@@ -24,8 +24,8 @@ export function BottomNav() {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (
-              <Link 
-                key={item.name} 
+              <Link
+                key={item.name}
                 href={item.href}
                 className="flex flex-col items-center justify-center gap-1 group transition-all duration-300 flex-1"
               >
@@ -39,9 +39,9 @@ export function BottomNav() {
         </div>
 
         <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-          <Link href="/discovery">
+          <Link href="/products">
             <div className="size-14 rounded-full gradient-primary border-[4px] border-background shadow-xl flex items-center justify-center group active:scale-95 transition-transform duration-200">
-              <Gem className="h-6 w-6 text-white fill-white/20 drop-shadow-md" />
+              <ShoppingBag className="h-6 w-6 text-white fill-white/20 drop-shadow-md" />
             </div>
           </Link>
         </div>
@@ -51,8 +51,8 @@ export function BottomNav() {
             const Icon = item.icon;
             const isActive = pathname === (item.href.split('?')[0]);
             return (
-              <Link 
-                key={item.name} 
+              <Link
+                key={item.name}
                 href={item.href}
                 className="flex flex-col items-center justify-center gap-1 group transition-all duration-300 flex-1"
               >
