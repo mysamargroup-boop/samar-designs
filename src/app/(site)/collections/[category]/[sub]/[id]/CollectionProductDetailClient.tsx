@@ -246,7 +246,7 @@ export default function CollectionProductDetailClient({ id }: { id: string }) {
                 <CarouselContent>
                   {galleryImages.map((img, idx) => (
                     <CarouselItem key={idx}>
-                      <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border-2 border-white bg-white w-full">
+                      <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden w-full">
                         <Image src={String(img)} alt={product.name} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" priority={idx === 0} loading={idx === 0 ? undefined : "lazy"} />
                         {idx === 0 && (
                           <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">

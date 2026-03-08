@@ -114,7 +114,7 @@ export default function BlogDetailClient({ id }: { id: string }) {
                         />
                     </div>
 
-                    <div className="flex flex-col lg:flex-row gap-12 pt-8">
+                    <div className="flex flex-col gap-12 pt-8">
                         <div className="flex-grow space-y-8">
                             <div className="prose prose-pink max-w-none">
                                 {blog.isPortableText && blog.content ? (
@@ -140,7 +140,7 @@ export default function BlogDetailClient({ id }: { id: string }) {
                             </div>
                         </div>
 
-                        <aside className="lg:w-72 space-y-8">
+                        <aside className="w-full max-w-lg mx-auto space-y-8">
                             <div className="bg-white p-8 rounded-[2.5rem] border border-primary/5 shadow-sm space-y-6">
                                 <h4 className="text-[10px] font-black uppercase tracking-widest text-primary">About Sumegha</h4>
                                 <div className="relative w-20 h-20 rounded-full overflow-hidden mb-4">

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sheet";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { SanityCategory } from "@/sanity/lib/queries";
+import productsData from '@/lib/products.json';
 
 export function Header({ categories }: { categories?: SanityCategory[] }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -103,7 +104,7 @@ export function Header({ categories }: { categories?: SanityCategory[] }) {
             {/* Desktop Search */}
             <div className="hidden lg:flex items-center relative mr-2">
               <div className={cn(
-                "flex items-center gap-2 bg-primary/5 border border-primary/10 rounded-full px-4 py-2 transition-all duration-300",
+                "flex items-center gap-2 bg-primary/5 border border-primary/10 rounded-full px-4 py-2 transition-all duration-300 relative z-50",
                 isSearchFocused ? "w-64 border-primary/30 bg-white shadow-lg" : "w-48"
               )}>
                 <Search className="h-4 w-4 text-primary opacity-60" />
@@ -121,6 +122,46 @@ export function Header({ categories }: { categories?: SanityCategory[] }) {
                     }
                   }}
                 />
+              </div>
+
+              {/* Real-time Search Dropdown */}
+              <div className={cn(
+                "absolute top-full left-0 w-64 mt-2 bg-white/95 backdrop-blur-xl border border-primary/10 rounded-2xl shadow-xl overflow-hidden transition-all duration-300 origin-top z-40",
+                (isSearchFocused && searchQuery.trim().length > 0) ? "opacity-100 scale-100 visible" : "opacity-0 scale-95 invisible"
+              )}>
+                <ScrollArea className="max-h-72 w-full">
+                  <div className="p-2 space-y-1">
+                    {productsData.products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.category.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 5).map(product => {
+                      const categorySlug = product.category.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                      const subCategorySlug = product.subcategory ? product.subcategory.toLowerCase().replace(/[^a-z0-9]+/g, '-') : "handcrafted";
+                      const productIdentifier = product.slug || product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                      const url = `/collections/${categorySlug}/${subCategorySlug}/${productIdentifier}`;
+                      return (
+                        <Link key={product.id} href={url} className="flex items-center gap-3 p-2 hover:bg-primary/5 rounded-xl transition-colors group">
+                          <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                            <Image src={product.imageUrl} alt={product.name} fill sizes="40px" className="object-cover" />
+                          </div>
+                          <div className="flex flex-col overflow-hidden">
+                            <span className="text-[10px] font-black uppercase tracking-tight truncate group-hover:text-primary transition-colors">{product.name}</span>
+                            <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest truncate">{product.category}</span>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                    {productsData.products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.category.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
+                      <div className="p-4 text-center text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
+                        No creations found
+                      </div>
+                    )}
+                  </div>
+                </ScrollArea>
+                {productsData.products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.category.toLowerCase().includes(searchQuery.toLowerCase())).length > 5 && (
+                  <div className="p-2 bg-primary/5 border-t border-primary/10 text-center">
+                    <Link href={`/products?search=${encodeURIComponent(searchQuery)}`} className="text-[9px] font-black uppercase text-primary hover:underline tracking-widest">
+                      View all results
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
             <Link href="/wishlist">
