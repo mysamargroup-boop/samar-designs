@@ -12,7 +12,9 @@
 /.next/
 /out/
 /.opennext/
+/.open-next/
 /.sanity/
+/.idx/
 
 # production
 /build

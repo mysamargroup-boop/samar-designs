@@ -71,6 +71,14 @@ export default function ProductDetailClient({ id }: { id: string }) {
 
   const product = sanityProduct || fallbackProduct;
 
+  const fallbackRecommendedProducts = useMemo(() => {
+    const category = product?.category;
+    if (!category) return [];
+    return (productsData.products as Product[])
+      .filter((p) => p.id !== id && p.category === category)
+      .slice(0, 4);
+  }, [id, product?.category]);
+
   useEffect(() => {
     if (!api) return;
     api.on("select", () => {
@@ -101,13 +109,10 @@ export default function ProductDetailClient({ id }: { id: string }) {
   const wishlisted = isWishlisted(product.id);
   const isFreeDelivery = product.sale_price >= 999;
 
-  const recommendedProducts = sanityRelated && sanityRelated.length > 0
-    ? sanityRelated
-    : useMemo(() =>
-      (productsData.products as Product[])
-        .filter((p) => p.id !== id && p.category === product.category)
-        .slice(0, 4),
-      [id, product.category]);
+  const recommendedProducts =
+    sanityRelated && sanityRelated.length > 0
+      ? sanityRelated
+      : fallbackRecommendedProducts;
 
   const mockReviews = [
     { name: "Aditi S.", rating: 5, comment: "Absolutely stunning! The detail on this piece is even better in person.", date: "2 weeks ago" },
