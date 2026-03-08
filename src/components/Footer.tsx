@@ -168,7 +168,7 @@ export function Footer() {
 
         <div className="mt-10 pt-8 border-t border-white/5 flex flex-col items-center gap-4 text-center px-4">
           <p className="text-[9px] text-white uppercase tracking-[0.5em] font-medium leading-relaxed">
-            © 2026 Sumegha Handmades. Crafted with Precision.
+            © 2026 Sumegha Handmades. Crafted with Precision & Love.
           </p>
           <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-white/20">
             <span>•</span>
