@@ -1,20 +1,21 @@
 {
   "/_not-found/page": "/_not-found",
   "/favicon.ico/route": "/favicon.ico",
+  "/icon.png/route": "/icon.png",
   "/studio/[[...tool]]/page": "/studio/[[...tool]]",
-  "/(site)/about/page": "/about",
-  "/(site)/blog/page": "/blog",
-  "/(site)/collections/page": "/collections",
-  "/(site)/contact/page": "/contact",
   "/(site)/cart/page": "/cart",
+  "/(site)/about/page": "/about",
+  "/(site)/collections/page": "/collections",
+  "/(site)/blog/page": "/blog",
+  "/(site)/contact/page": "/contact",
   "/(site)/discovery/page": "/discovery",
   "/(site)/page": "/",
-  "/(site)/returns/page": "/returns",
   "/(site)/privacy/page": "/privacy",
   "/(site)/products/page": "/products",
+  "/(site)/returns/page": "/returns",
   "/(site)/terms/page": "/terms",
   "/(site)/wishlist/page": "/wishlist",
+  "/(site)/blog/[id]/page": "/blog/[id]",
   "/(site)/collections/[category]/[sub]/[id]/page": "/collections/[category]/[sub]/[id]",
-  "/(site)/products/[id]/page": "/products/[id]",
-  "/(site)/blog/[id]/page": "/blog/[id]"
+  "/(site)/products/[id]/page": "/products/[id]"
 }
