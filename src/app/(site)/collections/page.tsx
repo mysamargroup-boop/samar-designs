@@ -44,31 +44,6 @@ interface CategorySectionProps {
 }
 
 function CategorySection({ collection, index }: CategorySectionProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-
-  const checkScroll = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 5);
-      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 5);
-    }
-  };
-
-  useEffect(() => {
-    checkScroll();
-    const el = scrollRef.current;
-    if (el) {
-      el.addEventListener('scroll', checkScroll);
-      window.addEventListener('resize', checkScroll);
-      return () => {
-        el.removeEventListener('scroll', checkScroll);
-        window.removeEventListener('resize', checkScroll);
-      };
-    }
-  }, []);
-
   const isEven = index % 2 === 0;
 
   return (
@@ -182,7 +157,6 @@ function CategorySection({ collection, index }: CategorySectionProps) {
           <div className="relative">
             <p className="text-[8px] font-black uppercase tracking-[0.3em] text-foreground/40 mb-3 px-1">Sub Categories</p>
             <div
-              ref={scrollRef}
               className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 -mx-1 px-1 scrollbar-hide"
             >
               {collection.subCategories.map((sub, sIdx) => (
@@ -200,14 +174,6 @@ function CategorySection({ collection, index }: CategorySectionProps) {
                 </Link>
               ))}
             </div>
-            {/* Left blur indicator */}
-            {canScrollLeft && (
-              <div className="absolute left-0 top-8 bottom-2 w-10 pointer-events-none rounded-l-xl" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.8), transparent)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }} />
-            )}
-            {/* Right blur indicator */}
-            {canScrollRight && (
-              <div className="absolute right-0 top-8 bottom-2 w-10 pointer-events-none rounded-r-xl" style={{ background: 'linear-gradient(to left, rgba(255,255,255,0.8), transparent)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }} />
-            )}
           </div>
         )}
       </div>
