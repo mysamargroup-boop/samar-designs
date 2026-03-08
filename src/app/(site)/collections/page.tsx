@@ -201,13 +201,13 @@ function CategorySection({ collection, index }: CategorySectionProps) {
               ))}
             </div>
             {/* Scroll indicators */}
-            {/* Left blur indicator */}
+            {/* Left fade indicator */}
             {canScrollLeft && (
-              <div className="absolute left-0 top-8 bottom-2 w-12 pointer-events-none rounded-l-xl z-10" style={{ background: 'linear-gradient(to right, var(--background) 10%, transparent)', backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)' }} />
+              <div className="absolute left-0 top-6 bottom-6 w-16 pointer-events-none z-10" style={{ background: 'linear-gradient(to right, var(--background) 20%, transparent)' }} />
             )}
-            {/* Right blur indicator */}
+            {/* Right fade indicator */}
             {canScrollRight && (
-              <div className="absolute right-0 top-8 bottom-2 w-12 pointer-events-none rounded-r-xl z-10" style={{ background: 'linear-gradient(to left, var(--background) 10%, transparent)', backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)' }} />
+              <div className="absolute right-0 top-6 bottom-6 w-16 pointer-events-none z-10" style={{ background: 'linear-gradient(to left, var(--background) 20%, transparent)' }} />
             )}
           </div>
         )}
