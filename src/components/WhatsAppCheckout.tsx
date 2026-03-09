@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 import { CartItem } from '@/lib/types';
-import { MessageCircle, ShoppingBag, Sparkles, CreditCard, MapPin, User, Mail, Ticket } from 'lucide-react';
+import { MessageCircle, ShoppingBag, Sparkles, CreditCard, MapPin, User, Mail, Ticket, Phone, StickyNote, Truck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
@@ -45,8 +46,11 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
     phone: '',
     address: '',
     pincode: '',
-    note: ''
+    note: '',
+    shippingAddress: '',
+    shippingPincode: '',
   });
+  const [sameAsShipping, setSameAsShipping] = useState(true);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
@@ -59,14 +63,17 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
     }
 
     // Pincode: allow only digits, max 6
-    if (id === 'pincode') {
+    if (id === 'pincode' || id === 'shippingPincode') {
       const digitsOnly = value.replace(/\D/g, '').slice(0, 6);
-      setFormData(prev => ({ ...prev, pincode: digitsOnly }));
+      setFormData(prev => ({ ...prev, [id]: digitsOnly }));
       return;
     }
 
     setFormData(prev => ({ ...prev, [id]: value }));
   };
+
+  const effectiveShippingAddress = sameAsShipping ? formData.address : formData.shippingAddress;
+  const effectiveShippingPincode = sameAsShipping ? formData.pincode : formData.shippingPincode;
 
   const handleCheckout = () => {
     const businessPhone = BUSINESS_WHATSAPP_NUMBER;
@@ -77,11 +84,11 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
       `- Name: ${formData.name}\n` +
       `- Email: ${formData.email}\n` +
       `- Phone: +91 ${formData.phone}\n` +
-      `- Address: ${formData.address}\n` +
-      `- Pincode: ${formData.pincode}\n\n` +
-      `*ORDER SUMMARY:*\n${itemDetails}\n\n` +
+      `- Billing Address: ${formData.address}\n` +
+      `- Billing Pincode: ${formData.pincode}\n` +
+      (sameAsShipping ? `` : `- Shipping Address: ${formData.shippingAddress}\n- Shipping Pincode: ${formData.shippingPincode}\n`) +
+      `\n*ORDER SUMMARY:*\n${itemDetails}\n\n` +
       (coupon ? `*COUPON USED:* ${coupon.toUpperCase()}\n` : '') +
-      `*TOTAL SAVINGS:* ₹${savings}\n` +
       `*TOTAL PAYABLE:* ₹${total}\n\n` +
       (formData.note ? `*NOTE FOR ARTIST:* ${formData.note}\n\n` : '') +
       `Please confirm my order. Thank you!`;
@@ -94,7 +101,13 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
     const orderData = {
       orderId,
       date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
-      customer: formData,
+      time: new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }),
+      customer: {
+        ...formData,
+        shippingAddress: effectiveShippingAddress,
+        shippingPincode: effectiveShippingPincode,
+        sameAsShipping,
+      },
       items,
       total,
       savings,
@@ -105,14 +118,15 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
     onOpenChange(false);
   };
 
-  const isFormValid = formData.name && formData.email && formData.address && formData.pincode && formData.pincode.length === 6;
+  const isFormValid = formData.name && formData.email && formData.address && formData.pincode && formData.pincode.length === 6 &&
+    (sameAsShipping || (formData.shippingAddress && formData.shippingPincode && formData.shippingPincode.length === 6));
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[450px] md:max-w-[850px] rounded-[2.5rem] border-none shadow-2xl overflow-hidden p-0 bg-background transition-all duration-500">
+      <DialogContent className="sm:max-w-[450px] md:max-w-[900px] max-h-[90vh] rounded-[2.5rem] border-none shadow-2xl overflow-hidden p-0 bg-background transition-all duration-500">
         <div className="grid grid-cols-1 md:grid-cols-2 h-full">
           {/* Left: Form */}
-          <div className="p-6 md:p-10 space-y-6">
+          <div className="p-6 md:p-8 space-y-5 overflow-y-auto max-h-[70vh] md:max-h-[85vh]">
             <DialogHeader>
               <DialogTitle className="font-display text-2xl font-black uppercase tracking-tight flex items-center gap-2">
                 <User className="h-6 w-6 text-primary" />
@@ -123,7 +137,8 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
               </DialogDescription>
             </DialogHeader>
 
-            <div className="space-y-5">
+            <div className="space-y-4">
+              {/* Name & Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-widest text-foreground/60 ml-1">Full Name *</Label>
@@ -131,16 +146,17 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="phone" className="text-[10px] font-black uppercase tracking-widest text-foreground/60 ml-1">Phone Number</Label>
-                  <div className="relative flex items-center">
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none z-10">
-                      <span className="text-base leading-none">🇮🇳</span>
-                      <span className="text-sm font-semibold text-foreground/70">+91</span>
+                  <div className="relative">
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none z-10">
+                      <span className="text-sm leading-none">🇮🇳</span>
+                      <span className="text-xs font-bold text-foreground/60">+91</span>
                     </div>
-                    <Input id="phone" type="tel" inputMode="numeric" pattern="[0-9]*" value={formData.phone} onChange={handleChange} placeholder="9876543210" className="pl-[4.5rem] rounded-xl border-primary/5 bg-white shadow-sm" maxLength={10} />
+                    <Input id="phone" type="tel" inputMode="numeric" pattern="[0-9]*" value={formData.phone} onChange={handleChange} placeholder="9876543210" className="pl-[4.2rem] rounded-xl border-primary/5 bg-white shadow-sm" maxLength={10} />
                   </div>
                 </div>
               </div>
 
+              {/* Email */}
               <div className="space-y-1.5">
                 <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-widest text-foreground/60 ml-1">Email Address *</Label>
                 <div className="relative">
@@ -149,14 +165,16 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
                 </div>
               </div>
 
+              {/* Billing Address */}
               <div className="space-y-1.5">
-                <Label htmlFor="address" className="text-[10px] font-black uppercase tracking-widest text-foreground/60 ml-1">Full Address *</Label>
+                <Label htmlFor="address" className="text-[10px] font-black uppercase tracking-widest text-foreground/60 ml-1">Billing Address *</Label>
                 <div className="relative">
                   <MapPin className="absolute left-4 top-4 h-4 w-4 text-muted-foreground" />
-                  <Textarea id="address" value={formData.address} onChange={handleChange} placeholder="House no, Street, Landmark..." className="pl-11 rounded-xl border-primary/5 bg-white shadow-sm min-h-[100px] resize-none" />
+                  <Textarea id="address" value={formData.address} onChange={handleChange} placeholder="House no, Street, Landmark..." className="pl-11 rounded-xl border-primary/5 bg-white shadow-sm min-h-[80px] resize-none" />
                 </div>
               </div>
 
+              {/* Pincode */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="pincode" className="text-[10px] font-black uppercase tracking-widest text-foreground/60 ml-1">Pincode *</Label>
@@ -166,11 +184,54 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
                   )}
                 </div>
               </div>
+
+              {/* Shipping Address Checkbox */}
+              <div className="flex items-center gap-2 pt-1">
+                <Checkbox
+                  id="sameAsShipping"
+                  checked={sameAsShipping}
+                  onCheckedChange={(checked) => setSameAsShipping(checked === true)}
+                  className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                />
+                <Label htmlFor="sameAsShipping" className="text-[11px] font-bold text-foreground/70 cursor-pointer">
+                  Shipping address same as billing address
+                </Label>
+              </div>
+
+              {/* Separate Shipping Address (shown when checkbox is unchecked) */}
+              {!sameAsShipping && (
+                <div className="space-y-4 p-4 bg-blue-50/50 rounded-2xl border border-blue-100 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex items-center gap-2">
+                    <Truck className="h-4 w-4 text-blue-600" />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-blue-700">Shipping Address</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="shippingAddress" className="text-[10px] font-black uppercase tracking-widest text-foreground/60 ml-1">Address *</Label>
+                    <Textarea id="shippingAddress" value={formData.shippingAddress} onChange={handleChange} placeholder="Shipping address..." className="rounded-xl border-primary/5 bg-white shadow-sm min-h-[70px] resize-none" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="shippingPincode" className="text-[10px] font-black uppercase tracking-widest text-foreground/60 ml-1">Pincode *</Label>
+                    <Input id="shippingPincode" type="tel" inputMode="numeric" pattern="[0-9]*" value={formData.shippingPincode} onChange={handleChange} placeholder="6-digit code" className="rounded-xl border-primary/5 bg-white shadow-sm" maxLength={6} />
+                    {formData.shippingPincode && formData.shippingPincode.length !== 6 && (
+                      <p className="text-[9px] text-red-500 font-medium ml-1 mt-0.5">Pincode must be exactly 6 digits</p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Extra Notes */}
+              <div className="space-y-1.5">
+                <Label htmlFor="note" className="text-[10px] font-black uppercase tracking-widest text-foreground/60 ml-1 flex items-center gap-1">
+                  <StickyNote className="h-3 w-3" />
+                  Extra Notes
+                </Label>
+                <Textarea id="note" value={formData.note} onChange={handleChange} placeholder="Any special instructions, preferred color, customization..." className="rounded-xl border-primary/5 bg-white shadow-sm min-h-[60px] resize-none text-sm" />
+              </div>
             </div>
           </div>
 
           {/* Right: Summary */}
-          <div className="bg-primary/[0.03] p-6 md:p-10 border-t md:border-t-0 md:border-l border-primary/5 flex flex-col justify-between">
+          <div className="bg-primary/[0.03] p-6 md:p-8 border-t md:border-t-0 md:border-l border-primary/5 flex flex-col justify-between">
             <div className="space-y-6">
               <h3 className="font-display text-xl font-black uppercase tracking-tight flex items-center gap-2">
                 <ShoppingBag className="h-5 w-5 text-primary" />
