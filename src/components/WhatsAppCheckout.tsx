@@ -26,7 +26,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 // CONFIGURABLE: Change this to your business WhatsApp number
 // (Include country code, but no '+' or spaces)
 // ============================================================
-const BUSINESS_WHATSAPP_NUMBER = "919876543210";
+const BUSINESS_WHATSAPP_NUMBER = "918234009618";
 // ============================================================
 
 interface WhatsAppCheckoutProps {
@@ -89,6 +89,7 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
       (sameAsShipping ? `` : `- Shipping Address: ${formData.shippingAddress}\n- Shipping Pincode: ${formData.shippingPincode}\n`) +
       `\n*ORDER SUMMARY:*\n${itemDetails}\n\n` +
       (coupon ? `*COUPON USED:* ${coupon.toUpperCase()}\n` : '') +
+      `*SHIPPING:* FREE\n` +
       `*TOTAL PAYABLE:* ₹${total}\n\n` +
       (formData.note ? `*NOTE FOR ARTIST:* ${formData.note}\n\n` : '') +
       `Please confirm my order. Thank you!`;
