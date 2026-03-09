@@ -124,10 +124,10 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[450px] md:max-w-[900px] max-h-[90vh] rounded-[2.5rem] border-none shadow-2xl overflow-hidden p-0 bg-background transition-all duration-500">
-        <div className="grid grid-cols-1 md:grid-cols-2 h-full">
+      <DialogContent className="sm:max-w-[450px] md:max-w-[900px] max-h-[90vh] md:max-h-[85vh] rounded-[2.5rem] border-none shadow-2xl overflow-hidden p-0 bg-background transition-all duration-500">
+        <div className="flex flex-col md:flex-row h-full max-h-[90vh] md:max-h-[85vh] overflow-hidden">
           {/* Left: Form */}
-          <div className="p-6 md:p-8 space-y-5 overflow-y-auto max-h-[70vh] md:max-h-[85vh]">
+          <div className="flex-1 p-6 md:p-8 space-y-5 overflow-y-auto custom-scrollbar">
             <DialogHeader>
               <DialogTitle className="font-display text-2xl font-black uppercase tracking-tight flex items-center gap-2">
                 <User className="h-6 w-6 text-primary" />

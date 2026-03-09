@@ -32,14 +32,15 @@ const BUSINESS_EMAIL = 'hello@sumeghahandmades.com';
 // ➡️ BUSINESS WEBSITE: Shown on invoice "From" section
 const BUSINESS_WEBSITE = 'www.sumeghahandmades.com';
 
-// ➡️ LOGO PATH: Path to your logo image (relative to /public folder)
-// Place your logo in /public/logo.png or change this path
-const BUSINESS_LOGO_PATH = '/logo.png';
+// ➡️ LOGO URL: Using an absolute URL works better for html2canvas to fetch the image.
+// Try hosting your logo and pasting the https:// URL here instead of a local path.
+const BUSINESS_LOGO_PATH = 'https://i.ibb.co/6nd5ZZV/logo.png'; // Example fallback, update me
 
 // ➡️ TAGLINE: Shown below business name on invoice
 const BUSINESS_TAGLINE = 'Crafted with love, shipped with care.';
 
 // ➡️ UPI PAYMENT DETAILS: Fixed exact-amount payment
+const ENABLE_QR_PAYMENT = true; // Set to false to hide the QR code payment block
 const BUSINESS_UPI_ID = '7000216694@paytm'; // Change to your actual UPI ID
 const BUSINESS_PAYEE_NAME = 'Sumegha Handmades';
 
@@ -74,7 +75,7 @@ interface OrderConfirmationProps {
     onClose: () => void;
 }
 
-// Generate a SKU from product name
+// Generate a SKU from product name (Using standard function, but we use Product ID in UI)
 function generateSKU(name: string, index: number): string {
     const slug = name
         .toUpperCase()
@@ -258,25 +259,31 @@ export function OrderConfirmation({ open, onOpenChange, orderData, onClose }: Or
                 {/* Embed Montserrat font for PDF rendering */}
                 <style>{`@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');`}</style>
 
-                {/* ➡️ INVOICE HEADER: Logo + Business Name + Invoice Title */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid #f0f0f0', paddingBottom: '30px', marginBottom: '40px', alignItems: 'flex-start' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        {/* ➡️ LOGO: Change BUSINESS_LOGO_PATH at top to update */}
+                {/* ➡️ INVOICE HEADER: Centered Logo + Business Name + Invoice Title */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', borderBottom: '2px solid #f0f0f0', paddingBottom: '30px', marginBottom: '40px', textAlign: 'center' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
+                        {/* ➡️ LOGO: Center aligned. If image doesn't load in PDF, use an absolute URL */}
                         <img
                             src={BUSINESS_LOGO_PATH}
                             alt={BUSINESS_NAME}
-                            style={{ width: '60px', height: '60px', borderRadius: '12px', objectFit: 'contain' }}
+                            style={{ maxWidth: '140px', maxHeight: '100px', objectFit: 'contain' }}
+                            crossOrigin="anonymous"
                         />
                         <div>
-                            <h1 style={{ fontSize: '28px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '2px', margin: '0 0 5px 0', fontFamily: '"Montserrat", sans-serif' }}>{BUSINESS_NAME}</h1>
-                            <p style={{ color: '#666', fontSize: '11px', margin: 0, letterSpacing: '1px', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>{BUSINESS_TAGLINE}</p>
+                            <h1 style={{ fontSize: '36px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '3px', margin: '0 0 8px 0', fontFamily: '"Montserrat", sans-serif', color: '#111' }}>{BUSINESS_NAME}</h1>
+                            <p style={{ color: '#666', fontSize: '12px', margin: 0, letterSpacing: '2px', textTransform: 'uppercase', fontFamily: '"Montserrat", sans-serif', fontWeight: 600 }}>{BUSINESS_TAGLINE}</p>
                         </div>
                     </div>
-                    <div style={{ textAlign: 'right' }}>
-                        <h2 style={{ fontSize: '38px', fontWeight: '900', color: '#db2777', margin: '0 0 5px 0', textTransform: 'uppercase', fontFamily: '"Montserrat", sans-serif' }}>Invoice</h2>
-                        <p style={{ margin: '0 0 5px 0', fontSize: '14px', fontWeight: 700, fontFamily: '"Montserrat", sans-serif' }}>Order ID: {orderData.orderId}</p>
-                        {/* ➡️ DATE & TIME: Auto-generated from order placement */}
-                        <p style={{ color: '#666', margin: 0, fontSize: '14px', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>Date: {orderData.date} | Time: {orderTime}</p>
+
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '20px' }}>
+                        <div style={{ textAlign: 'left' }}>
+                            <p style={{ margin: '0 0 5px 0', fontSize: '14px', fontWeight: 700, fontFamily: '"Montserrat", sans-serif' }}>Order ID: {orderData.orderId}</p>
+                            {/* ➡️ DATE & TIME: Auto-generated from order placement */}
+                            <p style={{ color: '#666', margin: 0, fontSize: '14px', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>Date: {orderData.date} | Time: {orderTime}</p>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                            <h2 style={{ fontSize: '38px', fontWeight: '900', color: '#db2777', margin: 0, textTransform: 'uppercase', fontFamily: '"Montserrat", sans-serif' }}>Invoice</h2>
+                        </div>
                     </div>
                 </div>
 
@@ -287,9 +294,9 @@ export function OrderConfirmation({ open, onOpenChange, orderData, onClose }: Or
                         <h3 style={{ textTransform: 'uppercase', letterSpacing: '1.5px', fontSize: '12px', color: '#888', marginBottom: '15px', marginTop: 0, fontFamily: '"Montserrat", sans-serif', fontWeight: 700 }}>Billed To:</h3>
                         <p style={{ fontWeight: 700, fontSize: '16px', margin: '0 0 8px 0', fontFamily: '"Montserrat", sans-serif' }}>{orderData.customer.name}</p>
                         <p style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#444', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>{orderData.customer.email}</p>
-                        {/* ➡️ CUSTOMER PHONE: Clickable tel: link */}
+                        {/* ➡️ CUSTOMER PHONE: Clickable callto: link */}
                         <p style={{ margin: '0 0 5px 0', fontSize: '14px', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>
-                            <a href={`tel:+91${orderData.customer.phone}`} style={{ color: '#2563eb', textDecoration: 'none' }}>+91 {orderData.customer.phone}</a>
+                            <a href={`callto:+91${orderData.customer.phone}`} style={{ color: '#2563eb', textDecoration: 'none' }}>+91 {orderData.customer.phone}</a>
                         </p>
                         <p style={{ margin: '0', fontSize: '14px', color: '#444', lineHeight: '1.5', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>
                             {orderData.customer.address}<br />
@@ -313,11 +320,13 @@ export function OrderConfirmation({ open, onOpenChange, orderData, onClose }: Or
                         <h3 style={{ textTransform: 'uppercase', letterSpacing: '1.5px', fontSize: '12px', color: '#888', marginBottom: '15px', marginTop: 0, fontFamily: '"Montserrat", sans-serif', fontWeight: 700 }}>From:</h3>
                         <p style={{ fontWeight: 700, fontSize: '16px', margin: '0 0 8px 0', fontFamily: '"Montserrat", sans-serif' }}>{BUSINESS_NAME}</p>
                         <p style={{ margin: '0 0 5px 0', fontSize: '13px', color: '#444', lineHeight: '1.6', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>{BUSINESS_ADDRESS}</p>
-                        {/* ➡️ BUSINESS PHONE: Clickable tel: link */}
+                        {/* ➡️ BUSINESS PHONE: Clickable callto: link */}
                         <p style={{ margin: '0 0 3px 0', fontSize: '13px', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>
-                            Phone: <a href={`tel:${BUSINESS_PHONE}`} style={{ color: '#2563eb', textDecoration: 'none' }}>{BUSINESS_PHONE}</a>
+                            Phone: <a href={`callto:${BUSINESS_PHONE}`} style={{ color: '#2563eb', textDecoration: 'none' }}>{BUSINESS_PHONE}</a>
                         </p>
-                        <p style={{ margin: '0 0 3px 0', fontSize: '13px', color: '#444', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>Email: {BUSINESS_EMAIL}</p>
+                        <p style={{ margin: '0 0 3px 0', fontSize: '13px', color: '#444', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>
+                            Email: <a href={`mailto:${BUSINESS_EMAIL}`} style={{ color: '#2563eb', textDecoration: 'none' }}>{BUSINESS_EMAIL}</a>
+                        </p>
                         <p style={{ margin: '0', fontSize: '13px', color: '#444', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>{BUSINESS_WEBSITE}</p>
                     </div>
                 </div>
@@ -339,7 +348,7 @@ export function OrderConfirmation({ open, onOpenChange, orderData, onClose }: Or
                             <tr key={idx}>
                                 <td style={{ textAlign: 'center', padding: '18px 10px', borderBottom: '1px solid #f5f5f5', color: '#888', fontWeight: 600, fontSize: '13px' }}>{idx + 1}</td>
                                 <td style={{ padding: '18px 10px', borderBottom: '1px solid #f5f5f5', fontWeight: 700, fontSize: '13px' }}>{item.name}</td>
-                                <td style={{ padding: '18px 10px', borderBottom: '1px solid #f5f5f5', color: '#999', fontWeight: 500, fontSize: '11px', fontFamily: '"Courier New", monospace' }}>{generateSKU(item.name, idx)}</td>
+                                <td style={{ padding: '18px 10px', borderBottom: '1px solid #f5f5f5', color: '#333', fontWeight: 700, fontSize: '12px', fontFamily: '"Montserrat", sans-serif' }}>{item.id.length > 10 ? item.id.substring(0, 8).toUpperCase() : item.id.toUpperCase()}</td>
                                 <td style={{ textAlign: 'center', padding: '18px 10px', borderBottom: '1px solid #f5f5f5', color: '#555', fontWeight: 500, fontSize: '13px' }}>₹{item.sale_price}</td>
                                 <td style={{ textAlign: 'center', padding: '18px 10px', borderBottom: '1px solid #f5f5f5', color: '#555', fontWeight: 500, fontSize: '13px' }}>{item.quantity}</td>
                                 <td style={{ textAlign: 'right', padding: '18px 10px', borderBottom: '1px solid #f5f5f5', fontWeight: 700, fontSize: '13px' }}>₹{item.sale_price * item.quantity}</td>
@@ -386,7 +395,7 @@ export function OrderConfirmation({ open, onOpenChange, orderData, onClose }: Or
                 <div style={{ marginTop: '80px', textAlign: 'center', borderTop: '1px solid #eee', paddingTop: '30px', color: '#888', fontSize: '12px', fontFamily: '"Montserrat", sans-serif', fontWeight: 500 }}>
                     <p style={{ margin: '0 0 5px 0' }}>Thank you for shopping with {BUSINESS_NAME}!</p>
                     <p style={{ margin: '0 0 5px 0' }}>If you have any questions about this invoice, please contact us on WhatsApp.</p>
-                    <p style={{ margin: '0', fontSize: '11px', color: '#aaa', fontWeight: 400 }}>{BUSINESS_ADDRESS} | <a href={`tel:${BUSINESS_PHONE}`} style={{ color: '#aaa', textDecoration: 'none' }}>{BUSINESS_PHONE}</a> | {BUSINESS_EMAIL}</p>
+                    <p style={{ margin: '0', fontSize: '11px', color: '#aaa', fontWeight: 400 }}>{BUSINESS_ADDRESS} | <a href={`callto:${BUSINESS_PHONE}`} style={{ color: '#aaa', textDecoration: 'none' }}>{BUSINESS_PHONE}</a> | <a href={`mailto:${BUSINESS_EMAIL}`} style={{ color: '#aaa', textDecoration: 'none' }}>{BUSINESS_EMAIL}</a></p>
                 </div>
             </div>
 
