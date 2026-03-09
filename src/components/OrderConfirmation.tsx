@@ -3,11 +3,12 @@
 import { useRef, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { FileDown, CheckCircle2, ArrowRight, Sparkles, Clock } from 'lucide-react';
+import { FileDown, CheckCircle2, ArrowRight, Sparkles, Clock, QrCode } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { CartItem } from '@/lib/types';
 import Link from 'next/link';
+import { QRCodeSVG } from 'qrcode.react';
 
 // ============================================================
 // 🔧 CONFIGURABLE SECTION — Change these values as needed
@@ -37,6 +38,10 @@ const BUSINESS_LOGO_PATH = '/logo.png';
 
 // ➡️ TAGLINE: Shown below business name on invoice
 const BUSINESS_TAGLINE = 'Crafted with love, shipped with care.';
+
+// ➡️ UPI PAYMENT DETAILS: Fixed exact-amount payment
+const BUSINESS_UPI_ID = '7000216694@paytm'; // Change to your actual UPI ID
+const BUSINESS_PAYEE_NAME = 'Sumegha Handmades';
 
 // ============================================================
 // END OF CONFIGURABLE SECTION
@@ -85,6 +90,9 @@ export function OrderConfirmation({ open, onOpenChange, orderData, onClose }: Or
     if (!orderData) return null;
 
     const orderTime = orderData.time || new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+    // Exact amount payment intent URL
+    const upiIntentUrl = `upi://pay?pa=${BUSINESS_UPI_ID}&pn=${encodeURIComponent(BUSINESS_PAYEE_NAME)}&am=${orderData.total}&cu=INR&tn=${encodeURIComponent(`Order ${orderData.orderId}`)}`;
 
     const handleDownloadInvoice = async () => {
         if (!invoiceRef.current) return;
@@ -158,8 +166,30 @@ export function OrderConfirmation({ open, onOpenChange, orderData, onClose }: Or
                             </div>
                         )}
 
+                        {/* Direct Fixed Amount UPI Payment */}
+                        <div className="w-full mt-4 p-4 md:p-5 bg-primary/5 rounded-[1.5rem] border border-primary/10 flex flex-col items-center text-center">
+                            <h4 className="text-[11px] font-black uppercase tracking-widest text-primary flex items-center gap-1.5 mb-1">
+                                <QrCode className="h-4 w-4" />
+                                Pay Exact Amount Now
+                            </h4>
+                            <p className="text-[9px] text-muted-foreground font-medium uppercase tracking-widest mb-3">
+                                Scan OR click to pay exactly ₹{orderData.total}
+                            </p>
+
+                            <div className="bg-white p-2.5 rounded-[1rem] border border-primary/20 shadow-sm inline-block">
+                                <QRCodeSVG value={upiIntentUrl} size={110} />
+                            </div>
+
+                            <Button
+                                className="w-full mt-4 h-11 rounded-xl bg-[#25D366] hover:bg-[#128C7E] text-white font-black text-[10px] uppercase tracking-[0.1em] shadow-lg shadow-green-500/20 transition-all"
+                                onClick={() => window.open(upiIntentUrl, '_blank')}
+                            >
+                                Open UPI App to Pay ₹{orderData.total}
+                            </Button>
+                        </div>
+
                         {/* Approximate Delivery Time */}
-                        <div className="w-full p-3 md:p-4 bg-blue-50 rounded-2xl border border-blue-100 flex items-center gap-3 mt-3">
+                        <div className="w-full p-3 md:p-4 bg-blue-50 rounded-2xl border border-blue-100 flex items-center gap-3 mt-4">
                             <Clock className="h-5 w-5 text-blue-600 flex-shrink-0" />
                             <div className="text-left">
                                 <p className="text-[10px] font-black text-blue-700 uppercase tracking-widest">Estimated Delivery</p>
