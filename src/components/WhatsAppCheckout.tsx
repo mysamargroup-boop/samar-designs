@@ -42,7 +42,23 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
+    const { id, value } = e.target;
+
+    // Phone: allow only digits, max 10
+    if (id === 'phone') {
+      const digitsOnly = value.replace(/\D/g, '').slice(0, 10);
+      setFormData(prev => ({ ...prev, phone: digitsOnly }));
+      return;
+    }
+
+    // Pincode: allow only digits, max 6
+    if (id === 'pincode') {
+      const digitsOnly = value.replace(/\D/g, '').slice(0, 6);
+      setFormData(prev => ({ ...prev, pincode: digitsOnly }));
+      return;
+    }
+
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
   const handleCheckout = () => {
@@ -53,7 +69,7 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
       `*CUSTOMER DETAILS:*\n` +
       `- Name: ${formData.name}\n` +
       `- Email: ${formData.email}\n` +
-      `- Phone: ${formData.phone}\n` +
+      `- Phone: +91 ${formData.phone}\n` +
       `- Address: ${formData.address}\n` +
       `- Pincode: ${formData.pincode}\n\n` +
       `*ORDER SUMMARY:*\n${itemDetails}\n\n` +
@@ -82,7 +98,7 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
     onOpenChange(false);
   };
 
-  const isFormValid = formData.name && formData.email && formData.address && formData.pincode;
+  const isFormValid = formData.name && formData.email && formData.address && formData.pincode && formData.pincode.length === 6;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -108,7 +124,13 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="phone" className="text-[10px] font-black uppercase tracking-widest text-foreground/60 ml-1">Phone Number</Label>
-                  <Input id="phone" value={formData.phone} onChange={handleChange} placeholder="+91..." className="rounded-xl border-primary/5 bg-white shadow-sm" />
+                  <div className="relative flex items-center">
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none z-10">
+                      <span className="text-base leading-none">🇮🇳</span>
+                      <span className="text-sm font-semibold text-foreground/70">+91</span>
+                    </div>
+                    <Input id="phone" type="tel" inputMode="numeric" pattern="[0-9]*" value={formData.phone} onChange={handleChange} placeholder="9876543210" className="pl-[4.5rem] rounded-xl border-primary/5 bg-white shadow-sm" maxLength={10} />
+                  </div>
                 </div>
               </div>
 
@@ -131,7 +153,10 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="pincode" className="text-[10px] font-black uppercase tracking-widest text-foreground/60 ml-1">Pincode *</Label>
-                  <Input id="pincode" value={formData.pincode} onChange={handleChange} placeholder="6-digit code" className="rounded-xl border-primary/5 bg-white shadow-sm" />
+                  <Input id="pincode" type="tel" inputMode="numeric" pattern="[0-9]*" value={formData.pincode} onChange={handleChange} placeholder="6-digit code" className="rounded-xl border-primary/5 bg-white shadow-sm" maxLength={6} />
+                  {formData.pincode && formData.pincode.length !== 6 && (
+                    <p className="text-[9px] text-red-500 font-medium ml-1 mt-0.5">Pincode must be exactly 6 digits</p>
+                  )}
                 </div>
               </div>
             </div>
