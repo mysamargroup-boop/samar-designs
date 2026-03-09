@@ -12,6 +12,8 @@ import { toast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import confetti from 'canvas-confetti';
+import useSound from 'use-sound';
 
 export default function CartPage() {
   const router = useRouter();
@@ -21,6 +23,9 @@ export default function CartPage() {
   const [couponCode, setCouponCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState(0);
   const [isSparkling, setIsSparkling] = useState(false);
+
+  // Magic spell sound effect for coupon
+  const [playSparkleSound] = useSound('/sounds/sparkle.mp3', { volume: 0.5 });
 
   // Use sale_price for current value and regular_price for comparison
   const subtotal = cart.reduce((sum, item) => sum + (item.sale_price * item.quantity), 0);
@@ -34,8 +39,23 @@ export default function CartPage() {
     if (couponCode.toUpperCase() === 'SUMEGHA10') {
       setAppliedDiscount(10);
       setIsSparkling(true);
+
+      // Play sound and trigger confetti
+      try {
+        playSparkleSound();
+      } catch (e) {
+        console.warn("Sound effect failed to play", e);
+      }
+
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#db2777', '#fbcfe8', '#fce7f3', '#ffffff']
+      });
+
       toast({
-        title: "Coupon Applied!",
+        title: "Coupon Applied! ✨",
         description: "You got an extra 10% off.",
         duration: 3000,
       });

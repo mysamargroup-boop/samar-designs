@@ -39,6 +39,8 @@
     "@radix-ui/react-tooltip": "^1.1.8",
     "@sanity/image-url": "^2.0.3",
     "@sanity/vision": "^3.99.0",
+    "@types/canvas-confetti": "^1.9.0",
+    "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
@@ -66,6 +68,7 @@
     "swr": "^2.4.1",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
+    "use-sound": "^5.0.0",
     "wrangler": "^4.71.0",
     "zod": "^3.24.2"
   },
