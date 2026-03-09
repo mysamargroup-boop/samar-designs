@@ -21,6 +21,13 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+// ============================================================
+// CONFIGURABLE: Change this to your business WhatsApp number
+// (Include country code, but no '+' or spaces)
+// ============================================================
+const BUSINESS_WHATSAPP_NUMBER = "919876543210";
+// ============================================================
+
 interface WhatsAppCheckoutProps {
   items: CartItem[];
   total: number;
@@ -62,7 +69,7 @@ export function WhatsAppCheckout({ items, total, savings, coupon, open, onOpenCh
   };
 
   const handleCheckout = () => {
-    const businessPhone = "919876543210";
+    const businessPhone = BUSINESS_WHATSAPP_NUMBER;
     const itemDetails = items.map(item => `- ${item.name} (Qty: ${item.quantity}, Price: ₹${item.sale_price * item.quantity})`).join('\n');
 
     const message = `*New Order from Sumegha Handmades*\n\n` +

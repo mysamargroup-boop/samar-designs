@@ -14,8 +14,8 @@ import Link from 'next/link';
 // ============================================================
 const APPROX_DELIVERY_DAYS = '5-7 business days'; // Change this to update delivery time
 const BUSINESS_NAME = 'Sumegha Handmades';
-const BUSINESS_ADDRESS = 'Samar Design Studio, 123 Art Lane, Jaipur, Rajasthan - 302001';
-const BUSINESS_PHONE = '+91 98765 43210';
+const BUSINESS_ADDRESS = 'Sagar, Madhya Pradesh, 470002';
+const BUSINESS_PHONE = '+918234009618';
 const BUSINESS_EMAIL = 'hello@sumeghahandmades.com';
 const BUSINESS_WEBSITE = 'www.sumeghahandmades.com';
 // ============================================================
